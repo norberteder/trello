@@ -1,0 +1,34 @@
+{
+    "name": "trello",
+    "version": "0.0.1",
+    "author": "Graeme Foster <graemef@gmail.com>",
+    "description": "Put stuff in Trello",
+    "contributors": [
+        {
+            "name": "Graeme Foster",
+            "email": "graemef@gmail.com"
+        }
+    ],
+    "scripts": {
+        "test": "mocha"
+    },
+    "main": "./lib/trello",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/graemef/trello.git"
+    },
+    "keywords": [
+        "trello"
+    ],
+    "dependencies": {
+        "restler": "2.0.x"
+    },
+    "devDependencies": {
+    },
+    "bundleDependencies": [
+    ],
+    "license": "MIT",
+    "engine": {
+        "node": ">=0.6"
+    }
+}
