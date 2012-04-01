@@ -11,47 +11,41 @@ describe('Trello', function () {
     var trello;
 
     beforeEach(function () {
-        sinon.stub(restler, 'post', function (uri, options) {
-            return {on: function (event, callback) {
-                callback(null, null);
-            }};
-        });
         trello = new Trello('key', 'token');
     });
 
     describe('addBoard', function () {
-        it('should post to https://api.trello.com/1/boards', function (done) {
-            trello.addBoard(null, null, null, function () {
-                restler.post.should.have.been.calledWith('https://api.trello.com/1/boards');
+        var query;
+        var post;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'post', function (uri, options) {
+                return {on: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.addBoard('name', 'description', 'organizationId', function () {
+                query = restler.post.args[0][1].query;
+                post = restler.post;
                 done();
             });
         });
 
-        describe('given a description', function () {
-            it('should include the description', function (done) {
-                trello.addBoard(null, 'description', null, function () {
-                    restler.post.args[0][1].query.desc.should.equal('description');
-                    done();
-                });
-            });
+        it('should post to https://api.trello.com/1/boards', function () {
+            post.should.have.been.calledWith('https://api.trello.com/1/boards');
         });
 
-        describe('given a name', function () {
-            it('should include the name', function (done) {
-                trello.addBoard('name', null, null, function () {
-                    restler.post.args[0][1].query.name.should.equal('name');
-                    done();
-                });
-            });
+        it('should include the description', function () {
+            query.desc.should.equal('description');
         });
 
-        describe('given an organization id', function () {
-            it('should include the organization id', function (done) {
-                trello.addBoard(null, null, 'organizationId', function () {
-                    restler.post.args[0][1].query.idOrganization.should.equal('organizationId');
-                    done();
-                });
-            });
+        it('should include the name', function () {
+            query.name.should.equal('name');
+        });
+
+        it('should include the organization id', function () {
+            query.idOrganization.should.equal('organizationId');
         });
 
         afterEach(function () {
