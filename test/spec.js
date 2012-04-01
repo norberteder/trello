@@ -5,7 +5,7 @@ chai.should();
 chai.use(sinonChai);
 
 var restler = require('restler');
-var Trello = require('trello');
+var Trello = require('../main');
 
 describe('Trello', function () {
     var trello;
