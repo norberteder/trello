@@ -1,36 +1,37 @@
 {
-    "name": "trello",
-    "version": "0.0.7",
-    "author": "Graeme Foster <graemef@gmail.com>",
-    "description": "Do stuff with Trello",
-    "contributors": [
-        {
-            "name": "Graeme Foster",
-            "email": "graemef@gmail.com"
-        }
-    ],
-    "scripts": {
-        "test": "node_modules/mocha/bin/mocha"
-    },
-    "main": "main.js",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/graemef/trello.git"
-    },
-    "keywords": [
-        "trello"
-    ],
-    "dependencies": {
-        "restler": "2.0.x"
-    },
-    "devDependencies": {
-        "mocha": "1.0.x",
-        "chai": "0.5.x",
-        "sinon": "1.3.x",
-        "sinon-chai": "1.1.x"
-    },
-    "license": "MIT",
-    "engine": {
-        "node": ">=0.6"
-    }
+  "name": "trello",
+  "version": "0.0.8",
+  "author": "Graeme Foster <graemef@gmail.com>",
+  "description": "Do stuff with Trello",
+  "contributors": [
+    "Graeme Foster <graemef@gmail.com>"
+  ],
+  "scripts": {
+    "test": "node_modules/mocha/bin/mocha"
+  },
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/graemef/trello.git"
+  },
+  "keywords": [
+    "trello"
+  ],
+  "dependencies": {
+    "restler": "2.0.x"
+  },
+  "devDependencies": {
+    "mocha": "1.0.x",
+    "chai": "0.5.x",
+    "sinon": "1.3.x",
+    "sinon-chai": "1.1.x"
+  },
+  "license": "MIT",
+  "engine": {
+    "node": ">=0.6"
+  },
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
 }
