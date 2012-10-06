@@ -11,6 +11,7 @@ Trello.prototype.createQuery = function () {
 };
 
 function makeRequest(fn, uri, options, callback) {
+    console.log(uri);
     fn(uri, options)
         .on('complete', function (result) {
             if (result instanceof Error) {
@@ -39,9 +40,12 @@ Trello.prototype.addCard = function (name, description, listId, callback) {
     query.idList = listId;
 
     if (description !== null)
-        query.desc = description;
 
     makeRequest(rest.post, this.uri + '/1/cards', {query: query}, callback);
+};
+
+Trello.prototype.getCard = function (boardId, cardId, callback) {
+    makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/cards/' + cardId, {query: this.createQuery()}, callback);
 };
 
 Trello.prototype.addListToBoard = function (boardId, name, callback) {
