@@ -4,7 +4,7 @@
   "author": "Graeme Foster <graemef@gmail.com>",
   "description": "Do stuff with Trello",
   "contributors": [
-    "Graeme Foster <graemef@gmail.com>"
+    "Brett Swift"
   ],
   "scripts": {
     "test": "node_modules/mocha/bin/mocha"
