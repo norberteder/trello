@@ -44,6 +44,10 @@ Trello.prototype.addCard = function (name, description, listId, callback) {
     makeRequest(rest.post, this.uri + '/1/cards', {query: query}, callback);
 };
 
+Trello.prototype.getCard = function (boardId, cardId, callback) {
+    makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/cards/' + cardId, {query: this.createQuery()}, callback);
+};
+
 Trello.prototype.addListToBoard = function (boardId, name, callback) {
     var query = this.createQuery();
     query.name = name;
