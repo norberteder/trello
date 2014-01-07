@@ -79,6 +79,10 @@ Trello.prototype.addMemberToCard = function (cardId, memberId, callback) {
     makeRequest('POST', this.uri + '/1/cards/' + cardId + '/members', query, callback);
 };
 
+Trello.prototype.getBoards = function(memberId, callback) {
+    makeRequest('GET', this.uri + '/1/members/' + memberId + '/boards', this.createQuery(), callback);
+};
+
 Trello.prototype.getBoardMembers = function (boardId, callback) {
     makeRequest('GET', this.uri + '/1/boards/' + boardId + '/members', this.createQuery(), callback);
 };
