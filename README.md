@@ -26,3 +26,9 @@ First, generate your Trello application key [like this](https://trello.com/card/
           }
       });
 ```
+
+## History
+
+### 0.2.0
+
+* `getBoards` added
