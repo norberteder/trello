@@ -81,6 +81,10 @@ Trello.prototype.getCardsOnBoard = function (boardId, callback) {
     makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/cards', {query: this.createQuery()}, callback);
 };
 
+Trello.prototype.getCardsOnList = function (listId, callback) {
+    makeRequest(rest.get, this.uri + '/1/lists/' + listId + '/cards', {query: this.createQuery()}, callback);
+}
+
 Trello.prototype.deleteCard = function (cardId, callback) {
     makeRequest(rest.del, this.uri + '/1/cards/' + cardId, {query: this.createQuery()}, callback);
 };
