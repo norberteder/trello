@@ -1,10 +1,11 @@
 {
   "name": "trello",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "Graeme Foster <graemef@gmail.com>",
   "description": "Do stuff with Trello",
   "contributors": [
-    "Brett Swift"
+    "Brett Swift",
+    "Mike Beasley"
   ],
   "scripts": {
     "test": "node_modules/mocha/bin/mocha"
