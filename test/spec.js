@@ -52,4 +52,87 @@ describe('Trello', function () {
             restler.post.restore();
         });
     });
+
+    describe('addWebhook', function () {
+        var query;
+        var post;
+        var data;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'post', function (uri, options) {
+                return {
+                    on: function (event, callback) {
+                        callback(null, null);
+                    }
+                };
+            });
+
+            trello.addWebhook('webhook', 'http://callback', 'xxx', function (result) {
+                query = restler.post.args[0][1].query;
+                data = restler.post.args[0][1].data;
+                post = restler.post;
+                done();
+            });
+
+        });
+
+        it('should post to https://api.trello.com/1/tokens/.../webhooks/', function () {
+            
+            post.args[0][0].should.equal('https://api.trello.com/1/tokens/' + trello.token + '/webhooks/');
+        });
+
+        it('should include the application key', function () {
+            query.key.should.equal('key');
+        });
+
+        it('should include the decription', function () {
+            data.description.should.equal('webhook');
+        });
+
+        it('should include the callbackUrl', function () {
+            data.callbackURL.should.equal('http://callback');
+        });
+
+        it('should include the idModel', function () {
+            data.idModel.should.equal('xxx');
+        });
+
+        afterEach(function () {
+            restler.post.restore();
+        });
+    });
+
+    describe('deleteWebhook', function () {
+        var query;
+        var del;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'del', function (uri, options) {
+                return {
+                    on: function (event, callback) {
+                        callback(null, null);
+                    }
+                };
+            });
+
+            trello.deleteWebhook('x1', function (result) {
+                query = restler.del.args[0][1].query;
+                del = restler.del;
+                done();
+            });
+
+        });
+
+        it('should delete to https://api.trello.com/1/webhooks/x1', function () {
+            del.args[0][0].should.equal('https://api.trello.com/1/webhooks/x1');
+        });
+
+        it('should include the application key', function () {
+            query.key.should.equal('key');
+        });
+
+        afterEach(function () {
+            restler.del.restore();
+        });
+    });
 });
