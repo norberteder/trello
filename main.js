@@ -76,11 +76,23 @@ Trello.prototype.addItemToChecklist = function (checkListId, name, callback) {
     makeRequest(rest.post, this.uri + '/1/checklists/' + checkListId + '/checkitems', {query: query}, callback);
 }
 
-Trello.prototype.updateCardDescription = function (cardId, description, callback) {
+Trello.prototype.updateCard = function (cardId, field, value, callback) {
     var query = this.createQuery();
-    query.value = description;
+    query.value = value;
 
-    makeRequest(rest.put, this.uri + '/1/cards/' + cardId + '/desc', {query: query}, callback);
+    makeRequest(rest.put, this.uri + '/1/cards/' + cardId + '/' + field, {query: query}, callback);
+}
+
+Trello.prototype.updateCardName = function (cardId, name, callback) {
+    this.updateCard(cardId, 'name', name, callback);
+}
+
+Trello.prototype.updateCardDescription = function (cardId, description, callback) {
+    this.updateCard(cardId, 'desc', description, callback);
+}
+
+Trello.prototype.updateCardList = function (cardId, listId, callback) {
+    this.updateCard(cardId, 'idList', listId, callback);
 }
 
 Trello.prototype.getBoardMembers = function (boardId, callback) {
