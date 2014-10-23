@@ -1,11 +1,11 @@
 {
   "name": "trello",
   "version": "0.2.0",
-  "author": "Norbert Eder <wpfnerd+github@gmail.com>",
-  "description": "Query Trello the easy way",
+  "author": "Graeme Foster <graemef@gmail.com>",
+  "description": "Do stuff with Trello",
   "contributors": [
     "Brett Swift",
-    "Graeme Foster"
+    "Mike Beasley"
   ],
   "scripts": {},
   "main": "main.js",

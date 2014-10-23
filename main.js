@@ -83,6 +83,32 @@ Trello.prototype.getBoards = function(memberId, callback) {
     makeRequest('GET', this.uri + '/1/members/' + memberId + '/boards', this.createQuery(), callback);
 };
 
+Trello.prototype.addItemToChecklist = function (checkListId, name, callback) {
+    var query = this.createQuery();
+    query.name = name;
+
+    makeRequest(rest.post, this.uri + '/1/checklists/' + checkListId + '/checkitems', {query: query}, callback);
+}
+
+Trello.prototype.updateCard = function (cardId, field, value, callback) {
+    var query = this.createQuery();
+    query.value = value;
+
+    makeRequest(rest.put, this.uri + '/1/cards/' + cardId + '/' + field, {query: query}, callback);
+}
+
+Trello.prototype.updateCardName = function (cardId, name, callback) {
+    this.updateCard(cardId, 'name', name, callback);
+}
+
+Trello.prototype.updateCardDescription = function (cardId, description, callback) {
+    this.updateCard(cardId, 'desc', description, callback);
+}
+
+Trello.prototype.updateCardList = function (cardId, listId, callback) {
+    this.updateCard(cardId, 'idList', listId, callback);
+}
+
 Trello.prototype.getBoardMembers = function (boardId, callback) {
     makeRequest('GET', this.uri + '/1/boards/' + boardId + '/members', this.createQuery(), callback);
 };
@@ -101,8 +127,30 @@ Trello.prototype.getCardsOnBoard = function (boardId, callback) {
     makeRequest('GET', this.uri + '/1/boards/' + boardId + '/cards', this.createQuery(), callback);
 };
 
+Trello.prototype.getCardsOnList = function (listId, callback) {
+    makeRequest(rest.get, this.uri + '/1/lists/' + listId + '/cards', {query: this.createQuery()}, callback);
+}
+
 Trello.prototype.deleteCard = function (cardId, callback) {
     makeRequest('DELETE', this.uri + '/1/cards/' + cardId, this.createQuery(), callback);
 };
+
+Trello.prototype.addWebhook = function (description, callbackUrl, idModel, callback) {
+    var query = this.createQuery();
+    var data = {};
+
+    data.description = description;
+    data.callbackURL = callbackUrl;
+    data.idModel = idModel;
+
+    makeRequest(rest.post, this.uri + '/1/tokens/' + this.token + '/webhooks/', { data: data, query: query }, callback);
+};
+
+Trello.prototype.deleteWebhook = function (webHookId, callback) {
+    var query = this.createQuery();
+    
+    makeRequest(rest.del, this.uri + '/1/webhooks/' + webHookId, { query: query }, callback);
+};
+
 
 module.exports = Trello;
