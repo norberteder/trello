@@ -135,4 +135,40 @@ describe('Trello', function () {
             restler.del.restore();
         });
     });
+
+
+    describe('Update card list', function () {
+        var query;
+        var put;
+        var data;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'put', function (uri, options) {
+                return {
+                    on: function (event, callback) {
+                        callback(null, null);
+                    }
+                };
+            });
+
+            trello.updateCardList('myCardId', 'newListId', function (result) {
+                query = restler.put.args[0][1].query;
+                put = restler.put;
+                done();
+            });
+
+        });
+
+        it('should put to https://api.trello.com/1/cards/myCardId/idList', function () {
+            put.args[0][0].should.equal('https://api.trello.com/1/cards/myCardId/idList');
+        });
+
+        it('should include the idList', function () {
+            query.value.should.equal('newListId');
+        });
+
+        afterEach(function () {
+            restler.put.restore();
+        });
+    });
 });
