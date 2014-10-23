@@ -11,7 +11,7 @@ First, generate your Trello application key [like this](https://trello.com/card/
  
 ## Example
 ```javascript
-  var Trello = require("trello_ex");
+  var Trello = require("trello");
   var trello = new Trello("MY APPLICATION KEY", "MY USER TOKEN");
 
   trello.addCard('Clean car', 'Wax on, wax off', myListId,
