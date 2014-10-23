@@ -1,14 +1,15 @@
 {
   "name": "trello",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": "Graeme Foster <graemef@gmail.com>",
   "description": "Do stuff with Trello",
   "contributors": [
     "Brett Swift",
-    "Mike Beasley"
+    "Mike Beasley",
+    "Norbert Eder <wpfnerd@gmail.com>"
   ],
   "scripts": {
-    "test": "node_modules/mocha/bin/mocha"
+    "test": "node node_modules/mocha/bin/mocha"
   },
   "main": "main.js",
   "repository": {

@@ -1,4 +1,4 @@
-# Trello
+# trello
 ## A simple asynchronous client for [Trello](http://www.trello.com)
 
 This is a wrapper for some of the Trello HTTP API. Please feel free to add any other pieces you need! :)
@@ -24,3 +24,14 @@ First, generate your Trello application key [like this](https://trello.com/card/
           }
       });
 ```
+
+## History
+
+### 0.3.0
+
+* Project `trello_ex` merged again with original project `trello`
+* Using 'restler' again
+
+### 0.2.0
+
+* `getBoards` added

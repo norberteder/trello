@@ -48,6 +48,13 @@ Trello.prototype.getCard = function (boardId, cardId, callback) {
     makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/cards/' + cardId, {query: this.createQuery()}, callback);
 };
 
+Trello.prototype.getCardsForList = function(listId, actions, callback) {
+    var query = this.createQuery();
+    if (actions)
+        query.actions = actions;
+    makeRequest(rest.get, this.uri + '/1/lists/' + listId + '/cards', {query: query}, callback);
+};
+
 Trello.prototype.addListToBoard = function (boardId, name, callback) {
     var query = this.createQuery();
     query.name = name;
@@ -67,6 +74,10 @@ Trello.prototype.addMemberToCard = function (cardId, memberId, callback) {
     query.value = memberId;
 
     makeRequest(rest.post, this.uri + '/1/cards/' + cardId + '/members', {query: query}, callback);
+};
+
+Trello.prototype.getBoards = function(memberId, callback) {
+    makeRequest(rest.get, this.uri + '/1/members/' + memberId + '/boards', {query: this.createQuery()}, callback);
 };
 
 Trello.prototype.addItemToChecklist = function (checkListId, name, callback) {
@@ -103,6 +114,12 @@ Trello.prototype.getListsOnBoard = function (boardId, callback) {
     makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/lists', {query: this.createQuery()}, callback);
 };
 
+Trello.prototype.getListsOnBoardByFilter = function(boardId, filter, callback) {
+    var query = this.createQuery();
+    query.filter = filter;
+    makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/lists', {query: query}, callback);
+};
+
 Trello.prototype.getCardsOnBoard = function (boardId, callback) {
     makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/cards', {query: this.createQuery()}, callback);
 };
@@ -131,6 +148,5 @@ Trello.prototype.deleteWebhook = function (webHookId, callback) {
     
     makeRequest(rest.del, this.uri + '/1/webhooks/' + webHookId, { query: query }, callback);
 };
-
 
 module.exports = Trello;

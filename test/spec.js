@@ -53,6 +53,45 @@ describe('Trello', function () {
         });
     });
 
+    describe('addCard', function() {
+        var query;
+        var post;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'post', function (uri, options) {
+                return {on: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.addCard('name', 'description', 'listId', function () {
+                query = restler.post.args[0][1].query;
+                post = restler.post;
+                done();
+            });
+        });
+
+        it('should post to https://api.trello.com/1/cards', function () {
+            post.should.have.been.calledWith('https://api.trello.com/1/cards');
+        });
+
+        it('should include the description', function () {
+            query.desc.should.equal('description');
+        });
+
+        it('should include the name', function () {
+            query.name.should.equal('name');
+        });
+
+        it('should include the list id', function () {
+            query.idList.should.equal('listId');
+        });
+
+        afterEach(function () {
+            restler.post.restore();
+        });
+    });
+
     describe('addWebhook', function () {
         var query;
         var post;
