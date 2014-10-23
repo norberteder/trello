@@ -103,4 +103,22 @@ Trello.prototype.deleteCard = function (cardId, callback) {
     makeRequest(rest.del, this.uri + '/1/cards/' + cardId, {query: this.createQuery()}, callback);
 };
 
+Trello.prototype.addWebhook = function (description, callbackUrl, idModel, callback) {
+    var query = this.createQuery();
+    var data = {};
+
+    data.description = description;
+    data.callbackURL = callbackUrl;
+    data.idModel = idModel;
+
+    makeRequest(rest.post, this.uri + '/1/tokens/' + this.token + '/webhooks/', { data: data, query: query }, callback);
+};
+
+Trello.prototype.deleteWebhook = function (webHookId, callback) {
+    var query = this.createQuery();
+    
+    makeRequest(rest.del, this.uri + '/1/webhooks/' + webHookId, { query: query }, callback);
+};
+
+
 module.exports = Trello;
