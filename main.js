@@ -11,14 +11,15 @@ Trello.prototype.createQuery = function () {
 };
 
 function makeRequest(fn, uri, options, callback) {
-    fn(uri, options)
-        .on('complete', function (result) {
-            if (result instanceof Error) {
-                callback(result);
-            } else {
-                callback(null, result);
-            }
-        });
+    var request = fn(uri, options);
+    request.once('complete', function (result) {
+        if (result instanceof Error) {
+            callback(result);
+        } else {
+            callback(null, result);
+        }
+        request.removeAllListeners('error');
+    });
 }
 
 Trello.prototype.addBoard = function (name, description, organizationId, callback) {
