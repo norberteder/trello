@@ -1,4 +1,7 @@
 var rest = require('restler');
+var path = require('path');
+var mime = require('mime');
+var fs = require('fs');
 
 var Trello = function (key, token) {
     this.uri = "https://api.trello.com";
@@ -147,6 +150,41 @@ Trello.prototype.deleteWebhook = function (webHookId, callback) {
     var query = this.createQuery();
     
     makeRequest(rest.del, this.uri + '/1/webhooks/' + webHookId, { query: query }, callback);
+};
+
+Trello.prototype.addAttachmentUrl = function (cardId, url, callback) {
+    var fileName = path.basename(file);
+    var contentType = mime.lookup(file, 'application/octet-stream');
+
+    var options = {
+        multipart: true,
+        data: {
+            url: url,
+            name: fileName,
+            mimeType: contentType
+        },
+        query: this.createQuery()
+    };
+
+    makeRequest(rest.post, this.uri + '/1/cards/' + cardId + '/attachments', options, callback);
+};
+
+Trello.prototype.addAttachmentFile = function (cardId, file, callback) {
+    var fileName = path.basename(file);
+    var fileSize = fs.statSync(file).size;
+    var contentType = mime.lookup(file, 'application/octet-stream');
+
+    var options = {
+        multipart: true,
+        data: {
+            file: rest.file(file, fileName, fileSize, null, contentType),
+            name: fileName,
+            mimeType: contentType
+        },
+        query: this.createQuery()
+    };
+
+    makeRequest(rest.post, this.uri + '/1/cards/' + cardId + '/attachments', options, callback);
 };
 
 module.exports = Trello;
