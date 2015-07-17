@@ -153,8 +153,8 @@ Trello.prototype.deleteWebhook = function (webHookId, callback) {
 };
 
 Trello.prototype.addAttachmentUrl = function (cardId, url, callback) {
-    var fileName = path.basename(file);
-    var contentType = mime.lookup(file, 'application/octet-stream');
+    var fileName = path.basename(url);
+    var contentType = mime.lookup(url, 'application/octet-stream');
 
     var options = {
         multipart: true,
