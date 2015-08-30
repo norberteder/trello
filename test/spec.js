@@ -20,7 +20,7 @@ describe('Trello', function () {
 
         beforeEach(function (done) {
             sinon.stub(restler, 'post', function (uri, options) {
-                return {on: function (event, callback) {
+                return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
@@ -59,7 +59,7 @@ describe('Trello', function () {
 
         beforeEach(function (done) {
             sinon.stub(restler, 'post', function (uri, options) {
-                return {on: function (event, callback) {
+                return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
@@ -100,7 +100,7 @@ describe('Trello', function () {
         beforeEach(function (done) {
             sinon.stub(restler, 'post', function (uri, options) {
                 return {
-                    on: function (event, callback) {
+                    once: function (event, callback) {
                         callback(null, null);
                     }
                 };
@@ -148,7 +148,7 @@ describe('Trello', function () {
         beforeEach(function (done) {
             sinon.stub(restler, 'del', function (uri, options) {
                 return {
-                    on: function (event, callback) {
+                    once: function (event, callback) {
                         callback(null, null);
                     }
                 };
@@ -184,7 +184,7 @@ describe('Trello', function () {
         beforeEach(function (done) {
             sinon.stub(restler, 'put', function (uri, options) {
                 return {
-                    on: function (event, callback) {
+                    once: function (event, callback) {
                         callback(null, null);
                     }
                 };

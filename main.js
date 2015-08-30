@@ -12,7 +12,7 @@ Trello.prototype.createQuery = function () {
 
 function makeRequest(fn, uri, options, callback) {
     fn(uri, options)
-        .on('complete', function (result) {
+        .once('complete', function (result) {
             if (result instanceof Error) {
                 callback(result);
             } else {
