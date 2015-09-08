@@ -69,6 +69,13 @@ Trello.prototype.addCommentToCard = function (cardId, comment, callback) {
     makeRequest(rest.post, this.uri + '/1/cards/' + cardId + '/actions/comments', {query: query}, callback);
 };
 
+Trello.prototype.addAttachmentToCard = function (cardId, url, callback) {
+    var query = this.createQuery();
+    query.url = url;
+
+    makeRequest(rest.post, this.uri + '/1/cards/' + cardId + '/attachments', {query: query}, callback);
+};
+
 Trello.prototype.addMemberToCard = function (cardId, memberId, callback) {
     var query = this.createQuery();
     query.value = memberId;

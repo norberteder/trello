@@ -272,4 +272,36 @@ describe('Trello', function () {
             cardsCreated.should.equal(cardsToCreate);
         });
     });
+
+    describe('addAttachmentToCard', function() {
+        var query;
+        var post;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'post', function (uri, options) {
+                return {on: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.addAttachmentToCard('myCardId', 'attachmentUrl', function () {
+                query = restler.post.args[0][1].query;
+                post = restler.post;
+                done();
+            });
+        });
+
+        it("should post to the card's attachment URI", function () {
+            post.should.have.been.calledWith('https://api.trello.com/1/cards/myCardId/attachments');
+        });
+
+        it('should include the list id', function () {
+            query.url.should.equal('attachmentUrl');
+        });
+
+        afterEach(function () {
+            restler.post.restore();
+        });
+    });
+
 });
