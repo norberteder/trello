@@ -279,7 +279,7 @@ describe('Trello', function () {
 
         beforeEach(function (done) {
             sinon.stub(restler, 'post', function (uri, options) {
-                return {on: function (event, callback) {
+                return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
