@@ -1,6 +1,9 @@
 var chai = require('chai');
 var sinon = require('sinon');
 var sinonChai = require("sinon-chai");
+var q = require('q');
+var fs = require('fs');
+
 chai.should();
 chai.use(sinonChai);
 
@@ -116,7 +119,7 @@ describe('Trello', function () {
         });
 
         it('should post to https://api.trello.com/1/tokens/.../webhooks/', function () {
-            
+
             post.args[0][0].should.equal('https://api.trello.com/1/tokens/' + trello.token + '/webhooks/');
         });
 
@@ -208,6 +211,65 @@ describe('Trello', function () {
 
         afterEach(function () {
             restler.put.restore();
+        });
+    });
+
+    describe.skip('It is able to chain several calls', function () {
+        var trello,
+            options =  {
+                key: "key",
+                token: "tocken",
+                listId: 'listId'
+            },
+            cardsToCreate = 30,
+            cardsCreated = 0;
+
+
+        beforeEach(function (done) {
+            var index,
+                promisesList = [],
+                cardCreationPromise = q.defer();
+
+            //Increase timeout due to real api calls
+            this.timeout(1000000);
+
+            //Setup a real trello client with a local configuration file
+            if (fs.existsSync('./test/config.js')) {
+                options = require('./config');
+            }
+            trello = new Trello(options.key, options.token);
+
+
+            //It creates and removes as many cards as set in cardsToCreate
+            for(index = 0; index < cardsToCreate; index++) {
+                cardCreationPromise = q.defer();
+                trello.addCard('Test card #' + index, 'test card', options.listId, cardCreationPromise.makeNodeResolver());
+
+                promisesList.push(
+                    //Remove the card created
+                    cardCreationPromise.promise.then(function (card) {
+                        if(!card.id) {
+                            console.log(card);
+                            throw "Trello call failed " + card;
+                        } else {
+                            var removeCardPromise = q.defer();
+                            cardsCreated = cardsCreated + 1;
+                            trello.deleteCard(card.id, removeCardPromise.makeNodeResolver());
+                            return removeCardPromise.promise;
+                        }
+                    }).fail (function(e){
+                        throw "Trello call failed " + e;
+                    })
+                );
+            }
+
+            q.allSettled(promisesList).then(function () {
+                done();
+            });
+        });
+
+        it('should chaing several calls without failing', function () {
+            cardsCreated.should.equal(cardsToCreate);
         });
     });
 });
