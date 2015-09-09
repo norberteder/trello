@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/norberteder/trello.svg?branch=master)](https://travis-ci.org/norberteder/trello)
+
 # trello
 ## A simple asynchronous client for [Trello](http://www.trello.com)
 
