@@ -29,6 +29,13 @@ First, generate your Trello application key [like this](https://trello.com/card/
 
 ## History
 
+### 0.4.0
+
+* One-time listener
+* `addAttachmentToCard` added
+* Updated `restler` dependency
+* Node.js support >= 0.10.x / removed 0.6 and 0.8
+
 ### 0.3.0
 
 * Project `trello_ex` merged again with original project `trello`
