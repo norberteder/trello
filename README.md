@@ -29,6 +29,10 @@ First, generate your Trello application key [like this](https://trello.com/card/
 
 ## History
 
+### 0.4.1
+
+* Updated dev dependencies
+
 ### 0.4.0
 
 * One-time listener
