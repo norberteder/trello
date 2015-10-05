@@ -156,4 +156,34 @@ Trello.prototype.deleteWebhook = function (webHookId, callback) {
     makeRequest(rest.del, this.uri + '/1/webhooks/' + webHookId, { query: query }, callback);
 };
 
+Trello.prototype.getLabelsForBoard = function(boardId, callback) {
+    makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/labels', {query:this.createQuery()}, callback);
+};
+
+Trello.prototype.addLabelOnBoard = function(boardId, name, color, callback) {
+    var query = this.createQuery();
+    var data = {
+        idBoard: boardId,
+        color: color,
+        name: name
+    };
+
+    makeRequest(rest.post, this.uri + '/1/labels', {data: data, query:query}, callback);
+};
+
+Trello.prototype.deleteLabel = function(labelId, callback) {
+    makeRequest(rest.del, this.uri + '/1/labels/' + labelId, {query: this.createQuery()}, callback);
+};
+
+Trello.prototype.addLabelToCard = function(cardId, labelId, callback) {
+    var query = this.createQuery();
+    var data = { value: labelId };
+    makeRequest(rest.post, this.uri+'/1/cards/' + cardId + '/idLabels', {query:query, data:data}, callback);
+};
+
+Trello.prototype.deleteLabelFromCard = function(cardId, labelId, callback){
+    makeRequest(rest.del, this.uri + '/1/cards/' + cardId + '/idLabels/'+labelId, {query: this.createQuery()}, callback);
+};
+
+
 module.exports = Trello;
