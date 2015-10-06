@@ -189,7 +189,7 @@ Trello.prototype.updateLabel = function (labelId, field, value, callback) {
     var query = this.createQuery();
     query.value = value;
 
-    makeRequest(rest.put, this.uri + '/1/labels/' + cardId + '/' + field, {query: query}, callback);
+    makeRequest(rest.put, this.uri + '/1/labels/' + labelId + '/' + field, {query: query}, callback);
 }
 
 Trello.prototype.updateLabelName = function (labelId, name, callback) {
