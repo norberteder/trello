@@ -185,5 +185,20 @@ Trello.prototype.deleteLabelFromCard = function(cardId, labelId, callback){
     makeRequest(rest.del, this.uri + '/1/cards/' + cardId + '/idLabels/'+labelId, {query: this.createQuery()}, callback);
 };
 
+Trello.prototype.updateLabel = function (labelId, field, value, callback) {
+    var query = this.createQuery();
+    query.value = value;
+
+    makeRequest(rest.put, this.uri + '/1/labels/' + cardId + '/' + field, {query: query}, callback);
+}
+
+Trello.prototype.updateLabelName = function (labelId, name, callback) {
+    this.updateLabel(labelId, 'name', name, callback);
+}
+
+Trello.prototype.updateLabelColor = function (labelId, color, callback) {
+    this.upadateLabel(labelId, 'color', color, callback);
+}
+
 
 module.exports = Trello;
