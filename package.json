@@ -34,7 +34,8 @@
     "trello"
   ],
   "dependencies": {
-    "restler": "~3.3.0"
+    "restler": "~3.3.0",
+    "es6-promise": "~3.0.2"
   },
   "devDependencies": {
     "mocha": "~2.3.2",

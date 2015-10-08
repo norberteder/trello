@@ -1,3 +1,4 @@
+require('es6-promise').polyfill();
 var rest = require('restler');
 
 var Trello = function (key, token) {
