@@ -320,4 +320,180 @@ describe('Trello', function () {
         });
     });
 
+    describe('getLabelsForBoard', function() {
+        var get;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'get', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.getLabelsForBoard('boardId', function () {
+                get = restler.get;
+                done();
+            });
+        });
+
+        it('should get to https://api.trello.com/1/boards/boardId/labels', function () {
+            get.should.have.been.calledWith('https://api.trello.com/1/boards/boardId/labels');
+        });
+    });
+
+
+    describe('addLabelOnBoard', function() {
+        var query;
+        var data;
+        var post;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'post', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.addLabelOnBoard('boardId', 'name', 'color', function () {
+                query = restler.post.args[0][1].query;
+                data = restler.post.args[0][1].data;
+                post = restler.post;
+                done();
+            });
+        });
+
+        it('should post to https://api.trello.com/1/labels', function () {
+            post.should.have.been.calledWith('https://api.trello.com/1/labels');
+        });
+
+        it('should include the color', function () {
+            data.color.should.equal('color');
+        });
+
+        it('should include the name', function () {
+            data.name.should.equal('name');
+        });
+
+        it('should include the board id', function () {
+            data.idBoard.should.equal('boardId');
+        });
+
+        afterEach(function () {
+            restler.post.restore();
+        });
+    });
+
+    describe('deleteLabel', function(){
+        var del;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'del', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.deleteLabel('labelId', function () {
+                del = restler.del;
+                done();
+            });
+        });
+
+        it('should delete to https://api.trello.com/1/labels/labelId', function () {
+            del.should.have.been.calledWith('https://api.trello.com/1/labels/labelId');
+        });
+
+        afterEach(function () {
+            restler.del.restore();
+        });
+    });
+
+    describe('addLabelToCard', function() {
+        var query;
+        var data;
+        var post;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'post', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.addLabelToCard('cardId', 'labelId', function () {
+                query = restler.post.args[0][1].query;
+                data = restler.post.args[0][1].data;
+                post = restler.post;
+                done();
+            });
+        });
+
+        it('should post to https://api.trello.com/1/cards/cardId/idLabels', function () {
+            post.should.have.been.calledWith('https://api.trello.com/1/cards/cardId/idLabels');
+        });
+
+        it('should include the label id', function () {
+            data.value.should.equal('labelId');
+        });
+
+        afterEach(function () {
+            restler.post.restore();
+        });
+    });
+
+    describe('deleteLabelFromCard', function(){
+        var del;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'del', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.deleteLabelFromCard('cardId', 'labelId', function () {
+                del = restler.del;
+                done();
+            });
+        });
+
+        it('should delete to https://api.trello.com/1/cards/cardId/idLabels/labelId', function () {
+            del.should.have.been.calledWith('https://api.trello.com/1/cards/cardId/idLabels/labelId');
+        });
+
+        afterEach(function () {
+            restler.del.restore();
+        });
+    });
+
+    describe('updateLabel', function() {
+        var query;
+        var put;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'put', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.updateLabel('labelId', 'field', 'value', function () {
+                query = restler.put.args[0][1].query;
+                put = restler.put;
+                done();
+            });
+        });
+
+        it('should put to https://api.trello.com/1/labels/labelId/field', function () {
+            put.should.have.been.calledWith('https://api.trello.com/1/labels/labelId/field');
+        });
+
+        it('should include the updated value', function () {
+            query.value.should.equal('value');
+        });
+
+        afterEach(function () {
+            restler.put.restore();
+        });
+    });
 });
