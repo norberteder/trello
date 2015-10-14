@@ -268,7 +268,7 @@ describe('Trello', function () {
             });
         });
 
-        it('should chaing several calls without failing', function () {
+        it('should chain several calls without failing', function () {
             cardsCreated.should.equal(cardsToCreate);
         });
     });
@@ -301,6 +301,22 @@ describe('Trello', function () {
 
         afterEach(function () {
             restler.post.restore();
+        });
+    });
+
+    describe('returnPromise', function() {
+        it('should return a promise', function() {
+            var shouldBeAPromise = trello.addAttachmentToCard('myCardId', 'attachmentUrl');
+
+            shouldBeAPromise.should.be.a("Promise");
+        });
+    });
+
+    describe('executeCallback', function() {
+        it('should not return a promise', function() {
+            var shouldNotBeAPromise = trello.addAttachmentToCard('myCardId', 'attachmentUrl', function() {});
+
+            chai.assert.isUndefined(shouldNotBeAPromise);
         });
     });
 
