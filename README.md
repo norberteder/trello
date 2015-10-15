@@ -29,6 +29,16 @@ First, generate your Trello application key [like this](https://trello.com/card/
 
 ## History
 
+### 0.5.0
+
+* Support of promises
+* Basic support of Labeling:
+  * getLabelsForBoard 
+  * addLabelOnBoard 
+  * deleteLabel 
+  * addLabelToCard 
+  * deleteLabelFromCard 
+
 ### 0.4.1
 
 * Updated dev dependencies

@@ -1,24 +1,28 @@
 {
   "name": "trello",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "author": "Norbert Eder <opensource@norberteder.com>",
-  "description": "Do stuff with Trello",
+  "description": "This module provides an easy way to make requests to the Trello API.",
   "contributors": [
     {
       "name": "Graeme Foster",
       "email": "graemef@gmail.com"
     },
     {
-      "name": "Brett Swift",
-      "email": ""
-    },
-    {
       "name": "Mike Beasley",
-      "email": ""
+      "email": "mbeasley@emcien.com"
     },
     {
       "name": "Dario Kondratiuk",
       "email": "dariokondratiuk@gmail.com"
+    },
+    {
+      "name": "Sean Madden",
+      "email": "sdm350@gmail.com"
+    },
+    {
+      "name": "Siôn Le Roux",
+      "email": "sinisterstuf@gmail.com"
     }
   ],
   "scripts": {
