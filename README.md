@@ -27,6 +27,20 @@ First, generate your Trello application key [like this](https://trello.com/card/
       });
 ```
 
+## Callback or promise
+API calls can either execute a callback or return a promise. To return a promise just omit the callback parameter.
+
+```javascript
+  //Callback
+  trello.getCardsOnList(listId, callback);
+
+  //Promise
+  var cardsPromise = trello.getCardsOnList(listId);
+  cardsPromise.then((cards) => {
+    //do stuff
+  })
+```
+
 ## History
 
 ### 0.4.1
