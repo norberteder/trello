@@ -304,6 +304,37 @@ describe('Trello', function () {
         });
     });
 
+    describe('renameList', function() {
+        var query;
+        var put;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'put', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.renameList('myListId', 'new list name', function () {
+                query = restler.put.args[0][1].query;
+                put = restler.put;
+                done();
+            });
+        });
+
+        it("should PUT to the card's attachment URI", function () {
+            put.should.have.been.calledWith('https://api.trello.com/1/lists/myListId/name');
+        });
+
+        it('should include the new list name', function () {
+            query.name.should.equal('new list name');
+        });
+
+        afterEach(function () {
+            restler.put.restore();
+        });
+    });
+
     describe('returnPromise', function() {
         it('should return a promise', function() {
             var shouldBeAPromise = trello.addAttachmentToCard('myCardId', 'attachmentUrl');
