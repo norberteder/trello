@@ -527,4 +527,35 @@ describe('Trello', function () {
             restler.put.restore();
         });
     });
+    
+    describe('addChecklistToCard', function() {
+        var query;
+        var post;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'post', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.addChecklistToCard('cardId', 'name', function () {
+                query = restler.post.args[0][1].query;
+                post = restler.post;
+                done();
+            });
+        });
+
+        it('should post to https://api.trello.com/1/cards/cardId/checklists', function () {
+            post.should.have.been.calledWith('https://api.trello.com/1/cards/cardId/checklists');
+        });
+
+        it('should include the checklist name', function () {
+            query.name.should.equal('name');
+        });
+
+        afterEach(function () {
+            restler.post.restore();
+        });
+    });
 });

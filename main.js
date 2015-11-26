@@ -108,6 +108,13 @@ Trello.prototype.getBoards = function(memberId, callback) {
     return makeRequest(rest.get, this.uri + '/1/members/' + memberId + '/boards', {query: this.createQuery()}, callback);
 };
 
+Trello.prototype.addChecklistToCard = function (cardId, name, callback) {
+    var query = this.createQuery();
+    query.name = name
+    
+    return makeRequest(rest.post, this.uri + '/1/cards/' + cardId + '/checklists', { query: query }, callback);
+}
+
 Trello.prototype.addItemToChecklist = function (checkListId, name, callback) {
     var query = this.createQuery();
     query.name = name;
