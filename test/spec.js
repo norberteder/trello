@@ -370,6 +370,10 @@ describe('Trello', function () {
         it('should get to https://api.trello.com/1/boards/boardId/labels', function () {
             get.should.have.been.calledWith('https://api.trello.com/1/boards/boardId/labels');
         });
+        
+        afterEach(function () {
+            restler.get.restore();
+        });
     });
 
 
@@ -556,6 +560,62 @@ describe('Trello', function () {
 
         afterEach(function () {
             restler.post.restore();
+        });
+    });
+    
+    describe('getChecklistsOnCard', function() {
+        var get;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'get', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.getChecklistsOnCard('cardId', function () {
+                get = restler.get;
+                done();
+            });
+        });
+
+        it('should get to https://api.trello.com/1/cards/cardId/checklists', function () {
+            get.should.have.been.calledWith('https://api.trello.com/1/cards/cardId/checklists');
+        });
+        
+        afterEach(function () {
+            restler.get.restore();
+        });
+    });
+    
+    describe('updateChecklist', function() {
+        var query;
+        var put;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'put', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.updateChecklist('checklistId', 'field', 'value', function () {
+                query = restler.put.args[0][1].query;
+                put = restler.put;
+                done();
+            });
+        });
+
+        it('should put to https://api.trello.com/1/checklists/checklistId/field', function () {
+            put.should.have.been.calledWith('https://api.trello.com/1/checklists/checklistId/field');
+        });
+
+        it('should include the checklist name', function () {
+            query.value.should.equal('value');
+        });
+
+        afterEach(function () {
+            restler.put.restore();
         });
     });
 });
