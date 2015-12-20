@@ -1,17 +1,63 @@
 require('es6-promise').polyfill();
-var rest = require('restler');
+var rest = require('restler'),
+    limiter = require('simple-rate-limiter');
 
 var Trello = function (key, token) {
-    this.uri = "https://api.trello.com";
-    this.key = key;
-    this.token = token;
+        this.uri = "https://api.trello.com";
+        this.key = key;
+        this.token = token;
+    },
+    limitRate = false,
+    limitedDoRequest;
+
+// default trello rate limits for a single key and token (100 per 10 seconds).
+Trello.limits = {
+    time: 10000,
+    count: 100
 };
+
+Object.defineProperty(Trello, 'limitRate', {
+   get: function () {
+       return limitRate;
+   },
+   set: function (val) {
+       limitRate = val;
+       if (limitRate) {
+           // update the limiter function each time we toggle limitRate property.
+           limitedDoRequest = limiter(doRequest).to(Trello.limits.count).per(Trello.limits.time);
+       } else {
+           limitedDoRequest = undefined;
+       }
+   } 
+});
 
 Trello.prototype.createQuery = function () {
     return {key: this.key, token: this.token};
 };
 
 function makeRequest(fn, uri, options, callback) {
+    if (Trello.limitRate) {
+        // we are limiting rate so call limitedDoRequest
+        if (callback) {
+            limitedDoRequest(fn, uri, options, callback);
+        } else {
+            // create a new promise straight away, 
+            // but listen for when we actually call doRequest as we want to resolve this promise with the promise returned from doRequest, 
+            // which will then resolve/reject once the response comes back.
+            return new Promise(function(resolve, reject) {
+                limitedDoRequest(fn, uri, options)
+                    .on('limiter-exec', function (promise) {
+                        resolve(promise);
+                    }); 
+            });
+        }
+    } else {
+        // not limiting the rate so call standard doRequest.
+        return doRequest(fn, uri, options, callback);
+    }
+}
+
+function doRequest(fn, uri, options, callback) {
     if (callback) {
         fn(uri, options)
             .once('complete', function (result) {

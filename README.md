@@ -41,6 +41,29 @@ API calls can either execute a callback or return a promise. To return a promise
   })
 ```
 
+## Rate limiting
+Trello limits it's APIs at [100 requests per 10 second interval for each token](http://help.trello.com/article/838-api-rate-limits). To change the limits from the default (100 requests per 10 second), modify the `limits` object.
+
+```javascript
+  var Trello = require("trello");
+  
+  Trello.limits.count = x;
+  Trello.limits.time = y;
+```
+
+By default limiting is turned off. To enable toggle the `limitRate` property.
+```javascript
+  var Trello = require("trello");
+  
+  Trello.limitRate = true; // now rate limited.
+  
+  // ...
+  
+  Trello.limitRate = false; // no longer rate limited.
+```
+
+*Note: changes to `count` and `time` properties only take effect after `limitRate` has been toggled.*
+
 ## History
 
 ### 0.5.0
