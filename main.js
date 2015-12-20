@@ -197,7 +197,7 @@ Trello.prototype.deleteWebhook = function (webHookId, callback) {
 };
 
 Trello.prototype.getLabelsForBoard = function(boardId, callback) {
-    makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/labels', {query:this.createQuery()}, callback);
+    return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/labels', {query:this.createQuery()}, callback);
 };
 
 Trello.prototype.addLabelOnBoard = function(boardId, name, color, callback) {
@@ -208,36 +208,36 @@ Trello.prototype.addLabelOnBoard = function(boardId, name, color, callback) {
         name: name
     };
 
-    makeRequest(rest.post, this.uri + '/1/labels', {data: data, query:query}, callback);
+    return makeRequest(rest.post, this.uri + '/1/labels', {data: data, query:query}, callback);
 };
 
 Trello.prototype.deleteLabel = function(labelId, callback) {
-    makeRequest(rest.del, this.uri + '/1/labels/' + labelId, {query: this.createQuery()}, callback);
+    return makeRequest(rest.del, this.uri + '/1/labels/' + labelId, {query: this.createQuery()}, callback);
 };
 
 Trello.prototype.addLabelToCard = function(cardId, labelId, callback) {
     var query = this.createQuery();
     var data = { value: labelId };
-    makeRequest(rest.post, this.uri+'/1/cards/' + cardId + '/idLabels', {query:query, data:data}, callback);
+    return makeRequest(rest.post, this.uri+'/1/cards/' + cardId + '/idLabels', {query:query, data:data}, callback);
 };
 
 Trello.prototype.deleteLabelFromCard = function(cardId, labelId, callback){
-    makeRequest(rest.del, this.uri + '/1/cards/' + cardId + '/idLabels/'+labelId, {query: this.createQuery()}, callback);
+    return makeRequest(rest.del, this.uri + '/1/cards/' + cardId + '/idLabels/'+labelId, {query: this.createQuery()}, callback);
 };
 
 Trello.prototype.updateLabel = function (labelId, field, value, callback) {
     var query = this.createQuery();
     query.value = value;
 
-    makeRequest(rest.put, this.uri + '/1/labels/' + labelId + '/' + field, {query: query}, callback);
+    return makeRequest(rest.put, this.uri + '/1/labels/' + labelId + '/' + field, {query: query}, callback);
 }
 
 Trello.prototype.updateLabelName = function (labelId, name, callback) {
-    this.updateLabel(labelId, 'name', name, callback);
+    return this.updateLabel(labelId, 'name', name, callback);
 }
 
 Trello.prototype.updateLabelColor = function (labelId, color, callback) {
-    this.upadateLabel(labelId, 'color', color, callback);
+    return this.upadateLabel(labelId, 'color', color, callback);
 }
 
 
