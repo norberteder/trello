@@ -9,6 +9,7 @@ chai.use(sinonChai);
 
 var restler = require('restler');
 var Trello = require('../main');
+var expect = chai.expect;
 
 describe('Trello', function () {
     var trello;
@@ -527,4 +528,158 @@ describe('Trello', function () {
             restler.put.restore();
         });
     });
+    
+    it('should have ratelimiting off by default and limits set to 100 per a 10 second span', function () {
+        expect(Trello.limitRate).to.be.false;
+        expect(Trello.limits.count).to.equal(100);
+        expect(Trello.limits.time).to.equal(10000);        
+    });
+    
+    describe('when limits are set but not enabled', function () {
+        beforeEach(function () {
+            sinon.stub(restler, 'put', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+            
+            Trello.limits = {
+                count: 3,
+                time: 50
+            };            
+        }); 
+        
+        describe('and more calls than the rate limit is requested', function () {
+            it('then it should not limit the rate and call all requests without delay', function (done) {
+                var start = +new Date(),
+                    returnCount = 0,
+                    numberOfRequests = 4,
+                    i;
+                    
+                for (i = 0; i < numberOfRequests; i++) {
+                    trello.renameList('listId', 'name', function () { 
+                        returnCount++;
+                        if (returnCount === numberOfRequests) {
+                            var end = +new Date();
+                            expect(end - start).to.be.below(50);
+                            restler.put.callCount.should.equal(4);
+                            done();
+                        }
+                    });
+                }
+            });
+        });
+        
+        afterEach(function () {
+            restler.put.restore();
+            Trello.limitRate = false;
+        });
+    });
+    
+    describe('when limiting request rate, to 3 per a 100ms span', function () {
+        beforeEach(function () {
+            sinon.stub(restler, 'put', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+            
+            Trello.limits = {
+                count: 3,
+                time: 50
+            };
+            
+            Trello.limitRate = true;
+        });      
+                
+        function assertions(runCallback) {
+            function runNTimes(numberOfRequests, done, expectionFn, finalExpectionFn) {
+                var returnCount = 0,
+                    handler = function () {                   
+                        var query = restler.put.args[0][1].query,
+                            put = restler.put;
+                        
+                        returnCount++;
+                        expectionFn(returnCount, query, put);
+                        if (returnCount === numberOfRequests) {
+                            finalExpectionFn(returnCount, query, put);
+                            done();
+                        }
+                    },
+                    i;
+                    
+                for (i = 0; i < numberOfRequests; i++) {
+                    if (runCallback) {
+                        trello.renameList('listId', 'name', handler);
+                    } else {
+                        trello.renameList('listId', 'name').then(handler);
+                    }                    
+                }
+            }
+        
+            describe('and less than or equal to 3 requests are made', function () {
+                it('then it should fire all requests without delay', function (done) {
+                    var start = +new Date();
+                    runNTimes(3, done, function (returnCount, query, put) {
+                        put.should.have.been.calledWith('https://api.trello.com/1/lists/listId/name');
+                        query.name.should.equal('name');                   
+                    }, function (returnCount, query, put) {
+                        var end = +new Date();
+                        expect(end - start).to.be.below(50);
+                        put.callCount.should.equal(3);
+                    });
+                });
+            });
+       
+            describe('and more than 3 requests are made', function () {
+                it('then it should fire all requests eventually', function (done) {
+                    var start = +new Date();
+                    runNTimes(4, done, function (returnCount, query, put) {
+                        put.should.have.been.calledWith('https://api.trello.com/1/lists/listId/name');
+                        query.name.should.equal('name');                   
+                    }, function (returnCount, query, put) {
+                        var end = +new Date();
+                        expect(end - start).to.be.above(50);
+                        put.callCount.should.equal(4);
+                    });
+                });
+                
+                it('then it should keep the original order of invokation', function (done) {
+                    var returnCount = 0,
+                        numberOfRequests = 4,
+                        handler = function () {
+                            returnCount++;
+                            if (returnCount === numberOfRequests) {
+                                for (j = 0; j < numberOfRequests; j++) {
+                                    restler.put.getCall(j).should.have.been.calledWith('https://api.trello.com/1/lists/' + j + '/name');
+                                }
+                                done();
+                            }
+                        },
+                        i, j;
+                        
+                    for (i = 0; i < numberOfRequests; i++) {
+                        if (runCallback) {
+                            trello.renameList(i, 'value', handler);
+                        } else {
+                            trello.renameList(i, 'value').then(handler);
+                        }
+                    }
+                });
+            });
+        }
+        
+        describe('using the callback version of the api', function () {
+            assertions(true);
+        });
+        
+        describe('using the promise version of the api', function () {
+            assertions(false);
+        });
+
+        afterEach(function () {
+            restler.put.restore();
+            Trello.limitRate = false;
+        });
+    });        
 });
