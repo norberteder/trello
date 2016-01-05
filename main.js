@@ -74,7 +74,7 @@ Trello.prototype.renameList = function (listId, name, callback) {
     query.name = name;
 
     return makeRequest(rest.put, this.uri + '/1/lists/' + listId + '/name', {query: query}, callback);
-}
+};
 
 Trello.prototype.addListToBoard = function (boardId, name, callback) {
     var query = this.createQuery();
@@ -110,14 +110,14 @@ Trello.prototype.getBoards = function(memberId, callback) {
 
 Trello.prototype.addChecklistToCard = function (cardId, name, callback) {
     var query = this.createQuery();
-    query.name = name
+    query.name = name;
     
     return makeRequest(rest.post, this.uri + '/1/cards/' + cardId + '/checklists', { query: query }, callback);
-}
+};
 
 Trello.prototype.getChecklistsOnCard = function (cardId, callback) {    
     return makeRequest(rest.get, this.uri + '/1/cards/' + cardId + '/checklists', {query: this.createQuery()}, callback);
-}
+};
 
 Trello.prototype.addItemToChecklist = function (checkListId, name, pos, callback) {
     var query = this.createQuery();
@@ -234,15 +234,15 @@ Trello.prototype.updateLabel = function (labelId, field, value, callback) {
     query.value = value;
 
     return makeRequest(rest.put, this.uri + '/1/labels/' + labelId + '/' + field, {query: query}, callback);
-}
+};
 
 Trello.prototype.updateLabelName = function (labelId, name, callback) {
     return this.updateLabel(labelId, 'name', name, callback);
-}
+};
 
 Trello.prototype.updateLabelColor = function (labelId, color, callback) {
     return this.upadateLabel(labelId, 'color', color, callback);
-}
+};
 
 
 module.exports = Trello;
