@@ -619,6 +619,56 @@ describe('Trello', function () {
         });
     });
     
+    describe('getBoardMembers', function() {
+        var get;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'get', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.getBoardMembers('boardId', function () {
+                get = restler.get;
+                done();
+            });
+        });
+
+        it('should get to https://api.trello.com/1/boards/boardId/members', function () {
+            get.should.have.been.calledWith('https://api.trello.com/1/boards/boardId/members');
+        });
+        
+        afterEach(function () {
+            restler.get.restore();
+        });
+    });
+    
+    describe('getOrgMembers', function() {
+        var get;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'get', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.getOrgMembers('organizationId', function () {
+                get = restler.get;
+                done();
+            });
+        });
+
+        it('should get to https://api.trello.com/1/organizations/organizationId/members', function () {
+            get.should.have.been.calledWith('https://api.trello.com/1/organizations/organizationId/members');
+        });
+        
+        afterEach(function () {
+            restler.get.restore();
+        });
+    });
+    
     describe('updateChecklist', function() {
         var query;
         var put;
