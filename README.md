@@ -43,6 +43,16 @@ API calls can either execute a callback or return a promise. To return a promise
 
 ## History
 
+### 0.5.1
+
+* added `renameList`
+* added `addChecklistToCard`
+* added `getChecklistsOnCard`
+* added `addExistingChecklistToCard`
+* added `updateChecklist`
+* added `getOrgMembers`
+* API methods now return the promise
+
 ### 0.5.0
 
 * Support of promises

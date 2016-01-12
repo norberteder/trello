@@ -1,6 +1,6 @@
 {
   "name": "trello",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "author": "Norbert Eder <opensource@norberteder.com>",
   "description": "This module provides an easy way to make requests to the Trello API.",
   "contributors": [
