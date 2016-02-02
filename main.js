@@ -160,6 +160,10 @@ Trello.prototype.updateCardList = function (cardId, listId, callback) {
     return this.updateCard(cardId, 'idList', listId, callback);
 };
 
+Trello.prototype.getMember = function(memberId, callback) {
+    return makeRequest(rest.get, this.uri + '/1/member/' + memberId, {query: this.createQuery()}, callback);
+}
+
 Trello.prototype.getBoardMembers = function (boardId, callback) {
     return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/members', {query: this.createQuery()}, callback);
 };
