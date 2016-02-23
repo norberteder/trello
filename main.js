@@ -255,5 +255,21 @@ Trello.prototype.updateLabelColor = function (labelId, color, callback) {
     return this.upadateLabel(labelId, 'color', color, callback);
 };
 
+Trello.prototype.getCardStickers = function (cardId, callback) {
+    return makeRequest(rest.get, this.uri + '/1/cards/' + cardId + '/stickers', {query: this.createQuery()}, callback);
+};
+
+Trello.prototype.addStickerToCard = function(cardId, image, left, top, zIndex, rotate, callback) {
+    var query = this.createQuery();
+    var data = {
+      image: image,
+      top: top,
+      left: left,
+      zIndex: zIndex,
+      rotate: rotate,
+    };
+    return makeRequest(rest.post, this.uri+'/1/cards/' + cardId + '/stickers', {query:query, data:data}, callback);
+};
+
 
 module.exports = Trello;

@@ -531,7 +531,81 @@ describe('Trello', function () {
             restler.put.restore();
         });
     });
-    
+
+    describe('getCardStickers', function() {
+        var get;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'get', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.getCardStickers('cardId', function () {
+                get = restler.get;
+                done();
+            });
+        });
+
+        it('should get to https://api.trello.com/1/cards/cardId/stickers', function () {
+            get.should.have.been.calledWith('https://api.trello.com/1/cards/cardId/stickers');
+        });
+
+        afterEach(function () {
+            restler.get.restore();
+        });
+    });
+
+    describe('addStickerToCard', function() {
+        var query;
+        var data;
+        var post;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'post', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.addStickerToCard('cardId', 'image', 'left', 'top', 'zIndex', 'rotate', function () {
+                query = restler.post.args[0][1].query;
+                data = restler.post.args[0][1].data;
+                post = restler.post;
+                done();
+            });
+        });
+
+        it('should post to https://api.trello.com/1/cards/cardId/stickers', function () {
+            post.should.have.been.calledWith('https://api.trello.com/1/cards/cardId/stickers');
+        });
+
+        it('should include the sticker image', function () {
+            data.image.should.equal('image');
+        });
+
+        it('should include the sticker top', function () {
+            data.top.should.equal('top');
+        });
+
+        it('should include the sticker left', function () {
+            data.left.should.equal('left');
+        });
+
+        it('should include the sticker zIndex', function () {
+            data.zIndex.should.equal('zIndex');
+        });
+
+        it('should include the sticker rotate', function () {
+            data.rotate.should.equal('rotate');
+        });
+
+        afterEach(function () {
+            restler.post.restore();
+        });
+    });
+
     describe('addChecklistToCard', function() {
         var query;
         var post;
