@@ -370,7 +370,7 @@ describe('Trello', function () {
         it('should get to https://api.trello.com/1/boards/boardId/labels', function () {
             get.should.have.been.calledWith('https://api.trello.com/1/boards/boardId/labels');
         });
-        
+
         afterEach(function () {
             restler.get.restore();
         });
@@ -636,7 +636,7 @@ describe('Trello', function () {
             restler.post.restore();
         });
     });
-    
+
     describe('addExistingChecklistToCard', function() {
         var query;
         var post;
@@ -687,12 +687,12 @@ describe('Trello', function () {
         it('should get to https://api.trello.com/1/cards/cardId/checklists', function () {
             get.should.have.been.calledWith('https://api.trello.com/1/cards/cardId/checklists');
         });
-        
+
         afterEach(function () {
             restler.get.restore();
         });
     });
-    
+
     describe('getBoardMembers', function() {
         var get;
 
@@ -712,12 +712,12 @@ describe('Trello', function () {
         it('should get to https://api.trello.com/1/boards/boardId/members', function () {
             get.should.have.been.calledWith('https://api.trello.com/1/boards/boardId/members');
         });
-        
+
         afterEach(function () {
             restler.get.restore();
         });
     });
-    
+
     describe('getOrgMembers', function() {
         var get;
 
@@ -737,12 +737,37 @@ describe('Trello', function () {
         it('should get to https://api.trello.com/1/organizations/organizationId/members', function () {
             get.should.have.been.calledWith('https://api.trello.com/1/organizations/organizationId/members');
         });
-        
+
         afterEach(function () {
             restler.get.restore();
         });
     });
-    
+
+    describe('getOrgBoards', function() {
+        var get;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'get', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.getOrgBoards('organizationId', function () {
+                get = restler.get;
+                done();
+            });
+        });
+
+        it('should get to https://api.trello.com/1/organizations/organizationId/boards', function () {
+            get.should.have.been.calledWith('https://api.trello.com/1/organizations/organizationId/boards');
+        });
+
+        afterEach(function () {
+            restler.get.restore();
+        });
+    });
+
     describe('updateChecklist', function() {
         var query;
         var put;
