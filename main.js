@@ -90,6 +90,13 @@ Trello.prototype.addListToBoard = function (boardId, name, callback) {
     return makeRequest(rest.post, this.uri + '/1/boards/' + boardId + '/lists', {query: query}, callback);
 };
 
+Trello.prototype.addMemberToBoard = function (boardId, memberId, type, callback) {
+    var query = this.createQuery();
+    var data = {type: type}; // Valid Values: 'normal','admin','observer'
+
+    return makeRequest(rest.put, this.uri + '/1/boards/' + boardId + '/members/' + memberId, { data: data, query: query }, callback);
+};
+
 Trello.prototype.addCommentToCard = function (cardId, comment, callback) {
     var query = this.createQuery();
     query.text = comment;

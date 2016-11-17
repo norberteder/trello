@@ -376,6 +376,36 @@ describe('Trello', function () {
         });
     });
 
+    describe('addMemberToBoard', function () {
+        var data;
+        var post;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'put', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.addMemberToBoard('boardId', 'memberId', 'normal', function () {
+                data = restler.put.args[0][1].data;
+                put = restler.put;
+                done();
+            });
+        });
+
+        it('should post to https://api.trello.com/1/boards/boardId/members/memberId', function () {
+            put.should.have.been.calledWith('https://api.trello.com/1/boards/boardId/members/memberId');
+        });
+
+        it('should include the type', function () {
+            data.type.should.equal('normal');
+        });
+
+        afterEach(function () {
+            restler.put.restore();
+        });
+    });
 
     describe('addLabelOnBoard', function() {
         var query;
