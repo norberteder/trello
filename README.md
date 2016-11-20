@@ -43,6 +43,16 @@ API calls can either execute a callback or return a promise. To return a promise
 
 ## History
 
+### 0.6.0
+
+* added `getMember`
+* added `getCardStickers`
+* added `addStickerToCard`
+* added `getOrgBoards`
+* added `getMemberCards`
+* added `updateBoardPref`
+* added `addMemberToBoard`
+
 ### 0.5.1
 
 * added `renameList`
