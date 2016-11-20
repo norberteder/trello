@@ -180,7 +180,7 @@ Trello.prototype.updateCardList = function (cardId, listId, callback) {
 
 Trello.prototype.getMember = function(memberId, callback) {
     return makeRequest(rest.get, this.uri + '/1/member/' + memberId, {query: this.createQuery()}, callback);
-}
+};
 
 Trello.prototype.getMemberCards = function (memberId, callback) {
     return makeRequest(rest.get, this.uri + '/1/members/' + memberId + '/cards', {query: this.createQuery()}, callback);
@@ -292,6 +292,5 @@ Trello.prototype.addStickerToCard = function(cardId, image, left, top, zIndex, r
     };
     return makeRequest(rest.post, this.uri+'/1/cards/' + cardId + '/stickers', {query:query, data:data}, callback);
 };
-
 
 module.exports = Trello;
