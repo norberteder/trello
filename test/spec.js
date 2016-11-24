@@ -17,6 +17,90 @@ describe('Trello', function () {
         trello = new Trello('key', 'token');
     });
 
+    describe('makeRequest', function () {
+        var expect = chai.expect;
+
+        it('should throw error if type of options passed is not object', function () {
+            expect(trello.makeRequest.bind(trello, 'GET', 'somePath', 'wrongOptions')).to.throw(TypeError)
+        });
+
+        it('should throw error if type of a method passed is not string', function () {
+            expect(trello.makeRequest.bind(trello, restler.post, 'somePath', {})).to.throw(TypeError)
+        });
+
+        it('should throw error if a method passed is not one of these: POST, GET, PUT, DELETE', function () {
+            expect(trello.makeRequest.bind(trello, 'patch', 'somePath', {})).to.throw(Error)
+        });
+
+        it('should not throw error if no options are passed', function () {
+            expect(trello.makeRequest.bind(trello, 'GET', '/1/members/me/tokens')).to.not.throw(Error);
+        });
+
+        it('should not throw error if a method passed is POST', function (done) {
+            sinon.stub(restler, 'post', function (path, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            expect(trello.makeRequest.bind(trello, 'POST', 'somePath', {}, function () {})).to.not.throw(Error);
+            restler.post.restore();
+            done();
+        });
+
+        it('should not throw error if a method passed is GET', function (done) {
+            sinon.stub(restler, 'get', function (path, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            expect(trello.makeRequest.bind(trello, 'GET', 'somePath', {}, function () {})).to.not.throw(Error);
+            restler.get.restore();
+            done();
+        });
+
+        it('should not throw error if a method passed is PUT', function (done) {
+            sinon.stub(restler, 'put', function (path, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            expect(trello.makeRequest.bind(trello, 'PUT', 'somePath', {}, function () {})).to.not.throw(Error);
+            restler.put.restore();
+            done();
+        });
+
+        it('should not throw error if a method passed is DELETE', function (done) {
+            sinon.stub(restler, 'del', function (path, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            expect(trello.makeRequest.bind(trello, 'DELETE', 'somePath', {}, function () {})).to.not.throw(Error);
+            restler.del.restore();
+            done();
+        });
+
+        it('should not mutate passed options object', function (done) {
+            sinon.stub(restler, 'get', function (path, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+            var options = { webhooks: true };
+            trello.makeRequest("get", "/1/cards", options)
+                .then(function (result) {
+                    expect(Object.keys(options).length, 1, "options object was mutated");
+                    expect(options.webhooks, true)
+                });
+            restler.get.restore();
+            done();
+        })
+    });
+
     describe('addBoard', function () {
         var query;
         var post;

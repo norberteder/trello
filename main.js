@@ -1,5 +1,6 @@
 require('es6-promise').polyfill();
 var rest = require('restler');
+var objectAssign = require('object-assign');
 
 var Trello = function (key, token) {
     this.uri = "https://api.trello.com";
@@ -34,6 +35,32 @@ function makeRequest(fn, uri, options, callback) {
         });
     }
 }
+
+Trello.prototype.makeRequest = function (requestMethod, path, options, callback) {
+    options = options || {};
+
+    if (typeof requestMethod !== 'string') {
+        throw new TypeError("requestMethod should be a string");
+    }
+    if (typeof options !== 'object') {
+        throw new TypeError("options should be an object");
+    }
+
+    var method = requestMethod.toLowerCase();
+    var methods = {
+        'post': rest.post,
+        'get': rest.get,
+        'put': rest.put,
+        'delete': rest.del
+    };
+
+    if (!methods[method]) {
+        throw new Error("Unsupported requestMethod. Pass one of these methods: POST, GET, PUT, DELETE.");
+    }
+    var keyTokenObj = this.createQuery();
+    var query = objectAssign({}, options, keyTokenObj);
+    return makeRequest(methods[method], this.uri + path, {query: query}, callback)
+};
 
 Trello.prototype.addBoard = function (name, description, organizationId, callback) {
     var query = this.createQuery();
