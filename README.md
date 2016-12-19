@@ -10,7 +10,7 @@ This is a wrapper for some of the Trello HTTP API. Please feel free to add any o
 
 ## Usage
 First, generate your Trello application key [like this](https://trello.com/card/generating-your-developer-key/4ed7e27fe6abb2517a21383d/25), then follow [these confusing instructions](https://trello.com/card/getting-a-user-token-and-oauth-urls/4ed7e27fe6abb2517a21383d/26) to get a user token. These need to be supplied when you create the Trello object (see below).
- 
+
 ## Example
 ```javascript
   var Trello = require("trello");
@@ -53,6 +53,10 @@ API calls can either execute a callback or return a promise. To return a promise
 ```
 
 ## History
+
+### 0.7.0
+
+* Public visibility for `makeRequest`
 
 ### 0.6.0
 
