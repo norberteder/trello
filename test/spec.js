@@ -411,7 +411,7 @@ describe('Trello', function () {
         });
 
         it('should include the new list name', function () {
-            query.name.should.equal('new list name');
+            query.value.should.equal('new list name');
         });
 
         afterEach(function () {
