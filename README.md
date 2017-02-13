@@ -9,7 +9,7 @@ This is a wrapper for some of the Trello HTTP API. Please feel free to add any o
     npm install trello
 
 ## Usage
-First, generate your Trello application key [like this](https://trello.com/card/generating-your-developer-key/4ed7e27fe6abb2517a21383d/25), then follow [these confusing instructions](https://trello.com/card/getting-a-user-token-and-oauth-urls/4ed7e27fe6abb2517a21383d/26) to get a user token. These need to be supplied when you create the Trello object (see below).
+Log in to Trello and visit [trello.com/app-key](https://trello.com/app-key) to get a `token` and `app key`. These need to be supplied when you create the Trello object (see below).
 
 ## Example
 ```javascript
@@ -82,11 +82,11 @@ API calls can either execute a callback or return a promise. To return a promise
 
 * Support of promises
 * Basic support of Labeling:
-  * getLabelsForBoard 
-  * addLabelOnBoard 
-  * deleteLabel 
-  * addLabelToCard 
-  * deleteLabelFromCard 
+  * getLabelsForBoard
+  * addLabelOnBoard
+  * deleteLabel
+  * addLabelToCard
+  * deleteLabelFromCard
 
 ### 0.4.1
 
