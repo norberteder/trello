@@ -2,6 +2,9 @@ require('es6-promise').polyfill();
 var rest = require('restler');
 var objectAssign = require('object-assign');
 
+var minRequestDelay = 500;
+var maxRequestDelay = 7000;
+
 var Trello = function (key, token) {
     this.uri = "https://api.trello.com";
     this.key = key;
@@ -14,24 +17,42 @@ Trello.prototype.createQuery = function () {
 
 function makeRequest(fn, uri, options, callback) {
     if (callback) {
-        fn(uri, options)
-            .once('complete', function (result) {
-                if (result instanceof Error) {
-                    callback(result);
-                } else {
-                    callback(null, result);
-                }
-            });
+      var completeCallback = function (result, response) {
+        // in case we hit HTTP 429, delay requests by random timeout in between minRequestDelay and maxRequestDelay
+        // http://help.trello.com/article/838-api-rate-limits
+        if(response && response.statusCode === 429) {
+          setTimeout(function() {
+            fn(uri, options).once('complete', completeCallback)
+          }, Math.floor(Math.random() * (maxRequestDelay - minRequestDelay)) + minRequestDelay);
+        }
+        else if (result instanceof Error) {
+            callback(result);
+        } else {
+            callback(null, result);
+        }
+      }
+
+      fn(uri, options).once('complete', completeCallback);
+
     } else {
         return new Promise(function(resolve, reject) {
-            fn(uri, options)
-                .once('complete', function (result) {
-                    if (result instanceof Error) {
-                        reject(result);
-                    } else {
-                        resolve(result);
-                    }
-                });
+
+            var completeCallback = function (result, response) {
+              // in case we hit HTTP 429, delay requests by random timeout in between minRequestDelay and maxRequestDelay
+              // http://help.trello.com/article/838-api-rate-limits
+              if(response && response.statusCode === 429) {
+                setTimeout(function() {
+                  fn(uri, options).once('complete', completeCallback)
+                }, Math.floor(Math.random() * (maxRequestDelay - minRequestDelay)) + minRequestDelay);
+              }
+              else if (result instanceof Error) {
+                  reject(result);
+              } else {
+                  resolve(result);
+              }
+            }
+
+            fn(uri, options).once('complete', completeCallback);
         });
     }
 }
