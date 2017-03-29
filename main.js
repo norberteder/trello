@@ -322,7 +322,7 @@ Trello.prototype.updateLabelName = function (labelId, name, callback) {
 };
 
 Trello.prototype.updateLabelColor = function (labelId, color, callback) {
-    return this.upadateLabel(labelId, 'color', color, callback);
+    return this.updateLabel(labelId, 'color', color, callback);
 };
 
 Trello.prototype.getCardStickers = function (cardId, callback) {
