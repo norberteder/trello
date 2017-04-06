@@ -113,6 +113,16 @@ Trello.prototype.addCard = function (name, description, listId, callback) {
     return makeRequest(rest.post, this.uri + '/1/cards', {query: query}, callback);
 };
 
+Trello.prototype.addCardWithExtraParams = function(name, extraParams, listId, callback) {
+    var query = this.createQuery();
+    query.name = name;
+    query.idList = listId;
+
+    Object.assign(query, extraParams);
+
+    return makeRequest(rest.post, this.uri + '/1/cards', {query: query}, callback);
+};
+
 Trello.prototype.getCard = function (boardId, cardId, callback) {
     return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/cards/' + cardId, {query: this.createQuery()}, callback);
 };
