@@ -341,4 +341,12 @@ Trello.prototype.addStickerToCard = function(cardId, image, left, top, zIndex, r
     return makeRequest(rest.post, this.uri+'/1/cards/' + cardId + '/stickers', {query:query, data:data}, callback);
 };
 
+Trello.prototype.addDueDateToCard = function (cardId, dateValue, callback) {
+    var query = this.createQuery();
+    query.value = dateValue;
+
+    return makeRequest(rest.put, this.uri + '/1/cards/' + cardId + '/due', {query: query}, callback);
+};
+
+
 module.exports = Trello;
