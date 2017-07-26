@@ -54,6 +54,12 @@ API calls can either execute a callback or return a promise. To return a promise
 
 ## History
 
+### 0.8.0
+
+* Rename list fixed
+* Handle API rate limit by retries 
+* New function `addCardWithExtraParams` 
+
 ### 0.7.0
 
 * Public visibility for `makeRequest`
