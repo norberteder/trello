@@ -21,7 +21,7 @@ function makeRequest(fn, uri, options, callback) {
         // in case we hit HTTP 429, delay requests by random timeout in between minRequestDelay and maxRequestDelay
         // http://help.trello.com/article/838-api-rate-limits
         if(response && response.statusCode === 429) {
-          setTimeout(function() {
+          setTimeout(() => {
             fn(uri, options).once('complete', completeCallback)
           }, Math.floor(Math.random() * (maxRequestDelay - minRequestDelay)) + minRequestDelay);
         }
@@ -35,13 +35,13 @@ function makeRequest(fn, uri, options, callback) {
       fn(uri, options).once('complete', completeCallback);
 
     } else {
-        return new Promise(function(resolve, reject) {
+        return new Promise((resolve, reject) => {
 
             var completeCallback = function (result, response) {
               // in case we hit HTTP 429, delay requests by random timeout in between minRequestDelay and maxRequestDelay
               // http://help.trello.com/article/838-api-rate-limits
               if(response && response.statusCode === 429) {
-                setTimeout(function() {
+                setTimeout(() => {
                   fn(uri, options).once('complete', completeCallback)
                 }, Math.floor(Math.random() * (maxRequestDelay - minRequestDelay)) + minRequestDelay);
               }
