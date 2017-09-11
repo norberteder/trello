@@ -962,4 +962,35 @@ describe('Trello', function () {
             restler.put.restore();
         });
     });
+
+    describe('addDueDateToCard', function() {
+        var query;
+        var put;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'put', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.addDueDateToCard('cardId', 'value', function () {
+                query = restler.put.args[0][1].query;
+                put = restler.put;
+                done();
+            });
+        });
+
+        it('should put to https://api.trello.com/1/cards/cardId/due', function () {
+            put.should.have.been.calledWith('https://api.trello.com/1/cards/cardId/due');
+        });
+
+        it('should include the date value', function () {
+            query.value.should.equal('value');
+        });
+
+        afterEach(function () {
+            restler.put.restore();
+        });
+    });
 });
