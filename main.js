@@ -266,9 +266,23 @@ Trello.prototype.getCardsOnBoard = function (boardId, callback) {
     return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/cards', {query: this.createQuery()}, callback);
 };
 
+Trello.prototype.getCardsOnBoardWithExtraParams = function (boardId, extraParams, callback) {
+    var query = this.createQuery();    
+    Object.assign(query, extraParams);
+
+    return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/cards', {query: query}, callback);
+}
+
 Trello.prototype.getCardsOnList = function (listId, callback) {
     return makeRequest(rest.get, this.uri + '/1/lists/' + listId + '/cards', {query: this.createQuery()}, callback);
 };
+
+Trello.prototype.getCardsOnListWithExtraParams = function (listId, extraParams, callback) {
+    var query = this.createQuery();    
+    Object.assign(query, extraParams);
+
+    return makeRequest(rest.get, this.uri + '/1/lists/' + listId + '/cards', {query: query}, callback);
+}
 
 Trello.prototype.deleteCard = function (cardId, callback) {
     return makeRequest(rest.del, this.uri + '/1/cards/' + cardId, {query: this.createQuery()}, callback);
