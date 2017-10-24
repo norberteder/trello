@@ -52,6 +52,69 @@ API calls can either execute a callback or return a promise. To return a promise
       });
 ```
 
+## Available functions
+
+### Add
+
+* addAttachmentToCard 
+* addBoard 
+* addCard 
+* addCardWithExtraParams 
+* addChecklistToCard 
+* addCommentToCard 
+* addDueDateToCard 
+* addExistingChecklistToCard 
+* addItemToChecklist 
+* addLabelOnBoard 
+* addLabelToCard 
+* addListToBoard 
+* addMemberToBoard 
+* addMemberToCard 
+* addStickerToCard 
+* addWebhook 
+
+### Delete
+
+* deleteCard 
+* deleteLabel 
+* deleteLabelFromCard 
+* deleteWebhook 
+
+### Get
+
+* getBoardMembers 
+* getBoards 
+* getCard 
+* getCardsForList 
+* getCardsOnBoard 
+* getCardsOnBoardWithExtraParams 
+* getCardsOnList 
+* getCardsOnListWithExtraParams
+* getCardStickers
+* getChecklistsOnCard 
+* getLabelsForBoard 
+* getListsOnBoard 
+* getListsOnBoardByFilter 
+* getMember 
+* getMemberCards 
+* getOrgBoards 
+* getOrgMembers 
+
+### Update
+
+* renameList 
+* updateBoardPref 
+* updateCard 
+* updateCardDescription 
+* updateCardList 
+* updateCardName 
+* updateChecklist 
+* updateLabel 
+* updateLabelColor 
+* updateLabelName 
+
+Everything that is not available as a function can be requested by calling `makeRequest`.
+
 ## History
 
 ### 0.8.0
