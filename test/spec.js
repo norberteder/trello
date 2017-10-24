@@ -229,6 +229,72 @@ describe('Trello', function () {
 
     });
 
+    describe('getCardsOnListWithExtraParams', function () {
+        var query;
+        var post;
+
+        var testDate = new Date("2015/03/25");
+        var extraParams = {before: testDate}
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'get', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.getCardsOnListWithExtraParams('listId', extraParams, function () {
+                query = restler.get.args[0][1].query;
+                get = restler.get;
+                done();
+            });
+        });
+
+        it('should get from https://api.trello.com/1/lists/listId/cards', function () {
+            get.should.have.been.calledWith('https://api.trello.com/1/lists/listId/cards');
+        });
+        it('should include a date in the query', function () {
+            query.before.should.equal(testDate)
+        });
+
+        afterEach(function () {
+            restler.get.restore();
+        });
+    });
+
+    describe('getCardsOnBoardWithExtraParams', function () {
+        var query;
+        var post;
+
+        var testDate = new Date("2015/03/25");
+        var extraParams = {before: testDate}
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'get', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.getCardsOnBoardWithExtraParams('boardId', extraParams, function () {
+                query = restler.get.args[0][1].query;
+                get = restler.get;
+                done();
+            });
+        });
+
+        it('should get from https://api.trello.com/1/boards/boardId/cards', function () {
+            get.should.have.been.calledWith('https://api.trello.com/1/boards/boardId/cards');
+        });
+        it('should include a date in the query', function () {
+            query.before.should.equal(testDate)
+        });
+
+        afterEach(function () {
+            restler.get.restore();
+        });
+    });
+
     describe('addWebhook', function () {
         var query;
         var post;
