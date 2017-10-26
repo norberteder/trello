@@ -495,7 +495,7 @@ describe('Trello', function () {
             post.should.have.been.calledWith('https://api.trello.com/1/cards/myCardId/attachments');
         });
 
-        it('should include the list id', function () {
+        it('should include the attachmentUrl', function () {
             query.url.should.equal('attachmentUrl');
         });
 
