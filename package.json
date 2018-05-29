@@ -24,14 +24,14 @@
       "name": "Siôn Le Roux",
       "email": "sinisterstuf@gmail.com"
     },
-	{
-	  "name": "Mike Garuccio",
-	  "url": "https://github.com/mgaruccio"
-	},
-	{
-	  "name": "Karel Piwko",
-	  "url": "https://github.com/kpiwko"
-	}
+    {
+      "name": "Mike Garuccio",
+      "url": "https://github.com/mgaruccio"
+    },
+    {
+      "name": "Karel Piwko",
+      "url": "https://github.com/kpiwko"
+    }
   ],
   "scripts": {
     "test": "node node_modules/mocha/bin/mocha"
