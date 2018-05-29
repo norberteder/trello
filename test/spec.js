@@ -847,7 +847,7 @@ describe('Trello', function () {
                 }};
             });
 
-            trello.addChecklistToCard('cardId', 'name', 'pos', function () {
+            trello.addChecklistToCard('cardId', 'name', function () {
                 query = restler.post.args[0][1].query;
                 post = restler.post;
                 done();

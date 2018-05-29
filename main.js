@@ -184,10 +184,9 @@ Trello.prototype.getOrgBoards = function (organizationId, callback) {
     return makeRequest(rest.get, this.uri + '/1/organizations/' + organizationId + '/boards', {query: this.createQuery()}, callback);
 };
 
-Trello.prototype.addChecklistToCard = function (cardId, name, pos, callback) {
+Trello.prototype.addChecklistToCard = function (cardId, name, callback) {
     var query = this.createQuery();
     query.name = name;
-    query.pos = pos;
 
     return makeRequest(rest.post, this.uri + '/1/cards/' + cardId + '/checklists', { query: query }, callback);
 };
