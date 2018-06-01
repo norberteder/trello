@@ -117,6 +117,12 @@ Everything that is not available as a function can be requested by calling `make
 
 ## History
 
+### 0.9.0
+
+* New function `getCardsOnBoardWithExtraParams`
+* New function `getCardsOnListWithExtraParams`
+* New function `addDueDateToCard`
+
 ### 0.8.0
 
 * Rename list fixed
