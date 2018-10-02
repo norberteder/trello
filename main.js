@@ -141,9 +141,13 @@ Trello.prototype.renameList = function (listId, name, callback) {
     return makeRequest(rest.put, this.uri + '/1/lists/' + listId + '/name', {query: query}, callback);
 };
 
-Trello.prototype.addListToBoard = function (boardId, name, callback) {
+Trello.prototype.addListToBoard = function (boardId, queryParams, callback) {
     var query = this.createQuery();
-    query.name = name;
+    if (typeof queryParams === 'string') {
+      query.name = queryParams;
+    } else {
+      query = queryParams;
+    }
 
     return makeRequest(rest.post, this.uri + '/1/boards/' + boardId + '/lists', {query: query}, callback);
 };
