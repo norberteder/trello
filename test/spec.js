@@ -119,8 +119,8 @@ describe('Trello', function () {
             });
         });
 
-        it('should post to https://api.trello.com/1/boards', function () {
-            post.should.have.been.calledWith('https://api.trello.com/1/boards');
+        it('should post to https://api.trello.com/1/boards/', function () {
+            post.should.have.been.calledWith('https://api.trello.com/1/boards/');
         });
 
         it('should include the description', function () {

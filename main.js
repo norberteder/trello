@@ -92,7 +92,7 @@ Trello.prototype.addBoard = function (name, description, organizationId, callbac
     if (organizationId !== null)
         query.idOrganization = organizationId;
 
-    return makeRequest(rest.post, this.uri + '/1/boards', {query: query}, callback);
+    return makeRequest(rest.post, this.uri + '/1/boards/', {query: query}, callback);
 };
 
 Trello.prototype.updateBoardPref = function (boardId, field, value, callback) {
