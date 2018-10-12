@@ -1,6 +1,6 @@
 {
   "name": "trello",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "author": "Norbert Eder <opensource@norberteder.com>",
   "description": "This module provides an easy way to make requests to the Trello API.",
   "contributors": [
@@ -24,14 +24,18 @@
       "name": "Siôn Le Roux",
       "email": "sinisterstuf@gmail.com"
     },
-	{
-	  "name": "Mike Garuccio",
-	  "url": "https://github.com/mgaruccio"
-	},
-	{
-	  "name": "Karel Piwko",
-	  "url": "https://github.com/kpiwko"
-	}
+    {
+      "name": "Mike Garuccio",
+      "url": "https://github.com/mgaruccio"
+    },
+    {
+      "name": "Karel Piwko",
+      "url": "https://github.com/kpiwko"
+    },
+    {
+      "name": "Josh Terrill",
+      "url": "https://github.com/joshterrill"
+    }
   ],
   "scripts": {
     "test": "node node_modules/mocha/bin/mocha"

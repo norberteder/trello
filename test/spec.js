@@ -1059,4 +1059,39 @@ describe('Trello', function () {
             restler.put.restore();
         });
     });
+
+    describe('addListToBoard', function() {
+        var query;
+        var post;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'post', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.addListToBoard('boardId', {name: 'Board Name', pos: 1}, function () {
+                query = restler.post.args[0][1].query;
+                post = restler.post;
+                done();
+            });
+        });
+
+        it('should post to https://api.trello.com/1/boards/boardId/lists', function () {
+            post.should.have.been.calledWith('https://api.trello.com/1/boards/boardId/lists');
+        });
+
+        it('should include the name', function () {
+            query.name.should.equal('Board Name');
+        });
+
+        it('should include position', function () {
+            query.pos.should.equal(1);
+        });
+
+        afterEach(function () {
+            restler.post.restore();
+        });
+    });
 });
