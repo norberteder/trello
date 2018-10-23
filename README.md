@@ -88,7 +88,8 @@ API calls can either execute a callback or return a promise. To return a promise
 * getCardsForList 
 * getCardsOnBoard 
 * getCardsOnBoardWithExtraParams 
-* getCardsOnList 
+* getCardsOnList
+* getClosedCardsOnList
 * getCardsOnListWithExtraParams
 * getCardStickers
 * getChecklistsOnCard 
