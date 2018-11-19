@@ -246,15 +246,23 @@ Trello.prototype.getMemberCards = function (memberId, callback) {
 
 Trello.prototype.getBoardMembers = function (boardId, filter, callback) {
     var query = this.createQuery();
-    if(filter && typeof(filter) !== 'function'){
+     if(filter && typeof(filter) !== 'function'){
         query.filter = filter;
+    }
+    else {
+     callback = filter;   
     }
     return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/members', {query: this.createQuery()}, callback);
 };
 
-Trello.prototype.getOrgMembers = function (organizationId, callback) {
+Trello.prototype.getOrgMembers = function (organizationId, filter, callback) {
     var query = this.createQuery();
-    query.filter = filter;
+   if(filter && typeof(filter) !== 'function'){
+        query.filter = filter;
+    }
+    else {
+     callback = filter;   
+    }
     return makeRequest(rest.get, this.uri + '/1/organizations/' + organizationId + '/members', {query: query}, callback);
 };
 
