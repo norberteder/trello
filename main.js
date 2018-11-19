@@ -276,6 +276,12 @@ Trello.prototype.getListsOnBoardByFilter = function(boardId, filter, callback) {
     return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/lists', {query: query}, callback);
 };
 
+Trello.prototype.getListsOnBoardWithExtraParams = function(boardId, extraParams, callback) {
+    var query = this.createQuery();
+    Object.assign(query, extraParams);
+    return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/lists', {query: query}, callback);
+};
+
 Trello.prototype.getCardsOnBoard = function (boardId, callback) {
     return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/cards', {query: this.createQuery()}, callback);
 };
