@@ -266,7 +266,7 @@ Trello.prototype.getOrgMembers = function (organizationId, filter, callback) {
     return makeRequest(rest.get, this.uri + '/1/organizations/' + organizationId + '/members', {query: query}, callback);
 };
 
-Trello.prototype.getListsOnBoard = function (boardId, filter, callback) {
+Trello.prototype.getListsOnBoard = function (boardId, callback) {
     return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/lists', {query: this.createQuery()}, callback);
 };
 
