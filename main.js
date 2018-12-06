@@ -26,7 +26,11 @@ function makeRequest(fn, uri, options, callback) {
           }, Math.floor(Math.random() * (maxRequestDelay - minRequestDelay)) + minRequestDelay);
         }
         else if (result instanceof Error) {
-            callback(result);
+            callback(result, null);
+        } else if (response != null && response.statusCode >= 400) {
+            const rv = new Error(result)
+            rv.response = response
+            callback(rv, null)
         } else {
             callback(null, result);
         }
@@ -47,6 +51,10 @@ function makeRequest(fn, uri, options, callback) {
               }
               else if (result instanceof Error) {
                   reject(result);
+              } else if (response != null && response.statusCode >= 400) {
+                  const rv = new Error(result)
+                  rv.response = response
+                  reject(rv)
               } else {
                   resolve(result);
               }
