@@ -117,6 +117,10 @@ Everything that is not available as a function can be requested by calling `make
 
 ## History
 
+### 0.9.1
+
+* Added trailing slash to /boards/ call
+
 ### 0.9.0
 
 * New function `getCardsOnBoardWithExtraParams`
