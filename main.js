@@ -134,6 +134,10 @@ Trello.prototype.getCardsForList = function(listId, actions, callback) {
     return makeRequest(rest.get, this.uri + '/1/lists/' + listId + '/cards', {query: query}, callback);
 };
 
+Trello.prototype.getCardActions = function (cardId, callback) {
+    return makeRequest(rest.get, this.uri + '/1/cards/' + cardId + '/actions', {query: this.createQuery()}, callback);
+};
+
 Trello.prototype.renameList = function (listId, name, callback) {
     var query = this.createQuery();
     query.value = name;
