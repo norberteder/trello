@@ -55,11 +55,11 @@
     "object-assign": "~4.1.0"
   },
   "devDependencies": {
-    "mocha": "~2.3.2",
     "chai": "3.2.0",
+    "mocha": "^5.2.0",
+    "q": "~1.4.1",
     "sinon": "~1.16.1",
-    "sinon-chai": "~2.8.0",
-    "q": "~1.4.1"
+    "sinon-chai": "~2.8.0"
   },
   "license": "MIT",
   "engines": {
