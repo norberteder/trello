@@ -229,6 +229,55 @@ describe('Trello', function () {
 
     });
 
+    describe('addCard (with extra params)', function() {
+        var query;
+        var post;
+
+        var extraParams = {
+            due: new Date("2015/03/25"),
+            dueComplete: false
+        };
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'post', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.addCard('name', 'description', 'listId', extraParams, function () {
+                query = restler.post.args[0][1].query;
+                post = restler.post;
+                done();
+            });
+        });
+
+        it('should post to https://api.trello.com/1/cards', function () {
+            post.should.have.been.calledWith('https://api.trello.com/1/cards');
+        });
+
+        it('should include the name', function () {
+            query.name.should.equal('name');
+        });
+
+        it('should include the description', function () {
+            query.desc.should.equal('description');
+        });
+
+        it('should include the due date', function() {
+            query.due.getTime().should.equal((new Date("2015/03/25").getTime()))
+        });
+
+        it('should include the list id', function () {
+            query.idList.should.equal('listId');
+        });
+
+        afterEach(function () {
+            restler.post.restore();
+        });
+
+    });
+
     describe('getCardsOnListWithExtraParams', function () {
         var query;
         var post;
@@ -262,6 +311,39 @@ describe('Trello', function () {
         });
     });
 
+    describe('getCardsOnList (with extra params)', function () {
+        var query;
+        var post;
+
+        var testDate = new Date("2015/03/25");
+        var extraParams = {before: testDate}
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'get', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.getCardsOnList('listId', extraParams, function () {
+                query = restler.get.args[0][1].query;
+                get = restler.get;
+                done();
+            });
+        });
+
+        it('should get from https://api.trello.com/1/lists/listId/cards', function () {
+            get.should.have.been.calledWith('https://api.trello.com/1/lists/listId/cards');
+        });
+        it('should include a date in the query', function () {
+            query.before.should.equal(testDate)
+        });
+
+        afterEach(function () {
+            restler.get.restore();
+        });
+    });
+
     describe('getCardsOnBoardWithExtraParams', function () {
         var query;
         var post;
@@ -277,6 +359,39 @@ describe('Trello', function () {
             });
 
             trello.getCardsOnBoardWithExtraParams('boardId', extraParams, function () {
+                query = restler.get.args[0][1].query;
+                get = restler.get;
+                done();
+            });
+        });
+
+        it('should get from https://api.trello.com/1/boards/boardId/cards', function () {
+            get.should.have.been.calledWith('https://api.trello.com/1/boards/boardId/cards');
+        });
+        it('should include a date in the query', function () {
+            query.before.should.equal(testDate)
+        });
+
+        afterEach(function () {
+            restler.get.restore();
+        });
+    });
+
+    describe('getCardsOnBoard (with extra params)', function () {
+        var query;
+        var post;
+
+        var testDate = new Date("2015/03/25");
+        var extraParams = {before: testDate}
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'get', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.getCardsOnBoard('boardId', extraParams, function () {
                 query = restler.get.args[0][1].query;
                 get = restler.get;
                 done();
