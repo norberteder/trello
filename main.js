@@ -57,14 +57,14 @@ function makeRequest(fn, uri, options, callback) {
     }
 }
 
-Trello.prototype.makeRequest = function (requestMethod, path, options, callback) {
-    options = options || {};
+Trello.prototype.makeRequest = function (requestMethod, path, query, callback) {
+    query = query || {};
 
     if (typeof requestMethod !== 'string') {
         throw new TypeError("requestMethod should be a string");
     }
-    if (typeof options !== 'object') {
-        throw new TypeError("options should be an object");
+    if (typeof query !== 'object') {
+        throw new TypeError("query should be an object");
     }
 
     var method = requestMethod.toLowerCase();
@@ -79,7 +79,7 @@ Trello.prototype.makeRequest = function (requestMethod, path, options, callback)
         throw new Error("Unsupported requestMethod. Pass one of these methods: POST, GET, PUT, DELETE.");
     }
     var keyTokenObj = this.createQuery();
-    var query = objectAssign({}, options, keyTokenObj);
+    query = objectAssign({}, query, keyTokenObj);
     return makeRequest(methods[method], this.uri + path, {query: query}, callback)
 };
 
