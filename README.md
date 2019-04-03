@@ -41,6 +41,21 @@ API calls can either execute a callback or return a promise. To return a promise
   })
 ```
 
+## Passing extra query parameters
+
+Each API call supports passing an optional object before the callback containing extra query parameters:
+
+```javascript
+  //Callback
+  trello.getCardsOnList(listId, { card_members: true }, callback)
+
+  //Promise
+  var cardsPromise = trello.getCardsOnList(listId, { card_members: true })
+  cardsPromise.then((cards) => {
+    //do stuff
+  })
+```
+
 ## Requests to API endpoints, not supported by this lib yet
 
 ```javascript
