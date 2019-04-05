@@ -16,36 +16,15 @@ Trello.prototype.createQuery = function() {
     return { key: this.key, token: this.token };
 };
 
-function makeRequest() {
-    //fetch(uri, { options })
-    return fetch(
-        `https://api.trello.com/1/tokens/d1f4835e7ff6350e5fa6a92ae5ab67d7be3853598f66f22f03c5c14a822f531e/webhooks/?key=4393f82a498d48057f9991b59a279226`,
-        {
-            method: 'POST',
+function makeRequest(url, options, methodType) {
+    if (methodType === 'POST')
+        return fetch(url, {
+            method: methodType,
             headers: {
                 'Content-Type': 'application/json',
-                // "Content-Type": "application/x-www-form-urlencoded",
             },
-            body: JSON.stringify({
-                description: 'My first webhook',
-                idModel: '5c8134364a386c7b268ac3cd',
-                callbackURL: 'https://adele.serveo.net/trelloCallback',
-            }),
-        }
-    );
-
-    //   fetch(
-    //   `https://api.trello.com/1/tokens/${config.TOKEN}/webhooks/?key=${
-    //     config.API_KEY
-    //   }`,
-    //   {
-    //     method: 'POST',
-    //     body: JSON.stringify(data),
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //   }
-    // );
+            body: JSON.stringify(options),
+        });
 }
 
 Trello.prototype.makeRequest = function(
@@ -483,20 +462,13 @@ Trello.prototype.deleteCard = function(cardId, callback) {
     );
 };
 
-Trello.prototype.addWebhook = function(
-    description,
-    callbackUrl,
-    idModel,
-    callback
-) {
+Trello.prototype.addWebhook = function(description, callbackURL, idModel) {
     var query = this.createQuery();
-    var data = {};
+    const url = `https://api.trello.com/1/tokens/${query.token}/webhooks/?key=${
+        query.key
+    }`;
 
-    data.description = description;
-    data.callbackURL = callbackUrl;
-    data.idModel = idModel;
-
-    return makeRequest();
+    return makeRequest(url, { description, callbackURL, idModel }, 'POST');
 };
 
 Trello.prototype.deleteWebhook = function(webHookId, callback) {
