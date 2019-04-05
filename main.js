@@ -16,53 +16,29 @@ Trello.prototype.createQuery = function() {
     return { key: this.key, token: this.token };
 };
 
-function makeRequest(url, options, methodType) {
-    if (methodType === 'POST')
+function makeRequest(url, options, requestMethod) {
+    if (requestMethod === 'POST')
         return fetch(url, {
-            method: methodType,
+            method: requestMethod,
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(options),
         });
+
+    throw new TypeError(
+        'Unsupported requestMethod. Pass one of these methods: POST, GET, PUT, DELETE.'
+    );
 }
 
-Trello.prototype.makeRequest = function(
-    requestMethod,
-    path,
-    options,
-    callback
-) {
-    options = options || {};
-
-    if (typeof requestMethod !== 'string') {
+Trello.prototype.makeRequest = function(requestMethod, path, options) {
+    if (typeof requestMethod !== 'string')
         throw new TypeError('requestMethod should be a string');
-    }
-    if (typeof options !== 'object') {
+
+    if (typeof options !== 'object')
         throw new TypeError('options should be an object');
-    }
 
-    var method = requestMethod.toLowerCase();
-    var methods = {
-        post: rest.post,
-        get: rest.get,
-        put: rest.put,
-        delete: rest.del,
-    };
-
-    if (!methods[method]) {
-        throw new Error(
-            'Unsupported requestMethod. Pass one of these methods: POST, GET, PUT, DELETE.'
-        );
-    }
-    var keyTokenObj = this.createQuery();
-    var query = objectAssign({}, options, keyTokenObj);
-    return makeRequest(
-        methods[method],
-        this.uri + path,
-        { query: query },
-        callback
-    );
+    return makeRequest(this.uri + path, options, requestMethod);
 };
 
 Trello.prototype.addBoard = function(
