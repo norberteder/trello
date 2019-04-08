@@ -17,7 +17,8 @@ Trello.prototype.createQuery = function() {
 };
 
 function makeRequest(url, options, requestMethod) {
-    if (requestMethod === 'POST')
+    console.log(options, url);
+    if (requestMethod === 'POST' || 'PUT')
         return fetch(url, {
             method: requestMethod,
             headers: {
@@ -26,12 +27,15 @@ function makeRequest(url, options, requestMethod) {
             body: JSON.stringify(options),
         });
 
-    throw new TypeError(
-        'Unsupported requestMethod. Pass one of these methods: POST, GET, PUT, DELETE.'
-    );
+    if (requestMethod === 'GET') return fetch(url);
 }
 
 Trello.prototype.makeRequest = function(requestMethod, path, options) {
+    if (requestMethod !== 'POST' || 'PUT' || 'GET' || 'DELETE')
+        throw new Error(
+            'Unsupported requestMethod. Pass one of these methods: POST, GET, PUT, DELETE.'
+        );
+
     if (typeof requestMethod !== 'string')
         throw new TypeError('requestMethod should be a string');
 
@@ -41,36 +45,41 @@ Trello.prototype.makeRequest = function(requestMethod, path, options) {
     return makeRequest(this.uri + path, options, requestMethod);
 };
 
-Trello.prototype.addBoard = function(
-    name,
-    description,
-    organizationId,
-    callback
-) {
+Trello.prototype.addBoard = function(name, description, teamId) {
     var query = this.createQuery();
-    query.name = name;
 
-    if (description !== null) query.desc = description;
-    if (organizationId !== null) query.idOrganization = organizationId;
+    if (!name || !description || !teamId)
+        throw new Error(
+            'Unable to create board because either a name, description or a team id was not supplied'
+        );
 
+    const url = 'https://api.trello.com/1/boards';
     return makeRequest(
-        rest.post,
-        this.uri + '/1/boards/',
-        { query: query },
-        callback
+        url,
+        {
+            key: query.key,
+            token: query.token,
+            name,
+            idOrganization: teamId,
+            desc: description,
+        },
+        'POST'
     );
 };
 
-Trello.prototype.updateBoardPref = function(boardId, field, value, callback) {
+Trello.prototype.updateBoardPref = function(boardId, field, value) {
     var query = this.createQuery();
     query.value = value;
 
-    return makeRequest(
-        rest.put,
-        this.uri + '/1/boards/' + boardId + '/prefs/' + field,
-        { query: query },
-        callback
-    );
+    options = {
+        key: query.key,
+        token: query.token,
+    };
+
+    options[field] = value;
+    const url = `https://api.trello.com/1/boards/${boardId}`;
+
+    return makeRequest(url, options, 'PUT');
 };
 
 Trello.prototype.addCard = function(name, description, listId, callback) {
