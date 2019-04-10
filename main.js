@@ -17,36 +17,45 @@ Trello.prototype.constructRequest = function(path, method, options) {
     var query = this.createQuery();
     var baseUrl = 'https://api.trello.com';
 
-    //for each option and the thingy to the end
-
     if (method === 'GET') {
+        var queryString = `?key=${query.key}&token=${query.token}`;
+
+        if (!options) return { url: `${baseUrl}${path}${queryString}` };
+
+        var keys = Object.keys(options);
+        var values = Object.values(options);
+        const additionalQueries = keys
+            .map((key, index) => `&${key}=${values[index]}`)
+            .join('');
+
         return {
-            url: baseUrl + path + `?key=${query.key}&token=${query.token}&`,
+            url: `${baseUrl}${path}${queryString}${additionalQueries}`,
         };
     }
 
     if (method === 'PUT' || 'POST' || 'DELETE')
-        return { url: baseUrl + path, data: { ...options, ...query }, method };
+        return {
+            url: baseUrl + path,
+            data: { ...options, ...query },
+            method,
+        };
 
     throw new Error(
         'Unsupported requestMethod. Pass one of these methods: POST, GET, PUT, DELETE.'
     );
 };
 
-Trello.prototype.handleMultipleParams = function(
-    arrayToPopulate,
-    paramsObject
-) {
+Trello.prototype.handleMultipleParams = function(objToPopulate, paramsObject) {
     var keys = Object.keys(paramsObject);
     var values = Object.values(paramsObject);
-    keys.map((key, index) => (arrayToPopulate[key] = values[index]));
-    return arrayToPopulate;
+    keys.map((key, index) => (objToPopulate[key] = values[index]));
+    return objToPopulate;
 };
 
 function makeRequest(url, options, requestMethod) {
     console.log(url, options, requestMethod);
 
-    if (!options & !requestMethod) return fetch(url);
+    if (requestMethod === 'GET') return fetch(url);
 
     return fetch(url, {
         method: requestMethod,
@@ -300,18 +309,12 @@ Trello.prototype.getListsOnBoard = function(boardId) {
     return makeRequest(request.url);
 };
 
-Trello.prototype.getListsOnBoardByFilter = function(boardId, filter, callback) {
-    var request = this.constructRequest(`/1/boards/${boardId}/lists`, 'GET');
-    return makeRequest(request.url);
+Trello.prototype.getListsOnBoardByFilter = function(boardId, filter) {
+    var request = this.constructRequest(`/1/boards/${boardId}/lists`, 'GET', {
+        filter,
+    });
 
-    var query = this.createQuery();
-    query.filter = filter;
-    return makeRequest(
-        rest.get,
-        this.uri + '/1/boards/' + boardId + '/lists',
-        { query: query },
-        callback
-    );
+    return makeRequest(request.url);
 };
 
 Trello.prototype.getCardsOnBoard = function(boardId, callback) {
