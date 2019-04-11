@@ -16,7 +16,7 @@ Trello.prototype.constructRequest = function(
     options,
     extraOption
 ) {
-    if (!(method === 'GET' || 'POST' || 'DELETE', 'PUT'))
+    if (!['GET', 'POST', 'DELETE', 'PUT'].includes(method))
         throw new Error(
             'Unsupported requestMethod. Pass one of these methods: POST, GET, PUT, DELETE.'
         );
