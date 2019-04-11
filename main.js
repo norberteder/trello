@@ -1,9 +1,6 @@
 require('es6-promise').polyfill();
 require('cross-fetch/polyfill');
 
-var minRequestDelay = 500;
-var maxRequestDelay = 7000;
-
 var Trello = function(key, token) {
     this.key = key;
     this.token = token;
@@ -418,90 +415,46 @@ Trello.prototype.deleteLabel = function(labelId) {
     return makeRequest(request.url, request.data, request.method);
 };
 
-Trello.prototype.addLabelToCard = function(cardId, labelId, callback) {
-    var query = this.createQuery();
-    var data = { value: labelId };
-    return makeRequest(
-        rest.post,
-        this.uri + '/1/cards/' + cardId + '/idLabels',
-        { query: query, data: data },
-        callback
+Trello.prototype.addLabelToCard = function(cardId, labelId) {
+    var request = this.constructRequest(`/1/cards/${cardId}/idLabels`, 'POST', {
+        value: labelId,
+    });
+    return makeRequest(request.url, request.data, request.method);
+};
+
+Trello.prototype.deleteLabelFromCard = function(cardId, labelId) {
+    var request = this.constructRequest(
+        `/1/cards/${cardId}/idLabels/${labelId}`,
+        'DELETE'
     );
+    return makeRequest(request.url, request.data, request.method);
 };
 
-Trello.prototype.deleteLabelFromCard = function(cardId, labelId, callback) {
-    return makeRequest(
-        rest.del,
-        this.uri + '/1/cards/' + cardId + '/idLabels/' + labelId,
-        { query: this.createQuery() },
-        callback
-    );
+Trello.prototype.updateLabel = function(labelId, params) {
+    const query = this.handleMultipleParams({}, params);
+
+    var request = this.constructRequest(`/1/labels/${labelId}`, 'PUT', query);
+    return makeRequest(request.url, request.data, request.method);
 };
 
-Trello.prototype.updateLabel = function(labelId, field, value, callback) {
-    var query = this.createQuery();
-    query.value = value;
-
-    return makeRequest(
-        rest.put,
-        this.uri + '/1/labels/' + labelId + '/' + field,
-        { query: query },
-        callback
-    );
+Trello.prototype.updateLabelName = function(labelId, name) {
+    return this.updateLabel(labelId, { name });
 };
 
-Trello.prototype.updateLabelName = function(labelId, name, callback) {
-    return this.updateLabel(labelId, 'name', name, callback);
+Trello.prototype.updateLabelColor = function(labelId, color) {
+    return this.updateLabel(labelId, { color });
 };
 
-Trello.prototype.updateLabelColor = function(labelId, color, callback) {
-    return this.updateLabel(labelId, 'color', color, callback);
+Trello.prototype.getCardStickers = function(cardId) {
+    var request = this.constructRequest(`/1/cards/${cardId}/stickers`, 'GET');
+    return makeRequest(request.url);
 };
 
-Trello.prototype.getCardStickers = function(cardId, callback) {
-    return makeRequest(
-        rest.get,
-        this.uri + '/1/cards/' + cardId + '/stickers',
-        { query: this.createQuery() },
-        callback
-    );
-};
-
-Trello.prototype.addStickerToCard = function(
-    cardId,
-    image,
-    left,
-    top,
-    zIndex,
-    rotate,
-    callback
-) {
-    var query = this.createQuery();
-    var data = {
-        image: image,
-        top: top,
-        left: left,
-        zIndex: zIndex,
-        rotate: rotate,
-    };
-    return makeRequest(
-        rest.post,
-        this.uri + '/1/cards/' + cardId + '/stickers',
-        { query: query, data: data },
-        callback
-    );
-};
-
-Trello.prototype.addDueDateToCard = function(cardId, dateValue, callback) {
-    var query = this.createQuery();
-    query.value = dateValue;
-
-    return makeRequest(
-        rest.put,
-        this.uri + '/1/cards/' + cardId + '/due',
-        { query: query },
-        callback
-    );
+Trello.prototype.addDueDateToCard = function(cardId, dateValue) {
+    var request = this.constructRequest(`/1/cards/${cardId}/due`, 'PUT', {
+        value: dateValue,
+    });
+    return makeRequest(request.url, request.data, request.method);
 };
 
 module.exports = Trello;
