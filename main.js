@@ -27,7 +27,7 @@ Trello.prototype.constructRequest = function(
     if (method === 'GET') {
         var queryString = `?key=${query.key}&token=${query.token}`;
 
-        //pure GETfunction
+        //pure GET function
         if (!options) return { url: `${baseUrl}${path}${queryString}` };
 
         if (Array.isArray(options))
@@ -78,8 +78,6 @@ Trello.prototype.handleMultipleParams = function(objToPopulate, paramsObject) {
 };
 
 function makeRequest(url, options, requestMethod) {
-    console.log(url, options, requestMethod);
-
     if (requestMethod === 'GET') return fetch(url);
 
     return fetch(url, {
