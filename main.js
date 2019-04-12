@@ -1,31 +1,26 @@
 require('es6-promise').polyfill();
 require('cross-fetch/polyfill');
 
-var Trello = function(key, token) {
+const Trello = (key, token) => {
     this.key = key;
     this.token = token;
 };
 
-Trello.prototype.createQuery = function() {
+Trello.prototype.createQuery = () => {
     return { key: this.key, token: this.token };
 };
 
-Trello.prototype.constructRequest = function(
-    path,
-    method,
-    options,
-    extraOption
-) {
+Trello.prototype.constructRequest = (path, method, options, extraOption) => {
     if (!['GET', 'POST', 'DELETE', 'PUT'].includes(method))
         throw new Error(
             'Unsupported requestMethod. Pass one of these methods: POST, GET, PUT, DELETE.'
         );
 
-    var query = this.createQuery();
-    var baseUrl = 'https://api.trello.com';
+    const query = this.createQuery();
+    const baseUrl = 'https://api.trello.com';
 
     if (method === 'GET') {
-        var queryString = `?key=${query.key}&token=${query.token}`;
+        const queryString = `?key=${query.key}&token=${query.token}`;
 
         //pure GET function
         if (!options) return { url: `${baseUrl}${path}${queryString}` };
@@ -37,9 +32,9 @@ Trello.prototype.constructRequest = function(
                 )}`,
             };
 
-        var keys = Object.keys(options);
-        var values = Object.values(options);
-        var additionalQueries = keys
+        const keys = Object.keys(options);
+        const values = Object.values(options);
+        const additionalQueries = keys
             .map((key, index) => `&${key}=${values[index]}`)
             .join('');
 
@@ -70,14 +65,14 @@ Trello.prototype.constructRequest = function(
     };
 };
 
-Trello.prototype.handleMultipleParams = function(objToPopulate, paramsObject) {
-    var keys = Object.keys(paramsObject);
-    var values = Object.values(paramsObject);
+Trello.prototype.handleMultipleParams = (objToPopulate, paramsObject) => {
+    const keys = Object.keys(paramsObject);
+    const values = Object.values(paramsObject);
     keys.map((key, index) => (objToPopulate[key] = values[index]));
     return objToPopulate;
 };
 
-function makeRequest(url, options, requestMethod) {
+const makeRequest = (url, options, requestMethod) => {
     if (requestMethod === 'GET') return fetch(url);
 
     return fetch(url, {
@@ -87,9 +82,9 @@ function makeRequest(url, options, requestMethod) {
         },
         body: JSON.stringify(options),
     });
-}
+};
 
-Trello.prototype.makeRequest = function(requestMethod, path, options) {
+Trello.prototype.makeRequest = (requestMethod, path, options) => {
     if (['GET', 'POST', 'DELETE', 'PUT'].includes(method))
         throw new Error(
             'Unsupported requestMethod. Pass one of these methods: POST, GET, PUT, DELETE.'
@@ -101,13 +96,13 @@ Trello.prototype.makeRequest = function(requestMethod, path, options) {
     return makeRequest(path, options, requestMethod);
 };
 
-Trello.prototype.addBoard = function(name, description, teamId) {
+Trello.prototype.addBoard = (name, description, teamId) => {
     if (!name || !description || !teamId)
         throw new Error(
             'Unable to create board because either a name, description or a team id was not supplied'
         );
 
-    var request = this.constructRequest('/1/boards', 'POST', {
+    const request = this.constructRequest('/1/boards', 'POST', {
         name,
         desc: description,
         idOrganization: teamId,
@@ -116,77 +111,81 @@ Trello.prototype.addBoard = function(name, description, teamId) {
     return makeRequest(request.url, request.data, request.method);
 };
 
-Trello.prototype.updateBoardPref = function(boardId, extraParams) {
+Trello.prototype.updateBoardPref = (boardId, extraParams) => {
     if (!boardId || !extraParams)
         throw new Error(
             'Unable to create board because either a boardId, fieldToChange or a value id was not supplied'
         );
 
     const query = this.handleMultipleParams({}, extraParams);
-    var request = this.constructRequest(`/1/boards/${boardId}`, 'PUT', query);
+    const request = this.constructRequest(`/1/boards/${boardId}`, 'PUT', query);
 
     return makeRequest(request.url, request.data, request.method);
 };
 
-Trello.prototype.addCard = function(name, listId) {
+Trello.prototype.addCard = (name, listId) => {
     if (!listId || !name || !description)
         throw new Error(
             'Unable to create board because either a listId, name or a description id was not supplied'
         );
 
-    var request = this.constructRequest('/1/cards/', 'POST', { name });
+    const request = this.constructRequest('/1/cards/', 'POST', { name });
 
     return makeRequest(request.url, request.data, request.method);
 };
 
-Trello.prototype.addCardWithExtraParams = function(name, extraParams, listId) {
+Trello.prototype.addCardWithExtraParams = (name, extraParams, listId) => {
     if (!listId || !name || !extraParams)
         throw new Error(
             'Unable to create board because either a listId, name or extra parameters were not supplied'
         );
 
-    var query = this.handleMultipleParams(
+    const query = this.handleMultipleParams(
         { name, idList: listId },
         extraParams
     );
-    var request = this.constructRequest('/1/cards/', 'POST', query);
+    const request = this.constructRequest('/1/cards/', 'POST', query);
 
     return makeRequest(request.url, request.data, request.method);
 };
 
-Trello.prototype.getCard = function(cardId) {
-    var request = this.constructRequest(`/1/cards/${cardId}`, 'GET');
+Trello.prototype.getCard = cardId => {
+    const request = this.constructRequest(`/1/cards/${cardId}`, 'GET');
     return makeRequest(request.url);
 };
 
-Trello.prototype.getCardsForList = function(listId) {
-    var request = this.constructRequest(`/1/lists/${listId}`, 'GET');
+Trello.prototype.getCardsForList = listId => {
+    const request = this.constructRequest(`/1/lists/${listId}`, 'GET');
     return makeRequest(request.url);
 };
 
-Trello.prototype.renameList = function(listId, name) {
-    var request = this.constructRequest(`/1/lists/${listId}/name`, 'PUT', {
+Trello.prototype.renameList = (listId, name) => {
+    const request = this.constructRequest(`/1/lists/${listId}/name`, 'PUT', {
         value: name,
     });
 
     return makeRequest(request.url, request.data, request.method);
 };
 
-Trello.prototype.addListToBoard = function(boardId, name) {
-    var request = this.constructRequest(`/1/boards/${boardId}/lists`, 'POST', {
-        name,
-    });
+Trello.prototype.addListToBoard = (boardId, name) => {
+    const request = this.constructRequest(
+        `/1/boards/${boardId}/lists`,
+        'POST',
+        {
+            name,
+        }
+    );
 
     return makeRequest(request.url, request.data, request.method);
 };
 
-Trello.prototype.addMemberToBoard = function(boardId, memberId, memberRights) {
+Trello.prototype.addMemberToBoard = (boardId, memberId, memberRights) => {
     if (!boardId || !memberId || !memberRights)
         throw new Error(
             'Unable to create board because either a boardId, memberId or memberRights were not supplied'
         );
 
-    var request = this.constructRequest(
+    const request = this.constructRequest(
         `/1/boards/${boardId}/members/${memberId}`,
         'PUT',
         {
@@ -197,8 +196,8 @@ Trello.prototype.addMemberToBoard = function(boardId, memberId, memberRights) {
     return makeRequest(request.url, request.data, request.method);
 };
 
-Trello.prototype.addCommentToCard = function(cardId, comment) {
-    var request = this.constructRequest(
+Trello.prototype.addCommentToCard = (cardId, comment) => {
+    const request = this.constructRequest(
         `/1/cards/${cardId}/actions/comments`,
         'POST',
         {
@@ -209,8 +208,8 @@ Trello.prototype.addCommentToCard = function(cardId, comment) {
     return makeRequest(request.url, request.data, request.method);
 };
 
-Trello.prototype.addAttachmentToCard = function(cardId, url) {
-    var request = this.constructRequest(
+Trello.prototype.addAttachmentToCard = (cardId, url) => {
+    const request = this.constructRequest(
         `/1/cards/${cardId}/attachments`,
         'POST',
         { url }
@@ -219,29 +218,36 @@ Trello.prototype.addAttachmentToCard = function(cardId, url) {
     return makeRequest(request.url, request.data, request.method);
 };
 
-Trello.prototype.addMemberToCard = function(cardId, memberId) {
-    var request = this.constructRequest(`/1/cards/${cardId}/members`, 'POST', {
-        value: memberId,
-    });
+Trello.prototype.addMemberToCard = (cardId, memberId) => {
+    const request = this.constructRequest(
+        `/1/cards/${cardId}/members`,
+        'POST',
+        {
+            value: memberId,
+        }
+    );
 
     return makeRequest(request.url, request.data, request.method);
 };
 
-Trello.prototype.getBoards = function(memberId) {
-    var request = this.constructRequest(`/1/members/${memberId}/boards`, 'GET');
+Trello.prototype.getBoards = memberId => {
+    const request = this.constructRequest(
+        `/1/members/${memberId}/boards`,
+        'GET'
+    );
     return makeRequest(request.url);
 };
 
-Trello.prototype.getOrgBoards = function(organizationId) {
-    var request = this.constructRequest(
+Trello.prototype.getOrgBoards = organizationId => {
+    const request = this.constructRequest(
         `/1/organizations/${organizationId}/boards`,
         'GET'
     );
     return makeRequest(request.url);
 };
 
-Trello.prototype.addChecklistToCard = function(cardId, name) {
-    var request = this.constructRequest(
+Trello.prototype.addChecklistToCard = (cardId, name) => {
+    const request = this.constructRequest(
         `/1/cards/${cardId}/checklists`,
         'POST',
         { name }
@@ -249,8 +255,8 @@ Trello.prototype.addChecklistToCard = function(cardId, name) {
     return makeRequest(request.url, request.data, request.method);
 };
 
-Trello.prototype.addExistingChecklistToCard = function(cardId, checklistId) {
-    var request = this.constructRequest(
+Trello.prototype.addExistingChecklistToCard = (cardId, checklistId) => {
+    const request = this.constructRequest(
         `/1/cards/${cardId}/checklists`,
         'POST',
         { idChecklistSource: checklistId }
@@ -259,13 +265,16 @@ Trello.prototype.addExistingChecklistToCard = function(cardId, checklistId) {
     return makeRequest(request.url, request.data, request.method);
 };
 
-Trello.prototype.getChecklistsOnCard = function(cardId) {
-    var request = this.constructRequest(`/1/cards/${cardId}/checklists`, 'GET');
+Trello.prototype.getChecklistsOnCard = cardId => {
+    const request = this.constructRequest(
+        `/1/cards/${cardId}/checklists`,
+        'GET'
+    );
     return makeRequest(request.url);
 };
 
-Trello.prototype.addItemToChecklist = function(checkListId, name, pos) {
-    var request = this.constructRequest(
+Trello.prototype.addItemToChecklist = (checkListId, name, pos) => {
+    const request = this.constructRequest(
         `/1/checklists/${checkListId}/checkitems`,
         'POST',
         { name, pos }
@@ -274,16 +283,16 @@ Trello.prototype.addItemToChecklist = function(checkListId, name, pos) {
     return makeRequest(request.url, request.data, request.method);
 };
 
-Trello.prototype.updateCard = function(cardId, params) {
+Trello.prototype.updateCard = (cardId, params) => {
     const query = this.handleMultipleParams({}, params);
-    var request = this.constructRequest(`/1/cards/${cardId}`, 'PUT', query);
+    const request = this.constructRequest(`/1/cards/${cardId}`, 'PUT', query);
 
     return makeRequest(request.url, request.data, request.method);
 };
 
-Trello.prototype.updateChecklist = function(checklistId, params) {
+Trello.prototype.updateChecklist = (checklistId, params) => {
     const query = this.handleMultipleParams({}, params);
-    var request = this.constructRequest(
+    const request = this.constructRequest(
         `/1/checklists/${checklistId}`,
         'PUT',
         query
@@ -292,64 +301,61 @@ Trello.prototype.updateChecklist = function(checklistId, params) {
     return makeRequest(request.url, request.data, request.method);
 };
 
-Trello.prototype.updateCardName = function(cardId, name) {
-    return this.updateCard(cardId, { name });
-};
+Trello.prototype.updateCardName = (cardId, name) =>
+    this.updateCard(cardId, { name });
 
-Trello.prototype.updateCardDescription = function(cardId, description) {
-    return this.updateCard(cardId, { desc: description });
-};
+Trello.prototype.updateCardDescription = (cardId, description) =>
+    this.updateCard(cardId, { desc: description });
 
-Trello.prototype.updateCardList = function(cardId, listId) {
-    return this.updateCard(cardId, { idList: listId });
-};
+Trello.prototype.updateCardList = (cardId, listId) =>
+    this.updateCard(cardId, { idList: listId });
 
-Trello.prototype.getMember = function(memberId) {
-    var request = this.constructRequest(`/1/member/${memberId}`, 'GET');
+Trello.prototype.getMember = memberId => {
+    const request = this.constructRequest(`/1/member/${memberId}`, 'GET');
     return makeRequest(request.url);
 };
 
-Trello.prototype.getMemberCards = function(memberId) {
-    var request = this.constructRequest(`/1/member/${memberId}/cards`, 'GET');
+Trello.prototype.getMemberCards = memberId => {
+    const request = this.constructRequest(`/1/member/${memberId}/cards`, 'GET');
     return makeRequest(request.url);
 };
 
-Trello.prototype.getBoardMembers = function(boardId) {
-    var request = this.constructRequest(`/1/boards/${boardId}/members`, 'GET');
+Trello.prototype.getBoardMembers = boardId => {
+    const request = this.constructRequest(
+        `/1/boards/${boardId}/members`,
+        'GET'
+    );
     return makeRequest(request.url);
 };
 
-Trello.prototype.getOrgMembers = function(organizationId) {
-    var request = this.constructRequest(
+Trello.prototype.getOrgMembers = organizationId => {
+    const request = this.constructRequest(
         `/1/organizations/${organizationId}/members`,
         'GET'
     );
     return makeRequest(request.url);
 };
 
-Trello.prototype.getListsOnBoard = function(boardId) {
-    var request = this.constructRequest(`/1/boards/${boardId}/lists`, 'GET');
+Trello.prototype.getListsOnBoard = boardId => {
+    const request = this.constructRequest(`/1/boards/${boardId}/lists`, 'GET');
     return makeRequest(request.url);
 };
 
-Trello.prototype.getListsOnBoardByFilter = function(boardId, filter) {
-    var request = this.constructRequest(`/1/boards/${boardId}/lists`, 'GET', {
+Trello.prototype.getListsOnBoardByFilter = (boardId, filter) => {
+    const request = this.constructRequest(`/1/boards/${boardId}/lists`, 'GET', {
         filter,
     });
 
     return makeRequest(request.url);
 };
 
-Trello.prototype.getCardsOnBoard = function(boardId) {
-    var request = this.constructRequest(`/1/boards/${boardId}/cards`, 'GET');
+Trello.prototype.getCardsOnBoard = boardId => {
+    const request = this.constructRequest(`/1/boards/${boardId}/cards`, 'GET');
     return makeRequest(request.url);
 };
 
-Trello.prototype.getCardsOnBoardWithExtraParams = function(
-    boardId,
-    extraParam
-) {
-    var request = this.constructRequest(
+Trello.prototype.getCardsOnBoardWithExtraParams = (boardId, extraParam) => {
+    const request = this.constructRequest(
         `/1/boards/${boardId}/cards/${extraParam}`,
         'GET'
     );
@@ -357,14 +363,14 @@ Trello.prototype.getCardsOnBoardWithExtraParams = function(
     return makeRequest(request.url);
 };
 
-Trello.prototype.getCardsOnList = function(listId) {
-    var request = this.constructRequest(`/1/lists/${listId}/cards`, 'GET');
+Trello.prototype.getCardsOnList = listId => {
+    const request = this.constructRequest(`/1/lists/${listId}/cards`, 'GET');
     return makeRequest(request.url);
 };
 
-Trello.prototype.getCardsOnListWithExtraParams = function(listId, fields) {
+Trello.prototype.getCardsOnListWithExtraParams = (listId, fields) => {
     // e.g. trello.getCardsOnList('5c8a3b4eb42f42133e1ea998', ['id', 'name', 'badges']);
-    var request = this.constructRequest(
+    const request = this.constructRequest(
         `/1/lists/${listId}/cards`,
         'GET',
         fields,
@@ -374,13 +380,13 @@ Trello.prototype.getCardsOnListWithExtraParams = function(listId, fields) {
     return makeRequest(request.url);
 };
 
-Trello.prototype.deleteCard = function(cardId) {
-    var request = this.constructRequest(`/1/cards/${cardId}`, 'DELETE');
+Trello.prototype.deleteCard = cardId => {
+    const request = this.constructRequest(`/1/cards/${cardId}`, 'DELETE');
     return makeRequest(request.url, request.data, request.method);
 };
 
-Trello.prototype.addWebhook = function(description, callbackURL, idModel) {
-    var request = this.constructRequest(`/1/webhooks`, 'POST', {
+Trello.prototype.addWebhook = (description, callbackURL, idModel) => {
+    const request = this.constructRequest(`/1/webhooks`, 'POST', {
         description,
         callbackURL,
         idModel,
@@ -388,19 +394,19 @@ Trello.prototype.addWebhook = function(description, callbackURL, idModel) {
     return makeRequest(request.url, request.data, request.method);
 };
 
-Trello.prototype.deleteWebhook = function(webHookId) {
+Trello.prototype.deleteWebhook = webHookId => {
     //get the webhook id https://api.trello.com/1/tokens/[token]/webhooks/?key=[key]
-    var request = this.constructRequest(`/1/webhooks/${webHookId}`, 'DELETE');
+    const request = this.constructRequest(`/1/webhooks/${webHookId}`, 'DELETE');
     return makeRequest(request.url, request.data, request.method);
 };
 
-Trello.prototype.getLabelsForBoard = function(boardId) {
-    var request = this.constructRequest(`/1/boards/${boardId}/labels`, 'GET');
+Trello.prototype.getLabelsForBoard = boardId => {
+    const request = this.constructRequest(`/1/boards/${boardId}/labels`, 'GET');
     return makeRequest(request.url);
 };
 
-Trello.prototype.addLabelOnBoard = function(boardId, name, color) {
-    var request = this.constructRequest('/1/labels', 'POST', {
+Trello.prototype.addLabelOnBoard = (boardId, name, color) => {
+    const request = this.constructRequest('/1/labels', 'POST', {
         idBoard: boardId,
         color,
         name,
@@ -408,48 +414,50 @@ Trello.prototype.addLabelOnBoard = function(boardId, name, color) {
     return makeRequest(request.url, request.data, request.method);
 };
 
-Trello.prototype.deleteLabel = function(labelId) {
-    var request = this.constructRequest(`/1/labels/${labelId}`, 'DELETE');
+Trello.prototype.deleteLabel = labelId => {
+    const request = this.constructRequest(`/1/labels/${labelId}`, 'DELETE');
     return makeRequest(request.url, request.data, request.method);
 };
 
-Trello.prototype.addLabelToCard = function(cardId, labelId) {
-    var request = this.constructRequest(`/1/cards/${cardId}/idLabels`, 'POST', {
-        value: labelId,
-    });
+Trello.prototype.addLabelToCard = (cardId, labelId) => {
+    const request = this.constructRequest(
+        `/1/cards/${cardId}/idLabels`,
+        'POST',
+        {
+            value: labelId,
+        }
+    );
     return makeRequest(request.url, request.data, request.method);
 };
 
-Trello.prototype.deleteLabelFromCard = function(cardId, labelId) {
-    var request = this.constructRequest(
+Trello.prototype.deleteLabelFromCard = (cardId, labelId) => {
+    const request = this.constructRequest(
         `/1/cards/${cardId}/idLabels/${labelId}`,
         'DELETE'
     );
     return makeRequest(request.url, request.data, request.method);
 };
 
-Trello.prototype.updateLabel = function(labelId, params) {
+Trello.prototype.updateLabel = (labelId, params) => {
     const query = this.handleMultipleParams({}, params);
 
-    var request = this.constructRequest(`/1/labels/${labelId}`, 'PUT', query);
+    const request = this.constructRequest(`/1/labels/${labelId}`, 'PUT', query);
     return makeRequest(request.url, request.data, request.method);
 };
 
-Trello.prototype.updateLabelName = function(labelId, name) {
-    return this.updateLabel(labelId, { name });
-};
+Trello.prototype.updateLabelName = (labelId, name) =>
+    this.updateLabel(labelId, { name });
 
-Trello.prototype.updateLabelColor = function(labelId, color) {
-    return this.updateLabel(labelId, { color });
-};
+Trello.prototype.updateLabelColor = (labelId, color) =>
+    this.updateLabel(labelId, { color });
 
-Trello.prototype.getCardStickers = function(cardId) {
-    var request = this.constructRequest(`/1/cards/${cardId}/stickers`, 'GET');
+Trello.prototype.getCardStickers = cardId => {
+    const request = this.constructRequest(`/1/cards/${cardId}/stickers`, 'GET');
     return makeRequest(request.url);
 };
 
-Trello.prototype.addDueDateToCard = function(cardId, dateValue) {
-    var request = this.constructRequest(`/1/cards/${cardId}/due`, 'PUT', {
+Trello.prototype.addDueDateToCard = (cardId, dateValue) => {
+    const request = this.constructRequest(`/1/cards/${cardId}/due`, 'PUT', {
         value: dateValue,
     });
     return makeRequest(request.url, request.data, request.method);
