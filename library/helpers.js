@@ -1,17 +1,16 @@
 require('es6-promise').polyfill();
 require('cross-fetch/polyfill');
 
-const constructRequest = (path, method, options, extraOption, key, token) => {
+const constructRequest = (path, method, key, token, options, extraOption) => {
     if (!['GET', 'POST', 'DELETE', 'PUT'].includes(method))
         throw new Error(
             'Unsupported requestMethod. Pass one of these methods: POST, GET, PUT, DELETE.'
         );
 
-    const query = { key, token };
     const baseUrl = 'https://api.trello.com';
 
     if (method === 'GET') {
-        const queryString = `?key=${query.key}&token=${query.token}`;
+        const queryString = `?key=${key}&token=${token}`;
 
         //pure GET function
         if (!options) return { url: `${baseUrl}${path}${queryString}` };
@@ -37,21 +36,20 @@ const constructRequest = (path, method, options, extraOption, key, token) => {
     if (path.includes('webhook') && method === 'DELETE')
         return {
             url: `${baseUrl}${path}`,
-            data: { ...query },
+            data: { key, token },
             method,
         };
 
     if (path.includes('webhook')) {
         return {
-            url: `https://api.trello.com/1/tokens/${query.token}/webhooks/`,
-            data: { key: query.key, ...options },
+            url: `https://api.trello.com/1/tokens/${token}/webhooks/`,
+            data: { key, ...options },
             method,
         };
     }
-
     return {
         url: baseUrl + path,
-        data: { ...options, ...query },
+        data: { ...options, key, token },
         method,
     };
 };
