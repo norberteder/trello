@@ -1,15 +1,15 @@
-require('es6-promise').polyfill();
-require('cross-fetch/polyfill');
+require("es6-promise").polyfill();
+require("cross-fetch/polyfill");
 
 const constructRequest = (path, method, key, token, options, extraOption) => {
-    if (!['GET', 'POST', 'DELETE', 'PUT'].includes(method))
+    if (!["GET", "POST", "DELETE", "PUT"].includes(method))
         throw new Error(
-            'Unsupported requestMethod. Pass one of these methods: POST, GET, PUT, DELETE.'
+            "Unsupported requestMethod. Pass one of these methods: POST, GET, PUT, DELETE."
         );
 
-    const baseUrl = 'https://api.trello.com';
+    const baseUrl = "https://api.trello.com";
 
-    if (method === 'GET') {
+    if (method === "GET") {
         const queryString = `?key=${key}&token=${token}`;
 
         //pure GET function
@@ -18,39 +18,39 @@ const constructRequest = (path, method, key, token, options, extraOption) => {
         if (Array.isArray(options))
             return {
                 url: `${baseUrl}${path}${queryString}&${extraOption}=${options.join(
-                    ','
-                )}`,
+                    ","
+                )}`
             };
 
         const keys = Object.keys(options);
         const values = Object.values(options);
         const additionalQueries = keys
             .map((key, index) => `&${key}=${values[index]}`)
-            .join('');
+            .join("");
 
         return {
-            url: `${baseUrl}${path}${queryString}${additionalQueries}`,
+            url: `${baseUrl}${path}${queryString}${additionalQueries}`
         };
     }
 
-    if (path.includes('webhook') && method === 'DELETE')
+    if (path.includes("webhook") && method === "DELETE")
         return {
             url: `${baseUrl}${path}`,
             data: { key, token },
-            method,
+            method
         };
 
-    if (path.includes('webhook')) {
+    if (path.includes("webhook")) {
         return {
             url: `https://api.trello.com/1/tokens/${token}/webhooks/`,
             data: { key, ...options },
-            method,
+            method
         };
     }
     return {
         url: baseUrl + path,
         data: { ...options, key, token },
-        method,
+        method
     };
 };
 
@@ -61,15 +61,16 @@ const handleMultipleParams = (objToPopulate, paramsObject) => {
     return objToPopulate;
 };
 
-const makeRequest = (url, options, requestMethod) => {
-    if (requestMethod === 'GET') return fetch(url);
+const makeRequest = (url, requestMethod, options) => {
+    console.log(url, options, requestMethod);
+    if (requestMethod === "GET") return fetch(url);
 
     return fetch(url, {
         method: requestMethod,
         headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json"
         },
-        body: JSON.stringify(options),
+        body: JSON.stringify(options)
     });
 };
 

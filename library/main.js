@@ -1,4 +1,4 @@
-const { makeRequest } = require('./helpers');
+const { makeRequest } = require("./helpers");
 
 const {
     addBoard,
@@ -11,8 +11,8 @@ const {
     getCardsOnBoard,
     getLabelsForBoard,
     addLabelOnBoard,
-    getCardsOnBoardWithExtraParams,
-} = require('./boards');
+    getCardsOnBoardWithExtraParams
+} = require("./boards");
 
 const {
     addCard,
@@ -29,21 +29,21 @@ const {
     deleteLabelFromCard,
     getCardStickers,
     addDueDateToCard,
-    deleteCard,
-} = require('./cards');
+    deleteCard
+} = require("./cards");
 
 const {
     renameList,
     getCardsForList,
     getCardsOnList,
-    getCardsOnListWithExtraParams,
-} = require('./lists');
+    getCardsOnListWithExtraParams
+} = require("./lists");
 
-const { getBoards, getMember, getMemberCards } = require('./members');
-const { getOrgBoards, getOrgMembers } = require('./organizations');
-const { addItemToChecklist, updateChecklist } = require('./checklists');
-const { updateLabel, deleteLabel } = require('./labels');
-const { addWebhook, deleteWebhook } = require('./webhooks');
+const { getBoards, getMember, getMemberCards } = require("./members");
+const { getOrgBoards, getOrgMembers } = require("./organizations");
+const { addItemToChecklist, updateChecklist } = require("./checklists");
+const { updateLabel, deleteLabel } = require("./labels");
+const { addWebhook, deleteWebhook } = require("./webhooks");
 
 class Trello {
     constructor(key, token) {
@@ -56,16 +56,19 @@ class Trello {
     }
 
     //api call
-    makeRequest(requestMethod, path, options) {
-        if (['GET', 'POST', 'DELETE', 'PUT'].includes(method))
+    makeRequest(method, path, options) {
+        if (!["GET", "POST", "DELETE", "PUT"].includes(method))
             throw new Error(
-                'Unsupported requestMethod. Pass one of these methods: POST, GET, PUT, DELETE.'
+                "Unsupported requestMethod. Pass one of these methods: POST, GET, PUT, DELETE."
             );
 
-        if (typeof options !== 'object')
-            throw new TypeError('options should be an object');
+        if (typeof method !== "string")
+            throw new TypeError("method should be a string");
 
-        return makeRequest(path, options, requestMethod);
+        if (options && typeof options !== "object")
+            throw new TypeError("options should be an object");
+
+        return makeRequest(path, method, options);
     }
 
     //api calls to board
@@ -237,7 +240,7 @@ class Trello {
     }
 
     getMember(memberId) {
-        const request = this.constructRequest(`/1/member/${memberId}`, 'GET');
+        const request = this.constructRequest(`/1/member/${memberId}`, "GET");
         return getMember(memberId, this.key, this.token);
     }
 

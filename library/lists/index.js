@@ -1,17 +1,17 @@
 const {
   constructRequest,
   handleMultipleParams,
-  makeRequest,
-} = require('../helpers');
+  makeRequest
+} = require("../helpers");
 
 const renameList = (listId, name, key, token) => {
   const request = constructRequest(
     `/1/lists/${listId}/name`,
-    'PUT',
+    "PUT",
     key,
     token,
     {
-      value: name,
+      value: name
     }
   );
 
@@ -19,29 +19,29 @@ const renameList = (listId, name, key, token) => {
 };
 
 const getCardsForList = (listId, key, token) => {
-  const request = constructRequest(`/1/lists/${listId}`, 'GET', key, token);
+  const request = constructRequest(`/1/lists/${listId}`, "GET", key, token);
   return makeRequest(request.url);
 };
 
 const getCardsOnList = (listId, key, token) => {
   const request = constructRequest(
     `/1/lists/${listId}/cards`,
-    'GET',
+    "GET",
     key,
     token
   );
   return makeRequest(request.url);
 };
 
-const getCardsOnListWithExtraParamsconst = (listId, fields, key, token) => {
+const getCardsOnListWithExtraParams = (listId, fields, key, token) => {
   // e.g. trello.getCardsOnList('5c8a3b4eb42f42133e1ea998', ['id', 'name', 'badges']);
   const request = constructRequest(
     `/1/lists/${listId}/cards`,
-    'GET',
+    "GET",
     key,
     token,
     fields,
-    'fields'
+    "fields"
   );
 
   return makeRequest(request.url);
@@ -51,5 +51,5 @@ module.exports = {
   renameList,
   getCardsForList,
   getCardsOnList,
-  getCardsOnListWithExtraParams,
+  getCardsOnListWithExtraParams
 };
