@@ -2,33 +2,28 @@ const {
   constructRequest,
   handleMultipleParams,
   makeRequest,
-} = require('../helpers');
+  checkParams
+} = require("../helpers");
 
 const addBoard = (name, description, teamId, key, token) => {
-  if (!name || !description || !teamId)
-    throw new Error(
-      'Unable to create board because either a name, description or a team id was not supplied'
-    );
+  checkParams([name, description, teamId]);
 
-  const request = constructRequest('/1/boards', 'POST', key, token, {
+  const request = constructRequest("/1/boards", "POST", key, token, {
     name,
     desc: description,
-    idOrganization: teamId,
+    idOrganization: teamId
   });
 
   return makeRequest(request.url, request.data, request.method);
 };
 
 const updateBoardPref = (boardId, extraParams, key, token) => {
-  if (!boardId || !extraParams)
-    throw new Error(
-      'Unable to create board because either a boardId, fieldToChange or a value id was not supplied'
-    );
+  checkParams([boardId, extraParams]);
 
   const params = handleMultipleParams({}, extraParams);
   const request = constructRequest(
     `/1/boards/${boardId}`,
-    'PUT',
+    "PUT",
     key,
     token,
     params
@@ -38,13 +33,15 @@ const updateBoardPref = (boardId, extraParams, key, token) => {
 };
 
 const addListToBoard = (boardId, name, key, token) => {
+  checkParams([boardId, name]);
+
   const request = constructRequest(
     `/1/boards/${boardId}/lists`,
-    'POST',
+    "POST",
     key,
     token,
     {
-      name,
+      name
     }
   );
 
@@ -52,18 +49,15 @@ const addListToBoard = (boardId, name, key, token) => {
 };
 
 const addMemberToBoard = (boardId, memberId, memberRights, key, token) => {
-  if (!boardId || !memberId || !memberRights)
-    throw new Error(
-      'Unable to create board because either a boardId, memberId or memberRights were not supplied'
-    );
+  checkParams([boardId, memberId, memberRights]);
 
   const request = constructRequest(
     `/1/boards/${boardId}/members/${memberId}`,
-    'PUT',
+    "PUT",
     key,
     token,
     {
-      type: memberRights,
+      type: memberRights
     }
   );
 
@@ -71,9 +65,11 @@ const addMemberToBoard = (boardId, memberId, memberRights, key, token) => {
 };
 
 const getBoardMembers = (boardId, key, token) => {
+  checkParams([boardId]);
+
   const request = constructRequest(
     `/1/boards/${boardId}/members`,
-    'GET',
+    "GET",
     key,
     token
   );
@@ -81,9 +77,11 @@ const getBoardMembers = (boardId, key, token) => {
 };
 
 const getListsOnBoard = (boardId, key, token) => {
+  checkParams([boardId]);
+
   const request = constructRequest(
     `/1/boards/${boardId}/lists`,
-    'GET',
+    "GET",
     key,
     token
   );
@@ -91,13 +89,15 @@ const getListsOnBoard = (boardId, key, token) => {
 };
 
 const getListsOnBoardByFilter = (boardId, filter, key, token) => {
+  checkParams([boardId, filter]);
+
   const request = constructRequest(
     `/1/boards/${boardId}/lists`,
     key,
     token,
-    'GET',
+    "GET",
     {
-      filter,
+      filter
     }
   );
 
@@ -105,9 +105,11 @@ const getListsOnBoardByFilter = (boardId, filter, key, token) => {
 };
 
 const getCardsOnBoard = (boardId, key, token) => {
+  checkParams([boardId]);
+
   const request = constructRequest(
     `/1/boards/${boardId}/cards`,
-    'GET',
+    "GET",
     key,
     token
   );
@@ -115,9 +117,11 @@ const getCardsOnBoard = (boardId, key, token) => {
 };
 
 const getLabelsForBoard = (boardId, key, token) => {
+  checkParams([boardId]);
+
   const request = constructRequest(
     `/1/boards/${boardId}/labels`,
-    'GET',
+    "GET",
     key,
     token
   );
@@ -125,18 +129,22 @@ const getLabelsForBoard = (boardId, key, token) => {
 };
 
 const addLabelOnBoard = (boardId, name, color, key, token) => {
-  const request = constructRequest('/1/labels', 'POST', key, token, {
+  checkParams([boardId, name, color]);
+
+  const request = constructRequest("/1/labels", "POST", key, token, {
     idBoard: boardId,
     color,
-    name,
+    name
   });
   return makeRequest(request.url, request.data, request.method);
 };
 
 const getCardsOnBoardWithExtraParams = (boardId, extraParam, key, token) => {
+  checkParams([boardId, extraParam]);
+
   const request = constructRequest(
     `/1/boards/${boardId}/cards/${extraParam}`,
-    'GET',
+    "GET",
     key,
     token
   );
@@ -155,5 +163,5 @@ module.exports = {
   getCardsOnBoard,
   getLabelsForBoard,
   addLabelOnBoard,
-  getCardsOnBoardWithExtraParams,
+  getCardsOnBoardWithExtraParams
 };
