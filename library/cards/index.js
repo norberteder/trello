@@ -6,7 +6,6 @@ const {
 } = require("../helpers");
 
 const addCard = (name, extraParams, listId, key, token) => {
-  console.log(name, extraParams, listId);
   checkParams([name, extraParams, listId]);
 
   const request = constructRequest("/1/cards", "POST", key, token, {

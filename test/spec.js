@@ -145,13 +145,10 @@ describe("Trello", () => {
         ).to.not.throw(Error);
       });
 
-      it("should throw if missing a param", () => {
-        expect(trello.addCard.bind(trello, "name", "listId")).to.throw(Error);
+      it("should throw if missing params", () => {
+        expect(trello.addCard.bind(trello, "name")).to.throw(Error);
       });
 
-      // it("should throw if missing a param", () => {
-      //   expect(trello.addBoard.bind(trello, "name", "teamId")).to.throw(Error);
-      // });
       //   var query;
       //   var post;
       //   beforeEach(function(done) {
@@ -168,18 +165,23 @@ describe("Trello", () => {
       //       done();
       //     });
       //   });
+      //
       //   it("should post to https://api.trello.com/1/cards", function() {
       //     post.should.have.been.calledWith("https://api.trello.com/1/cards");
       //   });
+      //
       //   it("should include the description", function() {
       //     query.desc.should.equal("description");
       //   });
+      //
       //   it("should include the name", function() {
       //     query.name.should.equal("name");
       //   });
+      //
       //   it("should include the list id", function() {
       //     query.idList.should.equal("listId");
       //   });
+      //
       //   afterEach(function() {});
     });
   });

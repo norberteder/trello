@@ -76,6 +76,7 @@ const makeRequest = (url, options, requestMethod) => {
 const isNull = params => params.includes(undefined);
 
 const checkParams = params => {
+    console.log(params);
     if (isNull(params))
         throw new Error(
             "Unable to carry out the request, please check the parameters are valid"

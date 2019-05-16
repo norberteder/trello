@@ -73,16 +73,16 @@ class Trello {
 
     //api calls to board
     addBoard(name, description, teamId) {
-        return addBoard(name, description, teamId, this.key, this.token);
+        return addBoard(this.key, this.token, name, description, teamId);
     }
 
     updateBoardPref(boardId, extraParams, key, token) {
         //extra params: {name: 'new board name'}
-        return updateBoardPref(boardId, extraParams, this.key, this.token);
+        return updateBoardPref(this.key, this.token, boardId, extraParams);
     }
 
     addListToBoard(boardId, name) {
-        return addListToBoard(boardId, name, this.key, this.token);
+        return addListToBoard(this.key, this.token, boardId, name);
     }
 
     addMemberToBoard(boardId, memberId, memberRights) {
@@ -96,88 +96,88 @@ class Trello {
     }
 
     getBoardMembers(boardId) {
-        return getBoardMembers(boardId, this.key, this.token);
+        return getBoardMembers(this.key, this.token, boardId);
     }
 
     getListsOnBoard(boardId) {
-        return getListsOnBoard(boardId, this.key, this.token);
+        return getListsOnBoard(this.key, this.token, boardId);
     }
 
     getListsOnBoardByFilter(boardId, filter) {
-        return getListsOnBoardByFilter(boardId, filter, this.key, this.token);
+        return getListsOnBoardByFilter(this.key, this.token, boardId, filter);
     }
 
     getCardsOnBoard(boardId) {
-        return getCardsOnBoard(boardId, this.key, this.token);
+        return getCardsOnBoard(this.key, this.token, boardId);
     }
 
     getLabelsForBoard(boardId) {
-        return getLabelsForBoard(boardId, this.key, this.token);
+        return getLabelsForBoard(this.key, this.token, boardId);
     }
 
     addLabelOnBoard(boardId, name, color) {
-        return addLabelOnBoard(boardId, name, color, this.key, this.token);
+        return addLabelOnBoard(this.key, this.token, boardId, name, color);
     }
 
     getCardsOnBoardWithExtraParams(boardId, extraParam) {
         return getCardsOnBoardWithExtraParams(
-            boardId,
-            extraParam,
             this.key,
-            this.token
+            this.token,
+            boardId,
+            extraParam
         );
     }
 
     //api calls to cards
     addCard(name, listId) {
-        return addCard(name, listId, this.key, this.token);
+        return addCard(this.key, this.token, name, listId);
     }
 
     addCardWithExtraParams(name, extraParams, listId) {
         return addCardWithExtraParams(
+            this.key,
+            this.token,
             name,
             extraParams,
-            listId,
-            this.key,
-            this.token
+            listId
         );
     }
 
     getCard(cardId) {
-        return getCard(cardId, this.key, this.token);
+        return getCard(this.key, this.token, cardId);
     }
 
     addMemberToCard(cardId, memberId) {
-        return addMemberToCard(cardId, memberId, this.key, this.token);
+        return addMemberToCard(this.key, this.token, cardId, memberId);
     }
 
     addCommentToCard(cardId, comment) {
-        return addCommentToCard(cardId, comment, this.key, this.token);
+        return addCommentToCard(this.key, this.token, cardId, comment);
     }
 
     addAttachmentToCard(cardId, url) {
-        return addAttachmentToCard(cardId, url, this.key, this.token);
+        return addAttachmentToCard(this.key, this.token, cardId, url);
     }
 
     addChecklistToCard(cardId, name) {
-        return addChecklistToCard(cardId, name, this.key, this.token);
+        return addChecklistToCard(this.key, this.token, cardId, name);
     }
 
     addExistingChecklistToCard(cardId, checklistId) {
         return addExistingChecklistToCard(
-            cardId,
-            checklistId,
             this.key,
-            this.token
+            this.token,
+            cardId,
+            checklistId
         );
     }
 
     getChecklistsOnCard(cardId) {
-        return getChecklistsOnCard(cardId, this.key, this.token);
+        return getChecklistsOnCard(this.key, this.token, cardId);
     }
 
     updateCard(cardId, params) {
-        return updateCard(cardId, params, this.key, this.token);
+        return updateCard(this.key, this.token, cardId, params);
     }
 
     updateCardName(cardId, name) {
@@ -193,89 +193,89 @@ class Trello {
     }
 
     addLabelToCard(cardId, labelId) {
-        return addLabelToCard(cardId, labelId, this.key, this.token);
+        return addLabelToCard(this.key, this.token, cardId, labelId);
     }
 
     deleteLabelFromCard(cardId) {
-        return deleteLabelFromCard(cardId, labelId, this.key, this.token);
+        return deleteLabelFromCard(this.key, this.token, cardId, labelId);
     }
 
     getCardStickers(cardId) {
-        return getCardStickers(cardId, this.key, this.token);
+        return getCardStickers(this.key, this.token, cardId);
     }
 
     addDueDateToCard(cardId, dateValue) {
-        return addDueDateToCard(cardId, dateValue, this.key, this.token);
+        return addDueDateToCard(this.key, this.token, cardId, dateValue);
     }
 
     deleteCard(cardId) {
-        return deleteCard(cardId, this.key, this.token);
+        return deleteCard(this.key, this.token, cardId);
     }
 
     //api calls to list
     getCardsForList(listId) {
-        return getCardsForList(listId, this.key, this.token);
+        return getCardsForList(this.key, this.token, listId);
     }
 
     renameList(listId, name) {
-        return renameList(listId, name, this.key, this.token);
+        return renameList(this.key, this.token, listId, name);
     }
 
     getCardsOnList(listId) {
-        return getCardsOnList(listId, this.key, this.token);
+        return getCardsOnList(this.key, this.token, listId);
     }
 
     getCardsOnListWithExtraParams(listId, fields) {
         return getCardsOnListWithExtraParams(
-            listId,
-            fields,
             this.key,
-            this.token
+            this.token,
+            listId,
+            fields
         );
     }
 
     //api calls to members
     getBoards(memberId) {
-        return getBoards(memberId, this.key, this.token);
+        return getBoards(this.key, this.token, memberId);
     }
 
     getMember(memberId) {
         const request = this.constructRequest(`/1/member/${memberId}`, "GET");
-        return getMember(memberId, this.key, this.token);
+        return getMember(this.key, this.token, memberId);
     }
 
     getMemberCards(memberId) {
-        return getMemberCards(memberId, this.key, this.token);
+        return getMemberCards(this.key, this.token, memberId);
     }
 
     //api calls to organizations
     getOrgBoards(organizationId) {
-        return getOrgBoards(organizationId, this.key, this.token);
+        return getOrgBoards(this.key, this.token, organizationId);
     }
 
     getOrgMembers(organizationId) {
-        return getOrgMembers(organizationId, this.key, this.token);
+        return getOrgMembers(this.key, this.token, organizationId);
     }
 
     //api calls to checklist
     addItemToChecklist(checkListId, name, position) {
         return addItemToChecklist(
+            this.key,
+            this.token,
             checkListId,
             name,
-            position,
-            this.key,
-            this.token
+            position
         );
     }
 
     updateChecklist(checklistId, params) {
-        return updateChecklist(checklistId, params, this.key, this.token);
+        return updateChecklist(this.key, this.token, checklistId, params);
     }
 
     //api calls to labels
 
     updateLabel(labelId, params) {
-        return updateLabel(labelId, params, this.key, this.token);
+        return updateLabel(this.key, this.token, labelId, params);
     }
 
     updateLabelName(labelId, name) {
@@ -287,23 +287,23 @@ class Trello {
     }
 
     deleteLabel(labelId) {
-        return deleteLabel(labelId, this.key, this.token);
+        return deleteLabel(this.key, this.token, labelId);
     }
 
     //api calls to webhook
 
     addWebhook(description, callbackURL, idModel) {
         return addWebhook(
+            this.key,
+            this.token,
             description,
             callbackURL,
-            idModel,
-            this.key,
-            this.token
+            idModel
         );
     }
 
     deleteWebhook(webhookId) {
-        return deleteWebhook(webhookId, this.key, this.token);
+        return deleteWebhook(this.key, this.token, webhookId);
     }
 }
 

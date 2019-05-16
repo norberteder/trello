@@ -5,7 +5,7 @@ const {
   checkParams
 } = require("../helpers");
 
-const addBoard = (name, description, teamId, key, token) => {
+const addBoard = (key, token, name, description, teamId) => {
   checkParams([name, description, teamId]);
 
   const request = constructRequest("/1/boards", "POST", key, token, {
@@ -17,7 +17,7 @@ const addBoard = (name, description, teamId, key, token) => {
   return makeRequest(request.url, request.data, request.method);
 };
 
-const updateBoardPref = (boardId, extraParams, key, token) => {
+const updateBoardPref = (key, token, boardId, extraParams) => {
   checkParams([boardId, extraParams]);
 
   const params = handleMultipleParams({}, extraParams);
@@ -32,7 +32,7 @@ const updateBoardPref = (boardId, extraParams, key, token) => {
   return makeRequest(request.url, request.data, request.method);
 };
 
-const addListToBoard = (boardId, name, key, token) => {
+const addListToBoard = (key, token, boardId, name) => {
   checkParams([boardId, name]);
 
   const request = constructRequest(
@@ -48,7 +48,7 @@ const addListToBoard = (boardId, name, key, token) => {
   return makeRequest(request.url, request.data, request.method);
 };
 
-const addMemberToBoard = (boardId, memberId, memberRights, key, token) => {
+const addMemberToBoard = (key, token, boardId, memberId, memberRights) => {
   checkParams([boardId, memberId, memberRights]);
 
   const request = constructRequest(
@@ -64,7 +64,7 @@ const addMemberToBoard = (boardId, memberId, memberRights, key, token) => {
   return makeRequest(request.url, request.data, request.method);
 };
 
-const getBoardMembers = (boardId, key, token) => {
+const getBoardMembers = (key, token, boardId) => {
   checkParams([boardId]);
 
   const request = constructRequest(
@@ -76,7 +76,7 @@ const getBoardMembers = (boardId, key, token) => {
   return makeRequest(request.url);
 };
 
-const getListsOnBoard = (boardId, key, token) => {
+const getListsOnBoard = (key, token, boardId) => {
   checkParams([boardId]);
 
   const request = constructRequest(
@@ -88,7 +88,7 @@ const getListsOnBoard = (boardId, key, token) => {
   return makeRequest(request.url);
 };
 
-const getListsOnBoardByFilter = (boardId, filter, key, token) => {
+const getListsOnBoardByFilter = (key, token, boardId, filter) => {
   checkParams([boardId, filter]);
 
   const request = constructRequest(
@@ -104,7 +104,7 @@ const getListsOnBoardByFilter = (boardId, filter, key, token) => {
   return makeRequest(request.url);
 };
 
-const getCardsOnBoard = (boardId, key, token) => {
+const getCardsOnBoard = (key, token, boardId) => {
   checkParams([boardId]);
 
   const request = constructRequest(
@@ -116,7 +116,7 @@ const getCardsOnBoard = (boardId, key, token) => {
   return makeRequest(request.url);
 };
 
-const getLabelsForBoard = (boardId, key, token) => {
+const getLabelsForBoard = (key, token, boardId) => {
   checkParams([boardId]);
 
   const request = constructRequest(
@@ -128,7 +128,7 @@ const getLabelsForBoard = (boardId, key, token) => {
   return makeRequest(request.url);
 };
 
-const addLabelOnBoard = (boardId, name, color, key, token) => {
+const addLabelOnBoard = (key, token, boardId, name, color) => {
   checkParams([boardId, name, color]);
 
   const request = constructRequest("/1/labels", "POST", key, token, {
@@ -139,7 +139,7 @@ const addLabelOnBoard = (boardId, name, color, key, token) => {
   return makeRequest(request.url, request.data, request.method);
 };
 
-const getCardsOnBoardWithExtraParams = (boardId, extraParam, key, token) => {
+const getCardsOnBoardWithExtraParams = (key, token, boardId, extraParam) => {
   checkParams([boardId, extraParam]);
 
   const request = constructRequest(
