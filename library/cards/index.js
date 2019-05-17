@@ -13,7 +13,7 @@ const addCard = (key, token, name, listId) => {
     idList: listId
   });
 
-  return makeRequest(request.url, request.data, request.method);
+  return makeRequest(request.url, request.method, request.data);
 };
 
 const addCardWithExtraParams = (key, token, name, extraParams, listId) => {
@@ -25,7 +25,7 @@ const addCardWithExtraParams = (key, token, name, extraParams, listId) => {
   const params = handleMultipleParams({ name, idList: listId }, extraParams);
   const request = constructRequest("/1/cards/", "POST", key, token, params);
 
-  return makeRequest(request.url, request.data, request.method);
+  return makeRequest(request.url, request.method, request.data);
 };
 
 const getCard = (key, token, cardId) => {
@@ -44,7 +44,7 @@ const addCommentToCard = (key, token, cardId, comment) => {
     }
   );
 
-  return makeRequest(request.url, request.data, request.method);
+  return makeRequest(request.url, request.method, request.data);
 };
 
 const addAttachmentToCard = (key, token, cardId, url) => {
@@ -56,7 +56,7 @@ const addAttachmentToCard = (key, token, cardId, url) => {
     { url }
   );
 
-  return makeRequest(request.url, request.data, request.method);
+  return makeRequest(request.url, request.method, request.data);
 };
 
 const addMemberToCard = (key, token, cardId, memberId) => {
@@ -70,7 +70,7 @@ const addMemberToCard = (key, token, cardId, memberId) => {
     }
   );
 
-  return makeRequest(request.url, request.data, request.method);
+  return makeRequest(request.url, request.method, request.data);
 };
 
 const addChecklistToCard = (key, token, cardId, name) => {
@@ -81,7 +81,7 @@ const addChecklistToCard = (key, token, cardId, name) => {
     token,
     { name }
   );
-  return makeRequest(request.url, request.data, request.method);
+  return makeRequest(request.url, request.method, request.data);
 };
 
 const addExistingChecklistToCard = (key, token, cardId, checklistId) => {
@@ -93,7 +93,7 @@ const addExistingChecklistToCard = (key, token, cardId, checklistId) => {
     { idChecklistSource: checklistId }
   );
 
-  return makeRequest(request.url, request.data, request.method);
+  return makeRequest(request.url, request.method, request.data);
 };
 
 const getChecklistsOnCard = (key, token, cardId) => {
@@ -116,7 +116,7 @@ const updateCard = (key, token, cardId, extraParams) => {
     query
   );
 
-  return makeRequest(request.url, request.data, request.method);
+  return makeRequest(request.url, request.method, request.data);
 };
 
 const addLabelToCard = (key, token, cardId, labelId) => {
@@ -129,7 +129,7 @@ const addLabelToCard = (key, token, cardId, labelId) => {
       value: labelId
     }
   );
-  return makeRequest(request.url, request.data, request.method);
+  return makeRequest(request.url, request.method, request.data);
 };
 
 const deleteLabelFromCard = (key, token, cardId, labelId) => {
@@ -162,12 +162,12 @@ const addDueDateToCard = (key, token, cardId, dateValue) => {
       value: dateValue
     }
   );
-  return makeRequest(request.url, request.data, request.method);
+  return makeRequest(request.url, request.method, request.data);
 };
 
 const deleteCard = (key, token, cardId) => {
   const request = constructRequest(`/1/cards/${cardId}`, key, token, "DELETE");
-  return makeRequest(request.url, request.data, request.method);
+  return makeRequest(request.url, request.method, request.data);
 };
 
 module.exports = {

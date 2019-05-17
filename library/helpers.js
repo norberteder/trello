@@ -62,8 +62,6 @@ const handleMultipleParams = (objToPopulate, paramsObject) => {
 };
 
 const makeRequest = (url, requestMethod, options) => {
-    //  console.log("method: ", requestMethod);
-    console.log(url, requestMethod, options);
     if (requestMethod === "GET") return fetch(url);
 
     return fetch(url, {

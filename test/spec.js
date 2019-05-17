@@ -23,7 +23,7 @@ describe("Trello", () => {
     trello = new Trello("key", "token");
   });
 
-  describe("makeRequest", () => {
+  describe("#makeRequest()", () => {
     it("should throw error if type of options passed is not object", () => {
       expect(
         trello.makeRequest.bind(
@@ -124,8 +124,8 @@ describe("Trello", () => {
   });
 
   describe("/1/boards", () => {
-    describe("addBoard", () => {
-      it.only("should not throw an error when called", () => {
+    describe("#addBoard()", () => {
+      it("should not throw an error when called", () => {
         expect(
           trello.addBoard.bind(trello, "name", "description", "teamId")
         ).to.not.throw(Error);
@@ -134,17 +134,11 @@ describe("Trello", () => {
       it("should throw if missing a param", () => {
         expect(trello.addBoard.bind(trello, "name", "teamId")).to.throw(Error);
       });
-
-      it("should be called with the correct parameters", () => {
-        trello.addCard("name", "listId").then(result => {
-          expect(result).to.equal("name");
-        });
-      });
     });
   });
 
   describe("/1/cards", () => {
-    describe("addCard", () => {
+    describe("#addCard()", () => {
       it("should not throw an error when called", () => {
         expect(trello.addCard.bind(trello, "name", "listId")).to.not.throw(
           Error
@@ -155,964 +149,92 @@ describe("Trello", () => {
         expect(trello.addCard.bind(trello, "name")).to.throw(Error);
       });
     });
+  });
 
-    describe("addCardWithExtraParams", function() {
-      var query;
-      var post;
-
-      var extraParams = {
-        desc: "description",
-        due: new Date("2015/03/25"),
-        dueComplete: false
-      };
-
-      beforeEach(function(done) {
-        sinon.stub(restler, "post", function(uri, options) {
-          return {
-            once: function(event, callback) {
-              callback(null, null);
-            }
-          };
-        });
-
-        trello.addCardWithExtraParams(
-          "name",
-          extraParams,
-          "listId",
-          function() {
-            query = restler.post.args[0][1].query;
-            post = restler.post;
-            done();
-          }
-        );
+  describe("/1/checklists", () => {
+    describe("#addItemToChecklist()", () => {
+      it("should not throw an error when called", () => {
+        expect(
+          trello.addItemToChecklist.bind(
+            trello,
+            "checkListId",
+            "name",
+            "position"
+          )
+        ).to.not.throw(Error);
       });
 
-      // it("should post to https://api.trello.com/1/cards", function() {
-      //   post.should.have.been.calledWith("https://api.trello.com/1/cards");
-      // });
-
-      // it("should include the name", function() {
-      //   query.name.should.equal("name");
-      // });
-
-      // it("should include the description", function() {
-      //   query.desc.should.equal("description");
-      // });
-
-      // it("should include the due date", function() {
-      //   query.due.getTime().should.equal(new Date("2015/03/25").getTime());
-      // });
-
-      // it("should include the list id", function() {
-      //   query.idList.should.equal("listId");
-      // });
-
-      // afterEach(function() {});
+      it("should throw if missing params", () => {
+        expect(
+          trello.addItemToChecklist.bind(trello, "checkListId", "name")
+        ).to.throw(Error);
+      });
     });
   });
 
-  //   describe("getCardsOnListWithExtraParams", function() {
-  //     var query;
-  //     var post;
-
-  //     var testDate = new Date("2015/03/25");
-  //     var extraParams = { before: testDate };
-
-  //     beforeEach(function(done) {
-  //       sinon.stub(restler, "get", function(uri, options) {
-  //         return {
-  //           once: function(event, callback) {
-  //             callback(null, null);
-  //           }
-  //         };
-  //       });
-
-  //       trello.getCardsOnListWithExtraParams("listId", extraParams, function() {
-  //         query = restler.get.args[0][1].query;
-  //         get = restler.get;
-  //         done();
-  //       });
-  //     });
-
-  //     it("should get from https://api.trello.com/1/lists/listId/cards", function() {
-  //       get.should.have.been.calledWith(
-  //         "https://api.trello.com/1/lists/listId/cards"
-  //       );
-  //     });
-  //     it("should include a date in the query", function() {
-  //       query.before.should.equal(testDate);
-  //     });
-
-  //     afterEach(function() {});
-  //   });
-
-  //   describe("getCardsOnBoardWithExtraParams", function() {
-  //     var query;
-  //     var post;
-
-  //     var testDate = new Date("2015/03/25");
-  //     var extraParams = { before: testDate };
-
-  //     beforeEach(function(done) {
-  //       sinon.stub(restler, "get", function(uri, options) {
-  //         return {
-  //           once: function(event, callback) {
-  //             callback(null, null);
-  //           }
-  //         };
-  //       });
-
-  //       trello.getCardsOnBoardWithExtraParams("boardId", extraParams, function() {
-  //         query = restler.get.args[0][1].query;
-  //         get = restler.get;
-  //         done();
-  //       });
-  //     });
-
-  //     it("should get from https://api.trello.com/1/boards/boardId/cards", function() {
-  //       get.should.have.been.calledWith(
-  //         "https://api.trello.com/1/boards/boardId/cards"
-  //       );
-  //     });
-  //     it("should include a date in the query", function() {
-  //       query.before.should.equal(testDate);
-  //     });
-
-  //     afterEach(function() {});
-  //   });
-
-  //   describe("addWebhook", function() {
-  //     var query;
-  //     var post;
-  //     var data;
-
-  //     beforeEach(function(done) {
-  //       sinon.stub(restler, "post", function(uri, options) {
-  //         return {
-  //           once: function(event, callback) {
-  //             callback(null, null);
-  //           }
-  //         };
-  //       });
-
-  //       trello.addWebhook("webhook", "http://callback", "xxx", function(result) {
-  //         query = restler.post.args[0][1].query;
-  //         data = restler.post.args[0][1].data;
-  //         post = restler.post;
-  //         done();
-  //       });
-  //     });
-
-  //     it("should post to https://api.trello.com/1/tokens/.../webhooks/", function() {
-  //       post.args[0][0].should.equal(
-  //         "https://api.trello.com/1/tokens/" + trello.token + "/webhooks/"
-  //       );
-  //     });
-
-  //     it("should include the application key", function() {
-  //       query.key.should.equal("key");
-  //     });
-
-  //     it("should include the decription", function() {
-  //       data.description.should.equal("webhook");
-  //     });
-
-  //     it("should include the callbackUrl", function() {
-  //       data.callbackURL.should.equal("http://callback");
-  //     });
-
-  //     it("should include the idModel", function() {
-  //       data.idModel.should.equal("xxx");
-  //     });
-
-  //     afterEach(function() {});
-  //   });
-
-  //   describe("deleteWebhook", function() {
-  //     var query;
-  //     var del;
-
-  //     beforeEach(function(done) {
-  //       sinon.stub(restler, "del", function(uri, options) {
-  //         return {
-  //           once: function(event, callback) {
-  //             callback(null, null);
-  //           }
-  //         };
-  //       });
-
-  //       trello.deleteWebhook("x1", function(result) {
-  //         query = restler.del.args[0][1].query;
-  //         del = restler.del;
-  //         done();
-  //       });
-  //     });
-
-  //     it("should delete to https://api.trello.com/1/webhooks/x1", function() {
-  //       del.args[0][0].should.equal("https://api.trello.com/1/webhooks/x1");
-  //     });
-
-  //     it("should include the application key", function() {
-  //       query.key.should.equal("key");
-  //     });
-
-  //     afterEach(function() {
-  //       restler.del.restore();
-  //     });
-  //   });
-
-  //   describe("Update card list", function() {
-  //     var query;
-  //     var put;
-  //     var data;
-
-  //     beforeEach(function(done) {
-  //       sinon.stub(restler, "put", function(uri, options) {
-  //         return {
-  //           once: function(event, callback) {
-  //             callback(null, null);
-  //           }
-  //         };
-  //       });
-
-  //       trello.updateCardList("myCardId", "newListId", function(result) {
-  //         query = restler.put.args[0][1].query;
-  //         put = restler.put;
-  //         done();
-  //       });
-  //     });
-
-  //     it("should put to https://api.trello.com/1/cards/myCardId/idList", function() {
-  //       put.args[0][0].should.equal(
-  //         "https://api.trello.com/1/cards/myCardId/idList"
-  //       );
-  //     });
-
-  //     it("should include the idList", function() {
-  //       query.value.should.equal("newListId");
-  //     });
-
-  //     afterEach(function() {
-  //       restler.put.restore();
-  //     });
-  //   });
-
-  //   describe.skip("It is able to chain several calls", function() {
-  //     var trello,
-  //       options = {
-  //         key: "key",
-  //         token: "tocken",
-  //         listId: "listId"
-  //       },
-  //       cardsToCreate = 30,
-  //       cardsCreated = 0;
-
-  //     beforeEach(function(done) {
-  //       var index,
-  //         promisesList = [],
-  //         cardCreationPromise = q.defer();
-
-  //       //Increase timeout due to real api calls
-  //       this.timeout(1000000);
-
-  //       //Setup a real trello client with a local configuration file
-  //       if (fs.existsSync("./test/config.js")) {
-  //         options = require("./config");
-  //       }
-  //       trello = new Trello(options.key, options.token);
-
-  //       //It creates and removes as many cards as set in cardsToCreate
-  //       for (index = 0; index < cardsToCreate; index++) {
-  //         cardCreationPromise = q.defer();
-  //         trello.addCard(
-  //           "Test card #" + index,
-  //           "test card",
-  //           options.listId,
-  //           cardCreationPromise.makeNodeResolver()
-  //         );
-
-  //         promisesList.push(
-  //           //Remove the card created
-  //           cardCreationPromise.promise
-  //             .then(function(card) {
-  //               if (!card.id) {
-  //                 console.log(card);
-  //                 throw "Trello call failed " + card;
-  //               } else {
-  //                 var removeCardPromise = q.defer();
-  //                 cardsCreated = cardsCreated + 1;
-  //                 trello.deleteCard(
-  //                   card.id,
-  //                   removeCardPromise.makeNodeResolver()
-  //                 );
-  //                 return removeCardPromise.promise;
-  //               }
-  //             })
-  //             .fail(function(e) {
-  //               throw "Trello call failed " + e;
-  //             })
-  //         );
-  //       }
-
-  //       q.allSettled(promisesList).then(function() {
-  //         done();
-  //       });
-  //     });
-
-  //     it("should chain several calls without failing", function() {
-  //       cardsCreated.should.equal(cardsToCreate);
-  //     });
-  //   });
-
-  //   describe("addAttachmentToCard", function() {
-  //     var query;
-  //     var post;
-
-  //     beforeEach(function(done) {
-  //       sinon.stub(restler, "post", function(uri, options) {
-  //         return {
-  //           once: function(event, callback) {
-  //             callback(null, null);
-  //           }
-  //         };
-  //       });
-
-  //       trello.addAttachmentToCard("myCardId", "attachmentUrl", function() {
-  //         query = restler.post.args[0][1].query;
-  //         post = restler.post;
-  //         done();
-  //       });
-  //     });
-
-  //     it("should post to the card's attachment URI", function() {
-  //       post.should.have.been.calledWith(
-  //         "https://api.trello.com/1/cards/myCardId/attachments"
-  //       );
-  //     });
-
-  //     it("should include the attachmentUrl", function() {
-  //       query.url.should.equal("attachmentUrl");
-  //     });
-
-  //     afterEach(function() {});
-  //   });
-
-  //   describe("renameList", function() {
-  //     var query;
-  //     var put;
-
-  //     beforeEach(function(done) {
-  //       sinon.stub(restler, "put", function(uri, options) {
-  //         return {
-  //           once: function(event, callback) {
-  //             callback(null, null);
-  //           }
-  //         };
-  //       });
-
-  //       trello.renameList("myListId", "new list name", function() {
-  //         query = restler.put.args[0][1].query;
-  //         put = restler.put;
-  //         done();
-  //       });
-  //     });
-
-  //     it("should PUT to the card's attachment URI", function() {
-  //       put.should.have.been.calledWith(
-  //         "https://api.trello.com/1/lists/myListId/name"
-  //       );
-  //     });
-
-  //     it("should include the new list name", function() {
-  //       query.value.should.equal("new list name");
-  //     });
-
-  //     afterEach(function() {
-  //       restler.put.restore();
-  //     });
-  //   });
-
-  //   describe("returnPromise", function() {
-  //     it("should return a promise", function() {
-  //       var shouldBeAPromise = trello.addAttachmentToCard(
-  //         "myCardId",
-  //         "attachmentUrl"
-  //       );
-
-  //       shouldBeAPromise.should.be.a("Promise");
-  //     });
-  //   });
-
-  //   describe("executeCallback", function() {
-  //     it("should not return a promise", function() {
-  //       var shouldNotBeAPromise = trello.addAttachmentToCard(
-  //         "myCardId",
-  //         "attachmentUrl",
-  //         function() {}
-  //       );
-
-  //       chai.assert.isUndefined(shouldNotBeAPromise);
-  //     });
-  //   });
-
-  //   describe("getLabelsForBoard", function() {
-  //     var get;
-
-  //     beforeEach(function(done) {
-  //       sinon.stub(restler, "get", function(uri, options) {
-  //         return {
-  //           once: function(event, callback) {
-  //             callback(null, null);
-  //           }
-  //         };
-  //       });
-
-  //       trello.getLabelsForBoard("boardId", function() {
-  //         get = restler.get;
-  //         done();
-  //       });
-  //     });
-
-  //     it("should get to https://api.trello.com/1/boards/boardId/labels", function() {
-  //       get.should.have.been.calledWith(
-  //         "https://api.trello.com/1/boards/boardId/labels"
-  //       );
-  //     });
-
-  //     afterEach(function() {});
-  //   });
-
-  //   describe("addMemberToBoard", function() {
-  //     var data;
-  //     var post;
-
-  //     beforeEach(function(done) {
-  //       sinon.stub(restler, "put", function(uri, options) {
-  //         return {
-  //           once: function(event, callback) {
-  //             callback(null, null);
-  //           }
-  //         };
-  //       });
-
-  //       trello.addMemberToBoard("boardId", "memberId", "normal", function() {
-  //         data = restler.put.args[0][1].data;
-  //         put = restler.put;
-  //         done();
-  //       });
-  //     });
-
-  //     it("should post to https://api.trello.com/1/boards/boardId/members/memberId", function() {
-  //       put.should.have.been.calledWith(
-  //         "https://api.trello.com/1/boards/boardId/members/memberId"
-  //       );
-  //     });
-
-  //     it("should include the type", function() {
-  //       data.type.should.equal("normal");
-  //     });
-
-  //     afterEach(function() {
-  //       restler.put.restore();
-  //     });
-  //   });
-
-  //   describe("addLabelOnBoard", function() {
-  //     var query;
-  //     var data;
-  //     var post;
-
-  //     beforeEach(function(done) {
-  //       sinon.stub(restler, "post", function(uri, options) {
-  //         return {
-  //           once: function(event, callback) {
-  //             callback(null, null);
-  //           }
-  //         };
-  //       });
-
-  //       trello.addLabelOnBoard("boardId", "name", "color", function() {
-  //         query = restler.post.args[0][1].query;
-  //         data = restler.post.args[0][1].data;
-  //         post = restler.post;
-  //         done();
-  //       });
-  //     });
-
-  //     it("should post to https://api.trello.com/1/labels", function() {
-  //       post.should.have.been.calledWith("https://api.trello.com/1/labels");
-  //     });
-
-  //     it("should include the color", function() {
-  //       data.color.should.equal("color");
-  //     });
-
-  //     it("should include the name", function() {
-  //       data.name.should.equal("name");
-  //     });
-
-  //     it("should include the board id", function() {
-  //       data.idBoard.should.equal("boardId");
-  //     });
-
-  //     afterEach(function() {});
-  //   });
-
-  //   describe("deleteLabel", function() {
-  //     var del;
-
-  //     beforeEach(function(done) {
-  //       sinon.stub(restler, "del", function(uri, options) {
-  //         return {
-  //           once: function(event, callback) {
-  //             callback(null, null);
-  //           }
-  //         };
-  //       });
-
-  //       trello.deleteLabel("labelId", function() {
-  //         del = restler.del;
-  //         done();
-  //       });
-  //     });
-
-  //     it("should delete to https://api.trello.com/1/labels/labelId", function() {
-  //       del.should.have.been.calledWith(
-  //         "https://api.trello.com/1/labels/labelId"
-  //       );
-  //     });
-
-  //     afterEach(function() {
-  //       restler.del.restore();
-  //     });
-  //   });
-
-  //   describe("addLabelToCard", function() {
-  //     var query;
-  //     var data;
-  //     var post;
-
-  //     beforeEach(function(done) {
-  //       sinon.stub(restler, "post", function(uri, options) {
-  //         return {
-  //           once: function(event, callback) {
-  //             callback(null, null);
-  //           }
-  //         };
-  //       });
-
-  //       trello.addLabelToCard("cardId", "labelId", function() {
-  //         query = restler.post.args[0][1].query;
-  //         data = restler.post.args[0][1].data;
-  //         post = restler.post;
-  //         done();
-  //       });
-  //     });
-
-  //     it("should post to https://api.trello.com/1/cards/cardId/idLabels", function() {
-  //       post.should.have.been.calledWith(
-  //         "https://api.trello.com/1/cards/cardId/idLabels"
-  //       );
-  //     });
-
-  //     it("should include the label id", function() {
-  //       data.value.should.equal("labelId");
-  //     });
-
-  //     afterEach(function() {});
-  //   });
-
-  //   describe("deleteLabelFromCard", function() {
-  //     var del;
-
-  //     beforeEach(function(done) {
-  //       sinon.stub(restler, "del", function(uri, options) {
-  //         return {
-  //           once: function(event, callback) {
-  //             callback(null, null);
-  //           }
-  //         };
-  //       });
-
-  //       trello.deleteLabelFromCard("cardId", "labelId", function() {
-  //         del = restler.del;
-  //         done();
-  //       });
-  //     });
-
-  //     it("should delete to https://api.trello.com/1/cards/cardId/idLabels/labelId", function() {
-  //       del.should.have.been.calledWith(
-  //         "https://api.trello.com/1/cards/cardId/idLabels/labelId"
-  //       );
-  //     });
-
-  //     afterEach(function() {
-  //       restler.del.restore();
-  //     });
-  //   });
-
-  //   describe("updateLabel", function() {
-  //     var query;
-  //     var put;
-
-  //     beforeEach(function(done) {
-  //       sinon.stub(restler, "put", function(uri, options) {
-  //         return {
-  //           once: function(event, callback) {
-  //             callback(null, null);
-  //           }
-  //         };
-  //       });
-
-  //       trello.updateLabel("labelId", "field", "value", function() {
-  //         query = restler.put.args[0][1].query;
-  //         put = restler.put;
-  //         done();
-  //       });
-  //     });
-
-  //     it("should put to https://api.trello.com/1/labels/labelId/field", function() {
-  //       put.should.have.been.calledWith(
-  //         "https://api.trello.com/1/labels/labelId/field"
-  //       );
-  //     });
-
-  //     it("should include the updated value", function() {
-  //       query.value.should.equal("value");
-  //     });
-
-  //     afterEach(function() {
-  //       restler.put.restore();
-  //     });
-  //   });
-
-  //   describe("getCardStickers", function() {
-  //     var get;
-
-  //     beforeEach(function(done) {
-  //       sinon.stub(restler, "get", function(uri, options) {
-  //         return {
-  //           once: function(event, callback) {
-  //             callback(null, null);
-  //           }
-  //         };
-  //       });
-
-  //       trello.getCardStickers("cardId", function() {
-  //         get = restler.get;
-  //         done();
-  //       });
-  //     });
-
-  //     it("should get to https://api.trello.com/1/cards/cardId/stickers", function() {
-  //       get.should.have.been.calledWith(
-  //         "https://api.trello.com/1/cards/cardId/stickers"
-  //       );
-  //     });
-
-  //     afterEach(function() {});
-  //   });
-
-  //   describe("addStickerToCard", function() {
-  //     var query;
-  //     var data;
-  //     var post;
-
-  //     beforeEach(function(done) {
-  //       sinon.stub(restler, "post", function(uri, options) {
-  //         return {
-  //           once: function(event, callback) {
-  //             callback(null, null);
-  //           }
-  //         };
-  //       });
-
-  //       trello.addStickerToCard(
-  //         "cardId",
-  //         "image",
-  //         "left",
-  //         "top",
-  //         "zIndex",
-  //         "rotate",
-  //         function() {
-  //           query = restler.post.args[0][1].query;
-  //           data = restler.post.args[0][1].data;
-  //           post = restler.post;
-  //           done();
-  //         }
-  //       );
-  //     });
-
-  //     it("should post to https://api.trello.com/1/cards/cardId/stickers", function() {
-  //       post.should.have.been.calledWith(
-  //         "https://api.trello.com/1/cards/cardId/stickers"
-  //       );
-  //     });
-
-  //     it("should include the sticker image", function() {
-  //       data.image.should.equal("image");
-  //     });
-
-  //     it("should include the sticker top", function() {
-  //       data.top.should.equal("top");
-  //     });
-
-  //     it("should include the sticker left", function() {
-  //       data.left.should.equal("left");
-  //     });
-
-  //     it("should include the sticker zIndex", function() {
-  //       data.zIndex.should.equal("zIndex");
-  //     });
-
-  //     it("should include the sticker rotate", function() {
-  //       data.rotate.should.equal("rotate");
-  //     });
-
-  //     afterEach(function() {});
-  //   });
-
-  //   describe("addChecklistToCard", function() {
-  //     var query;
-  //     var post;
-
-  //     beforeEach(function(done) {
-  //       sinon.stub(restler, "post", function(uri, options) {
-  //         return {
-  //           once: function(event, callback) {
-  //             callback(null, null);
-  //           }
-  //         };
-  //       });
-
-  //       trello.addChecklistToCard("cardId", "name", function() {
-  //         query = restler.post.args[0][1].query;
-  //         post = restler.post;
-  //         done();
-  //       });
-  //     });
-
-  //     it("should post to https://api.trello.com/1/cards/cardId/checklists", function() {
-  //       post.should.have.been.calledWith(
-  //         "https://api.trello.com/1/cards/cardId/checklists"
-  //       );
-  //     });
-
-  //     it("should include the checklist name", function() {
-  //       query.name.should.equal("name");
-  //     });
-
-  //     afterEach(function() {});
-  //   });
-
-  //   describe("addExistingChecklistToCard", function() {
-  //     var query;
-  //     var post;
-
-  //     beforeEach(function(done) {
-  //       sinon.stub(restler, "post", function(uri, options) {
-  //         return {
-  //           once: function(event, callback) {
-  //             callback(null, null);
-  //           }
-  //         };
-  //       });
-
-  //       trello.addExistingChecklistToCard("cardId", "checklistId", function() {
-  //         query = restler.post.args[0][1].query;
-  //         post = restler.post;
-  //         done();
-  //       });
-  //     });
-
-  //     it("should post to https://api.trello.com/1/cards/cardId/checklists", function() {
-  //       post.should.have.been.calledWith(
-  //         "https://api.trello.com/1/cards/cardId/checklists"
-  //       );
-  //     });
-
-  //     it("should include the checklist ID", function() {
-  //       query.idChecklistSource.should.equal("checklistId");
-  //     });
-
-  //     afterEach(function() {});
-  //   });
-
-  //   describe("getChecklistsOnCard", function() {
-  //     var get;
-
-  //     beforeEach(function(done) {
-  //       sinon.stub(restler, "get", function(uri, options) {
-  //         return {
-  //           once: function(event, callback) {
-  //             callback(null, null);
-  //           }
-  //         };
-  //       });
-
-  //       trello.getChecklistsOnCard("cardId", function() {
-  //         get = restler.get;
-  //         done();
-  //       });
-  //     });
-
-  //     it("should get to https://api.trello.com/1/cards/cardId/checklists", function() {
-  //       get.should.have.been.calledWith(
-  //         "https://api.trello.com/1/cards/cardId/checklists"
-  //       );
-  //     });
-
-  //     afterEach(function() {});
-  //   });
-
-  //   describe("getBoardMembers", function() {
-  //     var get;
-
-  //     beforeEach(function(done) {
-  //       sinon.stub(restler, "get", function(uri, options) {
-  //         return {
-  //           once: function(event, callback) {
-  //             callback(null, null);
-  //           }
-  //         };
-  //       });
-
-  //       trello.getBoardMembers("boardId", function() {
-  //         get = restler.get;
-  //         done();
-  //       });
-  //     });
-
-  //     it("should get to https://api.trello.com/1/boards/boardId/members", function() {
-  //       get.should.have.been.calledWith(
-  //         "https://api.trello.com/1/boards/boardId/members"
-  //       );
-  //     });
-
-  //     afterEach(function() {});
-  //   });
-
-  //   describe("getOrgMembers", function() {
-  //     var get;
-
-  //     beforeEach(function(done) {
-  //       sinon.stub(restler, "get", function(uri, options) {
-  //         return {
-  //           once: function(event, callback) {
-  //             callback(null, null);
-  //           }
-  //         };
-  //       });
-
-  //       trello.getOrgMembers("organizationId", function() {
-  //         get = restler.get;
-  //         done();
-  //       });
-  //     });
-
-  //     it("should get to https://api.trello.com/1/organizations/organizationId/members", function() {
-  //       get.should.have.been.calledWith(
-  //         "https://api.trello.com/1/organizations/organizationId/members"
-  //       );
-  //     });
-
-  //     afterEach(function() {});
-  //   });
-
-  //   describe("getOrgBoards", function() {
-  //     var get;
-
-  //     beforeEach(function(done) {
-  //       sinon.stub(restler, "get", function(uri, options) {
-  //         return {
-  //           once: function(event, callback) {
-  //             callback(null, null);
-  //           }
-  //         };
-  //       });
-
-  //       trello.getOrgBoards("organizationId", function() {
-  //         get = restler.get;
-  //         done();
-  //       });
-  //     });
-
-  //     it("should get to https://api.trello.com/1/organizations/organizationId/boards", function() {
-  //       get.should.have.been.calledWith(
-  //         "https://api.trello.com/1/organizations/organizationId/boards"
-  //       );
-  //     });
-
-  //     afterEach(function() {});
-  //   });
-
-  //   describe("updateChecklist", function() {
-  //     var query;
-  //     var put;
-
-  //     beforeEach(function(done) {
-  //       sinon.stub(restler, "put", function(uri, options) {
-  //         return {
-  //           once: function(event, callback) {
-  //             callback(null, null);
-  //           }
-  //         };
-  //       });
-
-  //       trello.updateChecklist("checklistId", "field", "value", function() {
-  //         query = restler.put.args[0][1].query;
-  //         put = restler.put;
-  //         done();
-  //       });
-  //     });
-
-  //     it("should put to https://api.trello.com/1/checklists/checklistId/field", function() {
-  //       put.should.have.been.calledWith(
-  //         "https://api.trello.com/1/checklists/checklistId/field"
-  //       );
-  //     });
-
-  //     it("should include the checklist name", function() {
-  //       query.value.should.equal("value");
-  //     });
-
-  //     afterEach(function() {
-  //       restler.put.restore();
-  //     });
-  //   });
-
-  //   describe("addDueDateToCard", function() {
-  //     var query;
-  //     var put;
-
-  //     beforeEach(function(done) {
-  //       sinon.stub(restler, "put", function(uri, options) {
-  //         return {
-  //           once: function(event, callback) {
-  //             callback(null, null);
-  //           }
-  //         };
-  //       });
-
-  //       trello.addDueDateToCard("cardId", "value", function() {
-  //         query = restler.put.args[0][1].query;
-  //         put = restler.put;
-  //         done();
-  //       });
-  //     });
-
-  //     it("should put to https://api.trello.com/1/cards/cardId/due", function() {
-  //       put.should.have.been.calledWith(
-  //         "https://api.trello.com/1/cards/cardId/due"
-  //       );
-  //     });
-
-  //     it("should include the date value", function() {
-  //       query.value.should.equal("value");
-  //     });
-
-  //     afterEach(function() {
-  //       restler.put.restore();
-  //     });
-  //   });
+  describe("/1/labels", () => {
+    describe("#updateLabel()", () => {
+      it("should not throw an error when called", () => {
+        expect(
+          trello.updateLabel.bind(trello, "labelId", "extraParams")
+        ).to.not.throw(Error);
+      });
+
+      it("should throw if missing params", () => {
+        expect(trello.updateLabel.bind(trello, "labelId")).to.throw(Error);
+      });
+    });
+  });
+
+  describe("/1/list", () => {
+    describe("#renameList()", () => {
+      it("should not throw an error when called", () => {
+        expect(trello.renameList.bind(trello, "param1", "param2")).to.not.throw(
+          Error
+        );
+      });
+
+      it("should throw if missing params", () => {
+        expect(trello.renameList.bind(trello, "param1")).to.throw(Error);
+      });
+    });
+  });
+
+  describe("/1/members", () => {
+    describe("#getBoards()", () => {
+      it("should not throw an error when called", () => {
+        expect(trello.getBoards.bind(trello, "param1")).to.not.throw(Error);
+      });
+
+      it("should throw if missing params", () => {
+        expect(trello.getBoards.bind(trello)).to.throw(Error);
+      });
+    });
+  });
+
+  describe("/1/organizations", () => {
+    describe("#getBoards()", () => {
+      it("should not throw an error when called", () => {
+        expect(trello.getBoards.bind(trello, "param1")).to.not.throw(Error);
+      });
+
+      it("should throw if missing params", () => {
+        expect(trello.getBoards.bind(trello)).to.throw(Error);
+      });
+    });
+  });
+
+  describe("/1/webhooks", () => {
+    describe("#addWebhook()", () => {
+      it("should not throw an error when called", () => {
+        expect(
+          trello.addWebhook.bind(trello, "param1", "param2", "param3")
+        ).to.not.throw(Error);
+      });
+
+      it("should throw if missing params", () => {
+        expect(trello.addWebhook.bind(trello, "param1")).to.throw(Error);
+      });
+    });
+  });
 });

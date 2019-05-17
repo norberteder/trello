@@ -14,7 +14,7 @@ const updateLabel = (key, token, labelId, extraParams) => {
     token,
     params
   );
-  return makeRequest(request.url, request.data, request.method);
+  return makeRequest(request.url, request.method, request.data);
 };
 
 const deleteLabel = (key, token, labelId) => {
@@ -24,7 +24,7 @@ const deleteLabel = (key, token, labelId) => {
     key,
     token
   );
-  return makeRequest(request.url, request.data, request.method);
+  return makeRequest(request.url, request.method, request.data);
 };
 
 module.exports = {

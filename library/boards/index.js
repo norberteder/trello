@@ -5,6 +5,8 @@ const {
   checkParams
 } = require("../helpers");
 
+//url, requestMethod, options
+
 const addBoard = (key, token, name, description, teamId) => {
   checkParams([name, description, teamId]);
 
@@ -13,7 +15,7 @@ const addBoard = (key, token, name, description, teamId) => {
     desc: description,
     idOrganization: teamId
   });
-  return makeRequest(request.method, request.url, request.data);
+  return makeRequest(request.url, request.method, request.data);
 };
 
 const updateBoardPref = (key, token, boardId, extraParams) => {
@@ -28,7 +30,7 @@ const updateBoardPref = (key, token, boardId, extraParams) => {
     params
   );
 
-  return makeRequest(request.url, request.data, request.method);
+  makeRequest(request.url, request.method, request.data);
 };
 
 const addListToBoard = (key, token, boardId, name) => {
@@ -44,7 +46,7 @@ const addListToBoard = (key, token, boardId, name) => {
     }
   );
 
-  return makeRequest(request.url, request.data, request.method);
+  makeRequest(request.url, request.method, request.data);
 };
 
 const addMemberToBoard = (key, token, boardId, memberId, memberRights) => {
@@ -60,7 +62,7 @@ const addMemberToBoard = (key, token, boardId, memberId, memberRights) => {
     }
   );
 
-  return makeRequest(request.url, request.data, request.method);
+  makeRequest(request.url, request.method, request.data);
 };
 
 const getBoardMembers = (key, token, boardId) => {
@@ -135,7 +137,7 @@ const addLabelOnBoard = (key, token, boardId, name, color) => {
     color,
     name
   });
-  return makeRequest(request.url, request.data, request.method);
+  return makeRequest(request.url, request.method, request.data);
 };
 
 const getCardsOnBoardWithExtraParams = (key, token, boardId, extraParam) => {

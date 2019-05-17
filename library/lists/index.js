@@ -1,10 +1,13 @@
 const {
   constructRequest,
   handleMultipleParams,
-  makeRequest
+  makeRequest,
+  checkParams
 } = require("../helpers");
 
 const renameList = (key, token, listId, name) => {
+  checkParams([listId, name]);
+
   const request = constructRequest(
     `/1/lists/${listId}/name`,
     "PUT",
@@ -14,16 +17,19 @@ const renameList = (key, token, listId, name) => {
       value: name
     }
   );
-
-  return makeRequest(request.url, request.data, request.method);
+  return makeRequest(request.url, request.method, request.data);
 };
 
 const getCardsForList = (key, token, listId) => {
+  checkParams([listId]);
+
   const request = constructRequest(`/1/lists/${listId}`, "GET", key, token);
   return makeRequest(request.url);
 };
 
 const getCardsOnList = (key, token, listId) => {
+  checkParams([listId]);
+
   const request = constructRequest(
     `/1/lists/${listId}/cards`,
     "GET",
@@ -35,6 +41,9 @@ const getCardsOnList = (key, token, listId) => {
 
 const getCardsOnListWithExtraParams = (key, token, listId, fields) => {
   // e.g. trello.getCardsOnList('5c8a3b4eb42f42133e1ea998', ['id', 'name', 'badges']);
+
+  checkParams([listId, fields]);
+
   const request = constructRequest(
     `/1/lists/${listId}/cards`,
     "GET",

@@ -1,10 +1,13 @@
 const {
   constructRequest,
   handleMultipleParams,
-  makeRequest
+  makeRequest,
+  checkParams
 } = require("../helpers");
 
 const getBoards = (key, token, memberId) => {
+  checkParams([memberId]);
+
   const request = constructRequest(
     `/1/members/${memberId}/boards`,
     "GET",
@@ -15,11 +18,15 @@ const getBoards = (key, token, memberId) => {
 };
 
 const getMember = (key, token, memberId) => {
+  checkParams([memberId]);
+
   const request = constructRequest(`/1/member/${memberId}`, "GET", key, token);
   return makeRequest(request.url);
 };
 
 const getMemberCards = (key, token, memberId) => {
+  checkParams([memberId]);
+
   const request = constructRequest(
     `/1/member/${memberId}/cards`,
     "GET",
