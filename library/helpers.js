@@ -61,7 +61,9 @@ const handleMultipleParams = (objToPopulate, paramsObject) => {
     return objToPopulate;
 };
 
-const makeRequest = (url, options, requestMethod) => {
+const makeRequest = (url, requestMethod, options) => {
+    //  console.log("method: ", requestMethod);
+    console.log(url, requestMethod, options);
     if (requestMethod === "GET") return fetch(url);
 
     return fetch(url, {
@@ -76,7 +78,6 @@ const makeRequest = (url, options, requestMethod) => {
 const isNull = params => params.includes(undefined);
 
 const checkParams = params => {
-    console.log(params);
     if (isNull(params))
         throw new Error(
             "Unable to carry out the request, please check the parameters are valid"

@@ -1,23 +1,23 @@
 const {
   constructRequest,
   handleMultipleParams,
-  makeRequest,
-} = require('../helpers');
+  makeRequest
+} = require("../helpers");
 
-const addWebhook = (description, callbackURL, idModel, key, token) => {
-  const request = constructRequest(`/1/webhooks`, 'POST', key, token, {
+const addWebhook = (key, token, description, callbackURL, idModel) => {
+  const request = constructRequest(`/1/webhooks`, "POST", key, token, {
     description,
     callbackURL,
-    idModel,
+    idModel
   });
   return makeRequest(request.url, request.data, request.method);
 };
 
-const deleteWebhook = (webHookId, key, token) => {
+const deleteWebhook = (key, token, webHookId) => {
   //get the webhook id https://api.trello.com/1/tokens/[token]/webhooks/?key=[key]
   const request = constructRequest(
     `/1/webhooks/${webHookId}`,
-    'DELETE',
+    "DELETE",
     key,
     token
   );

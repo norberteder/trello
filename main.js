@@ -61,7 +61,6 @@ class Trello {
             throw new Error(
                 "Unsupported requestMethod. Pass one of these methods: POST, GET, PUT, DELETE."
             );
-
         if (typeof method !== "string")
             throw new TypeError("method should be a string");
 
