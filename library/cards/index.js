@@ -17,10 +17,7 @@ const addCard = (key, token, name, listId) => {
 };
 
 const addCardWithExtraParams = (key, token, name, extraParams, listId) => {
-  if (!listId || !name || !extraParams)
-    throw new Error(
-      "Unable to create board because either a listId, name or extra parameters were not supplied"
-    );
+  checkParams([name, listId, extraParams]);
 
   const params = handleMultipleParams({ name, idList: listId }, extraParams);
   const request = constructRequest("/1/cards/", "POST", key, token, params);
@@ -29,18 +26,22 @@ const addCardWithExtraParams = (key, token, name, extraParams, listId) => {
 };
 
 const getCard = (key, token, cardId) => {
+  checkParams([cardId]);
+
   const request = constructRequest(`/1/cards/${cardId}`, "GET", key, token);
-  return makeRequest(request.url);
+  return makeRequest(request.url, request.method);
 };
 
 const addCommentToCard = (key, token, cardId, comment) => {
+  checkParams([cardId, comment]);
+
   const request = constructRequest(
     `/1/cards/${cardId}/actions/comments`,
     "POST",
     key,
     token,
     {
-      text: comments
+      text: comment
     }
   );
 
@@ -48,6 +49,8 @@ const addCommentToCard = (key, token, cardId, comment) => {
 };
 
 const addAttachmentToCard = (key, token, cardId, url) => {
+  checkParams([cardId, url]);
+
   const request = constructRequest(
     `/1/cards/${cardId}/attachments`,
     "POST",
@@ -60,6 +63,8 @@ const addAttachmentToCard = (key, token, cardId, url) => {
 };
 
 const addMemberToCard = (key, token, cardId, memberId) => {
+  checkParams([cardId, memberId]);
+
   const request = constructRequest(
     `/1/cards/${cardId}/members`,
     "POST",
@@ -74,6 +79,8 @@ const addMemberToCard = (key, token, cardId, memberId) => {
 };
 
 const addChecklistToCard = (key, token, cardId, name) => {
+  checkParams([cardId, name]);
+
   const request = constructRequest(
     `/1/cards/${cardId}/checklists`,
     "POST",
@@ -85,6 +92,8 @@ const addChecklistToCard = (key, token, cardId, name) => {
 };
 
 const addExistingChecklistToCard = (key, token, cardId, checklistId) => {
+  checkParams([cardId, checklistId]);
+
   const request = constructRequest(
     `/1/cards/${cardId}/checklists`,
     "POST",
@@ -97,17 +106,21 @@ const addExistingChecklistToCard = (key, token, cardId, checklistId) => {
 };
 
 const getChecklistsOnCard = (key, token, cardId) => {
+  checkParams([cardId]);
+
   const request = constructRequest(
     `/1/cards/${cardId}/checklists`,
     "GET",
     key,
     token
   );
-  return makeRequest(request.url);
+  return makeRequest(request.url, request.method);
 };
 
 const updateCard = (key, token, cardId, extraParams) => {
-  const query = handleMultipleParams({}, params);
+  checkParams([cardId, extraParams]);
+
+  const query = handleMultipleParams({}, extraParams);
   const request = constructRequest(
     `/1/cards/${cardId}`,
     "PUT",
@@ -120,6 +133,8 @@ const updateCard = (key, token, cardId, extraParams) => {
 };
 
 const addLabelToCard = (key, token, cardId, labelId) => {
+  checkParams([cardId, labelId]);
+
   const request = constructRequest(
     `/1/cards/${cardId}/idLabels`,
     "POST",
@@ -133,26 +148,33 @@ const addLabelToCard = (key, token, cardId, labelId) => {
 };
 
 const deleteLabelFromCard = (key, token, cardId, labelId) => {
-  const request = this.constructRequest(
+  checkParams([cardId, labelId]);
+
+  const request = constructRequest(
     `/1/cards/${cardId}/idLabels/${labelId}`,
     "DELETE",
     key,
     token
   );
-  return makeRequest(request.url, request.data, request.method);
+
+  return makeRequest(request.url, request.method);
 };
 
 const getCardStickers = (key, token, cardId) => {
+  checkParams([cardId]);
+
   const request = constructRequest(
     `/1/cards/${cardId}/stickers`,
     "GET",
     key,
     token
   );
-  return makeRequest(request.url);
+  return makeRequest(request.url, request.method);
 };
 
 const addDueDateToCard = (key, token, cardId, dateValue) => {
+  checkParams([cardId, dateValue]);
+
   const request = constructRequest(
     `/1/cards/${cardId}/due`,
     "PUT",
@@ -166,8 +188,10 @@ const addDueDateToCard = (key, token, cardId, dateValue) => {
 };
 
 const deleteCard = (key, token, cardId) => {
-  const request = constructRequest(`/1/cards/${cardId}`, key, token, "DELETE");
-  return makeRequest(request.url, request.method, request.data);
+  checkParams([cardId]);
+
+  const request = constructRequest(`/1/cards/${cardId}`, "DELETE", key, token);
+  return makeRequest(request.url, request.method);
 };
 
 module.exports = {

@@ -24,7 +24,7 @@ const getCardsForList = (key, token, listId) => {
   checkParams([listId]);
 
   const request = constructRequest(`/1/lists/${listId}`, "GET", key, token);
-  return makeRequest(request.url);
+  return makeRequest(request.url, request.method);
 };
 
 const getCardsOnList = (key, token, listId) => {
@@ -36,7 +36,7 @@ const getCardsOnList = (key, token, listId) => {
     key,
     token
   );
-  return makeRequest(request.url);
+  return makeRequest(request.url, request.method);
 };
 
 const getCardsOnListWithExtraParams = (key, token, listId, fields) => {
@@ -53,7 +53,7 @@ const getCardsOnListWithExtraParams = (key, token, listId, fields) => {
     "fields"
   );
 
-  return makeRequest(request.url);
+  return makeRequest(request.url, request.method);
 };
 
 module.exports = {

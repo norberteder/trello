@@ -5,8 +5,6 @@ const {
   checkParams
 } = require("../helpers");
 
-//url, requestMethod, options
-
 const addBoard = (key, token, name, description, teamId) => {
   checkParams([name, description, teamId]);
 
@@ -94,9 +92,9 @@ const getListsOnBoardByFilter = (key, token, boardId, filter) => {
 
   const request = constructRequest(
     `/1/boards/${boardId}/lists`,
+    "GET",
     key,
     token,
-    "GET",
     {
       filter
     }

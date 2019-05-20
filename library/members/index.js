@@ -14,14 +14,14 @@ const getBoards = (key, token, memberId) => {
     key,
     token
   );
-  return makeRequest(request.url);
+  return makeRequest(request.url, request.method);
 };
 
 const getMember = (key, token, memberId) => {
   checkParams([memberId]);
 
   const request = constructRequest(`/1/member/${memberId}`, "GET", key, token);
-  return makeRequest(request.url);
+  return makeRequest(request.url, request.method);
 };
 
 const getMemberCards = (key, token, memberId) => {
@@ -33,7 +33,7 @@ const getMemberCards = (key, token, memberId) => {
     key,
     token
   );
-  return makeRequest(request.url);
+  return makeRequest(request.url, request.method);
 };
 
-module.exports = { getBoards, getMember };
+module.exports = { getBoards, getMember, getMemberCards };

@@ -1,12 +1,14 @@
 const {
   constructRequest,
   handleMultipleParams,
-  makeRequest
+  makeRequest,
+  checkParams
 } = require("../helpers");
 
 const updateLabel = (key, token, labelId, extraParams) => {
-  const params = handleMultipleParams({}, extraParams);
+  checkParams([labelId, extraParams]);
 
+  const params = handleMultipleParams({}, extraParams);
   const request = constructRequest(
     `/1/labels/${labelId}`,
     "PUT",
@@ -18,6 +20,8 @@ const updateLabel = (key, token, labelId, extraParams) => {
 };
 
 const deleteLabel = (key, token, labelId) => {
+  checkParams([labelId]);
+
   const request = constructRequest(
     `/1/labels/${labelId}`,
     "DELETE",
@@ -28,5 +32,6 @@ const deleteLabel = (key, token, labelId) => {
 };
 
 module.exports = {
-  updateLabel
+  updateLabel,
+  deleteLabel
 };

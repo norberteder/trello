@@ -196,7 +196,7 @@ class Trello {
         return addLabelToCard(this.key, this.token, cardId, labelId);
     }
 
-    deleteLabelFromCard(cardId) {
+    deleteLabelFromCard(cardId, labelId) {
         return deleteLabelFromCard(this.key, this.token, cardId, labelId);
     }
 
@@ -240,7 +240,6 @@ class Trello {
     }
 
     getMember(memberId) {
-        const request = this.constructRequest(`/1/member/${memberId}`, "GET");
         return getMember(this.key, this.token, memberId);
     }
 
