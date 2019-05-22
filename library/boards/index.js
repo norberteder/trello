@@ -13,6 +13,7 @@ const addBoard = (key, token, name, description, teamId) => {
     desc: description,
     idOrganization: teamId
   });
+
   return makeRequest(request.url, request.method, request.data);
 };
 

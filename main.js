@@ -1,4 +1,4 @@
-const { makeRequest } = require("./library/helpers");
+const { makeRequest, handleMakeRequest } = require("./library/helpers");
 
 const {
     addBoard,
@@ -56,7 +56,9 @@ class Trello {
     }
 
     //api call
-    makeRequest(method, path, options) {
+    makeRequest(requestMethod, path, options) {
+        const method = requestMethod.toUpperCase();
+
         if (!["GET", "POST", "DELETE", "PUT"].includes(method))
             throw new Error(
                 "Unsupported requestMethod. Pass one of these methods: POST, GET, PUT, DELETE."
@@ -68,7 +70,7 @@ class Trello {
         if (options && typeof options !== "object")
             throw new TypeError("options should be an object");
 
-        return makeRequest(path, method, options);
+        return handleMakeRequest(this.key, this.token, path, method, options);
     }
 
     //api calls to board
