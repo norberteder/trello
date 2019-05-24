@@ -38,6 +38,7 @@
     }
   ],
   "scripts": {
+    "test:coverage": "nyc --reporter=html --reporter=text mocha --node node_modules/mocha/bin/mocha",
     "test": "node node_modules/mocha/bin/mocha"
   },
   "main": "main.js",
@@ -58,6 +59,7 @@
     "chai": "^4.2.0",
     "fetch-mock": "^7.3.3",
     "mocha": "^6.1.4",
+    "nyc": "^14.1.1",
     "sinon": "^7.3.2",
     "sinon-chai": "^3.3.0",
     "sinon-stub-promise": "^4.0.0"

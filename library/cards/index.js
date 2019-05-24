@@ -191,7 +191,7 @@ const deleteCard = (key, token, cardId) => {
   checkParams([cardId]);
 
   const request = constructRequest(`/1/cards/${cardId}`, "DELETE", key, token);
-  return makeRequest(request.url, request.method);
+  return makeRequest(request.url);
 };
 
 module.exports = {

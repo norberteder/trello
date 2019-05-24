@@ -1,3 +1,9 @@
+# package directories
 node_modules
-.vscode/launch.json
-package-lock.json
+yarn-error.log
+yarn.lock
+
+
+# coverage
+coverage
+.nyc_output/

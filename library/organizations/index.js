@@ -14,7 +14,7 @@ const getOrgBoards = (key, token, organizationId) => {
     key,
     token
   );
-  return makeRequest(request.url, request.method);
+  return makeRequest(request.url);
 };
 
 const getOrgMembers = (key, token, organizationId) => {
@@ -26,7 +26,7 @@ const getOrgMembers = (key, token, organizationId) => {
     key,
     token
   );
-  return makeRequest(request.url, request.method);
+  return makeRequest(request.url);
 };
 
 module.exports = { getOrgBoards, getOrgMembers };

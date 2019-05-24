@@ -122,14 +122,30 @@ describe("Trello", () => {
 
     it("should not mutate passed options object", () => {
       const options = { webhooks: true };
+      const result = trello.makeRequest(
+        "GET",
+        "https://www.example.com/1/cards",
+        options
+      );
 
-      trello
-        .makeRequest("GET", "https://www.example.com/1/cards", options)
-        .then(function(result) {
-          expect(Object.keys(options).length, 1, "options object was mutated");
-          expect(options.webhooks, true);
-        });
+      result.then(function() {
+        expect(Object.keys(options).length, 1, "options object was mutated");
+        expect(options.webhooks, true);
+      });
     });
+
+    // it("should error if unable to to make request", () => {
+    //   //
+    //   expect(
+    //     trello.makeRequest.bind(
+    //       trello,
+    //       "DELETE",
+    //       "https://www.example.com/somePath",
+    //       {}
+    //     )
+    //   ).to.throw(Error);
+
+    // });
   });
 
   describe("/1/boards", () => {
@@ -444,9 +460,17 @@ describe("Trello", () => {
       });
     });
 
-    describe("#deleteCard()", () => {
+    describe.only("#deleteCard()", () => {
       it("should not throw an error when called", () => {
         expect(trello.deleteCard.bind(trello, "param1")).to.not.throw(Error);
+      });
+
+      it("should resolve with a 200 statusCode", () => {
+        const response = trello.deleteCard("param1");
+
+        response.then(result => {
+          expect(result.status).to.equal(200);
+        });
       });
 
       it("should throw if missing params", () => {
@@ -459,13 +483,20 @@ describe("Trello", () => {
     describe("#addItemToChecklist()", () => {
       it("should not throw an error when called", () => {
         expect(
-          trello.addItemToChecklist.bind(
-            trello,
-            "checkListId",
-            "name",
-            "position"
-          )
+          trello.addItemToChecklist.bind(trello, "param1", "param2", "param3")
         ).to.not.throw(Error);
+      });
+
+      it("should resolve with a 200 statusCode", () => {
+        const response = trello.addItemToChecklist(
+          "param1",
+          "param2",
+          "param3"
+        );
+
+        response.then(result => {
+          expect(result.status).to.equal(200);
+        });
       });
 
       it("should throw if missing params", () => {
@@ -482,6 +513,14 @@ describe("Trello", () => {
         ).to.not.throw(Error);
       });
 
+      it("should resolve with a 200 statusCode", () => {
+        const response = trello.updateChecklist("param1", "param2", "param3");
+
+        response.then(result => {
+          expect(result.status).to.equal(200);
+        });
+      });
+
       it("should throw if missing params", () => {
         expect(trello.updateChecklist.bind(trello)).to.throw(Error);
       });
@@ -496,6 +535,14 @@ describe("Trello", () => {
         ).to.not.throw(Error);
       });
 
+      it("should resolve with a 200 statusCode", () => {
+        const response = trello.deleteLabel("param1");
+
+        response.then(result => {
+          expect(result.status).to.equal(200);
+        });
+      });
+
       it("should throw if missing params", () => {
         expect(trello.updateLabel.bind(trello, "labelId")).to.throw(Error);
       });
@@ -504,6 +551,14 @@ describe("Trello", () => {
     describe("#deleteLabel()", () => {
       it("should not throw an error when called", () => {
         expect(trello.deleteLabel.bind(trello, "labelId")).to.not.throw(Error);
+      });
+
+      it("should resolve with a 200 statusCode", () => {
+        const response = trello.deleteLabel("param1");
+
+        response.then(result => {
+          expect(result.status).to.equal(200);
+        });
       });
 
       it("should throw if missing params", () => {
@@ -520,6 +575,14 @@ describe("Trello", () => {
         );
       });
 
+      it("should resolve with a 200 statusCode", () => {
+        const response = trello.renameList("param1", "param2");
+
+        response.then(result => {
+          expect(result.status).to.equal(200);
+        });
+      });
+
       it("should throw if missing params", () => {
         expect(trello.renameList.bind(trello, "param1")).to.throw(Error);
       });
@@ -532,6 +595,14 @@ describe("Trello", () => {
         );
       });
 
+      it("should resolve with a 200 statusCode", () => {
+        const response = trello.getCardsForList("param1");
+
+        response.then(result => {
+          expect(result.status).to.equal(200);
+        });
+      });
+
       it("should throw if missing params", () => {
         expect(trello.getCardsForList.bind(trello)).to.throw(Error);
       });
@@ -542,6 +613,14 @@ describe("Trello", () => {
         expect(trello.getCardsOnList.bind(trello, "param1")).to.not.throw(
           Error
         );
+      });
+
+      it("should resolve with a 200 statusCode", () => {
+        const response = trello.getCardsOnList("param1");
+
+        response.then(result => {
+          expect(result.status).to.equal(200);
+        });
       });
 
       it("should throw if missing params", () => {
@@ -560,6 +639,16 @@ describe("Trello", () => {
         ).to.not.throw(Error);
       });
 
+      it("should resolve with a 200 statusCode", () => {
+        const response = trello.getCardsOnListWithExtraParams("param1", [
+          "param2"
+        ]);
+
+        response.then(result => {
+          expect(result.status).to.equal(200);
+        });
+      });
+
       it("should throw if missing params", () => {
         expect(trello.getCardsOnListWithExtraParams.bind(trello)).to.throw(
           Error
@@ -574,6 +663,14 @@ describe("Trello", () => {
         expect(trello.getBoards.bind(trello, "param1")).to.not.throw(Error);
       });
 
+      it("should resolve with a 200 statusCode", () => {
+        const response = trello.getBoards("param1");
+
+        response.then(result => {
+          expect(result.status).to.equal(200);
+        });
+      });
+
       it("should throw if missing params", () => {
         expect(trello.getBoards.bind(trello)).to.throw(Error);
       });
@@ -582,6 +679,14 @@ describe("Trello", () => {
     describe("#getMember()", () => {
       it("should not throw an error when called", () => {
         expect(trello.getMember.bind(trello, "param1")).to.not.throw(Error);
+      });
+
+      it("should resolve with a 200 statusCode", () => {
+        const response = trello.getMember("param1");
+
+        response.then(result => {
+          expect(result.status).to.equal(200);
+        });
       });
 
       it("should throw if missing params", () => {
@@ -596,6 +701,14 @@ describe("Trello", () => {
         );
       });
 
+      it("should resolve with a 200 statusCode", () => {
+        const response = trello.getMemberCards("param1");
+
+        response.then(result => {
+          expect(result.status).to.equal(200);
+        });
+      });
+
       it("should throw if missing params", () => {
         expect(trello.getMemberCards.bind(trello)).to.throw(Error);
       });
@@ -608,6 +721,14 @@ describe("Trello", () => {
         expect(trello.getOrgBoards.bind(trello, "param1")).to.not.throw(Error);
       });
 
+      it("should resolve with a 200 statusCode", () => {
+        const response = trello.getOrgBoards("param1");
+
+        response.then(result => {
+          expect(result.status).to.equal(200);
+        });
+      });
+
       it("should throw if missing params", () => {
         expect(trello.getOrgBoards.bind(trello)).to.throw(Error);
       });
@@ -616,6 +737,14 @@ describe("Trello", () => {
     describe("#getOrgMembers()", () => {
       it("should not throw an error when called", () => {
         expect(trello.getOrgMembers.bind(trello, "param1")).to.not.throw(Error);
+      });
+
+      it("should resolve with a 200 statusCode", () => {
+        const response = trello.getOrgMembers("param1");
+
+        response.then(result => {
+          expect(result.status).to.equal(200);
+        });
       });
 
       it("should throw if missing params", () => {
@@ -632,6 +761,14 @@ describe("Trello", () => {
         ).to.not.throw(Error);
       });
 
+      it("should resolve with a 200 statusCode", () => {
+        const response = trello.addWebhook("param1", "param2", "param3");
+
+        response.then(result => {
+          expect(result.status).to.equal(200);
+        });
+      });
+
       it("should throw if missing params", () => {
         expect(trello.addWebhook.bind(trello, "param1")).to.throw(Error);
       });
@@ -639,9 +776,15 @@ describe("Trello", () => {
 
     describe("#deleteWebhook()", () => {
       it("should not throw an error when called", () => {
-        expect(
-          trello.deleteWebhook.bind(trello, "param1", "param2", "param3")
-        ).to.not.throw(Error);
+        expect(trello.deleteWebhook.bind(trello, "param1")).to.not.throw(Error);
+      });
+
+      it("should resolve with a 200 statusCode", () => {
+        const response = trello.deleteWebhook("param1");
+
+        response.then(result => {
+          expect(result.status).to.equal(200);
+        });
       });
 
       it("should throw if missing params", () => {

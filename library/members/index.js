@@ -14,7 +14,7 @@ const getBoards = (key, token, memberId) => {
     key,
     token
   );
-  return makeRequest(request.url, request.method);
+  return makeRequest(request.url);
 };
 
 const getMember = (key, token, memberId) => {
@@ -33,7 +33,7 @@ const getMemberCards = (key, token, memberId) => {
     key,
     token
   );
-  return makeRequest(request.url, request.method);
+  return makeRequest(request.url);
 };
 
 module.exports = { getBoards, getMember, getMemberCards };

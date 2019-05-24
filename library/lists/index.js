@@ -36,7 +36,7 @@ const getCardsOnList = (key, token, listId) => {
     key,
     token
   );
-  return makeRequest(request.url, request.method);
+  return makeRequest(request.url);
 };
 
 const getCardsOnListWithExtraParams = (key, token, listId, fields) => {
@@ -53,7 +53,7 @@ const getCardsOnListWithExtraParams = (key, token, listId, fields) => {
     "fields"
   );
 
-  return makeRequest(request.url, request.method);
+  return makeRequest(request.url);
 };
 
 module.exports = {

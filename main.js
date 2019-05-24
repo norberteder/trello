@@ -57,20 +57,13 @@ class Trello {
 
     //api call
     makeRequest(requestMethod, path, options) {
-        const method = requestMethod.toUpperCase();
-
-        if (!["GET", "POST", "DELETE", "PUT"].includes(method))
-            throw new Error(
-                "Unsupported requestMethod. Pass one of these methods: POST, GET, PUT, DELETE."
-            );
-
-        if (typeof method !== "string")
-            throw new TypeError("method should be a string");
-
-        if (options && typeof options !== "object")
-            throw new TypeError("options should be an object");
-
-        return handleMakeRequest(this.key, this.token, path, method, options);
+        return handleMakeRequest(
+            this.key,
+            this.token,
+            path,
+            requestMethod,
+            options
+        );
     }
 
     //api calls to board
@@ -227,12 +220,12 @@ class Trello {
         return getCardsOnList(this.key, this.token, listId);
     }
 
-    getCardsOnListWithExtraParams(listId, fields) {
+    getCardsOnListWithExtraParams(listId, fieldsArray) {
         return getCardsOnListWithExtraParams(
             this.key,
             this.token,
             listId,
-            fields
+            fieldsArray
         );
     }
 

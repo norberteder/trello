@@ -7,11 +7,13 @@ const {
 
 const addWebhook = (key, token, description, callbackURL, idModel) => {
   checkParams([description, callbackURL, idModel]);
+
   const request = constructRequest(`/1/webhooks`, "POST", key, token, {
     description,
     callbackURL,
     idModel
   });
+
   return makeRequest(request.url, request.method, request.data);
 };
 
@@ -25,7 +27,7 @@ const deleteWebhook = (key, token, webHookId) => {
     key,
     token
   );
-  return makeRequest(request.url, request.method, request.data);
+  return makeRequest(request.url);
 };
 
 module.exports = { addWebhook, deleteWebhook };

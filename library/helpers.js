@@ -9,7 +9,7 @@ const constructRequest = (path, method, key, token, options, extraOption) => {
 
     const baseUrl = "https://api.trello.com";
 
-    if (method === ("GET" || "DELETE")) {
+    if (method === "GET" || "DELETE") {
         const queryString = `?key=${key}&token=${token}`;
 
         //pure GET function
@@ -27,7 +27,6 @@ const constructRequest = (path, method, key, token, options, extraOption) => {
         const additionalQueries = keys
             .map((key, index) => `&${key}=${values[index]}`)
             .join("");
-
         return {
             url: `${baseUrl}${path}${queryString}${additionalQueries}`
         };
@@ -47,6 +46,7 @@ const constructRequest = (path, method, key, token, options, extraOption) => {
             data: { key, ...options }
         };
     }
+
     return {
         url: baseUrl + path,
         method,
@@ -62,20 +62,29 @@ const handleMultipleParams = (objToPopulate, paramsObject) => {
 };
 
 const handleMakeRequest = (key, token, url, requestMethod, options) => {
-    const requestData = constructRequest(
-        url,
-        requestMethod,
-        key,
-        token,
-        options
-    );
+    const method = requestMethod.toUpperCase();
+
+    if (!["GET", "POST", "DELETE", "PUT"].includes(method))
+        throw new Error(
+            "Unsupported requestMethod. Pass one of these methods: POST, GET, PUT, DELETE."
+        );
+
+    if (options && typeof options !== "object")
+        throw new TypeError("options should be an object");
+
+    const requestData = constructRequest(url, method, key, token, options);
 
     if (requestData.method && requestData.data)
-        makeRequest(requestData.url, requestData.method, requestData.data);
+        return makeRequest(
+            requestData.url,
+            requestData.method,
+            requestData.data
+        );
 
-    if (!requestData.method && !requestData.data) makeRequest(requestData.url);
-
-    return;
+    if (!requestData.method && !requestData.data)
+        return makeRequest(requestData.url);
+    //new return
+    //throw new Error("unable to make request");
 };
 
 const makeRequest = (url, requestMethod, options) => {
