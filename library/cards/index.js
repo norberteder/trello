@@ -121,6 +121,7 @@ const updateCard = (key, token, cardId, extraParams) => {
   checkParams([cardId, extraParams]);
 
   const query = handleMultipleParams({}, extraParams);
+
   const request = constructRequest(
     `/1/cards/${cardId}`,
     "PUT",
@@ -144,6 +145,8 @@ const addLabelToCard = (key, token, cardId, labelId) => {
       value: labelId
     }
   );
+
+  //console.log("request: ", request.url, request.method, request.data);
   return makeRequest(request.url, request.method, request.data);
 };
 
@@ -169,29 +172,27 @@ const getCardStickers = (key, token, cardId) => {
     key,
     token
   );
-  return makeRequest(request.url, request.method);
+  return makeRequest(request.url);
 };
 
-const addDueDateToCard = (key, token, cardId, dateValue) => {
-  checkParams([cardId, dateValue]);
+const addDueDateToCard = (key, token, cardId, date) => {
+  //date e.g.: "2019-05-24T10:05:12.074Z"
+  checkParams([cardId, date]);
 
   const request = constructRequest(
-    `/1/cards/${cardId}/due`,
+    `/1/cards/${cardId}?due=${date}&key=${key}&token=${token}`,
     "PUT",
     key,
-    token,
-    {
-      value: dateValue
-    }
+    token
   );
-  return makeRequest(request.url, request.method, request.data);
+  return makeRequest(request.url, request.method);
 };
 
 const deleteCard = (key, token, cardId) => {
   checkParams([cardId]);
 
   const request = constructRequest(`/1/cards/${cardId}`, "DELETE", key, token);
-  return makeRequest(request.url);
+  return makeRequest(request.url, request.method);
 };
 
 module.exports = {
