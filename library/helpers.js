@@ -28,13 +28,13 @@ const constructPostRequest = (method, baseUrl, path, key, token, options) => {
   }
 
   return {
-    url: baseUrl + path,
+    url: `${baseUrl}${path}`,
     method,
     data: { ...options, key, token },
   };
 };
 
-const constructGetRequest = (
+const constructGetDeleteRequest = (
   method,
   baseUrl,
   path,
@@ -43,41 +43,7 @@ const constructGetRequest = (
   options,
   extraOption
 ) => {
-  //
-  const queryString = `?key=${key}&token=${token}`;
-
-  if (!options) return { url: `${baseUrl}${path}${queryString}`, method };
-
-  //pure GET function
-  // if (!options) return { url: `${baseUrl}${path}${queryString}` };
-
-  if (Array.isArray(options))
-    return {
-      url: `${baseUrl}${path}${queryString}&${extraOption}=${options.join(
-        ","
-      )}`,
-    };
-
-  const keys = Object.keys(options);
-  const values = Object.values(options);
-  const additionalQueries = keys
-    .map((key, index) => `&${key}=${values[index]}`)
-    .join("");
-  return {
-    url: `${baseUrl}${path}${queryString}${additionalQueries}`,
-  };
-};
-
-const constructDeleteRequest = (
-  method,
-  baseUrl,
-  path,
-  key,
-  token,
-  options,
-  extraOption
-) => {
-  if (path.includes("webhook"))
+  if (path.includes("webhook") && method === "DELETE")
     return {
       url: `${baseUrl}${path}`,
       method,
@@ -87,9 +53,6 @@ const constructDeleteRequest = (
   const queryString = `?key=${key}&token=${token}`;
 
   if (!options) return { url: `${baseUrl}${path}${queryString}`, method };
-
-  //pure GET function
-  // if (!options) return { url: `${baseUrl}${path}${queryString}` };
 
   if (Array.isArray(options))
     return {
@@ -121,11 +84,16 @@ const constructRequest = (path, method, key, token, options, extraOption) => {
   if (method === "POST")
     return constructPostRequest(method, baseUrl, path, key, token, options);
 
-  if (method === "GET")
-    return constructGetRequest(method, baseUrl, path, key, token, options);
-
-  if (method === "DELETE")
-    return constructDeleteRequest(method, baseUrl, path, key, token, options);
+  if (method === "GET" || method === "DELETE")
+    return constructGetDeleteRequest(
+      method,
+      baseUrl,
+      path,
+      key,
+      token,
+      options,
+      extraOption
+    );
 };
 
 const handleMultipleParams = (objToPopulate, paramsObject) => {
@@ -138,26 +106,17 @@ const handleMultipleParams = (objToPopulate, paramsObject) => {
 const handleMakeRequest = (key, token, url, requestMethod, options) => {
   const method = requestMethod.toUpperCase();
 
-  if (!["GET", "POST", "DELETE", "PUT"].includes(method))
-    throw new Error(
-      "Unsupported requestMethod. Pass one of these methods: POST, GET, PUT, DELETE."
-    );
-
   if (options && typeof options !== "object")
     throw new TypeError("options should be an object");
 
   const requestData = constructRequest(url, method, key, token, options);
+  //console.log(url, method, key, token, options);
 
-  if (requestData.method && requestData.data)
-    return makeRequest(requestData.url, requestData.method, requestData.data);
-
-  if (!requestData.method && !requestData.data)
-    return makeRequest(requestData.url);
-  //new return
-  //throw new Error("unable to make request");
+  return makeRequest(requestData.url, requestData.method, requestData.data);
 };
 
 const makeRequest = (url, method, options) => {
+  console.log(url, method, options);
   if (!method && !options) return fetch(url);
 
   if (!options) return fetch(url, { method });

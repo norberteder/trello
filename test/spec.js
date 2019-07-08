@@ -12,7 +12,7 @@ const {
   constructRequest,
   handleMultipleParams,
   makeRequest,
-  checkParams
+  checkParams,
 } = require("../library/helpers");
 
 describe("Trello", () => {
@@ -35,98 +35,55 @@ describe("Trello", () => {
   describe("#makeRequest()", () => {
     it("should throw error if type of options passed is not object", () => {
       expect(
-        trello.makeRequest.bind(
-          trello,
-          "GET",
-          "https://www.example.com/somePath",
-          "wrongOptions"
-        )
+        trello.makeRequest.bind(trello, "GET", "/somePath", "wrongOptions")
       ).to.throw(Error);
     });
 
     it("should throw error if type of a method passed is not string", () => {
-      expect(
-        trello.makeRequest.bind(
-          trello,
-          {},
-          "https://www.example.com/somePath",
-          {}
-        )
-      ).to.throw(Error);
+      expect(trello.makeRequest.bind(trello, {}, "/somePath", {})).to.throw(
+        Error
+      );
     });
 
     it("should throw error if a method passed is not one of these: POST, GET, PUT, DELETE", () => {
       expect(
-        trello.makeRequest.bind(
-          trello,
-          "patch",
-          "https://www.example.com/somePath",
-          {}
-        )
+        trello.makeRequest.bind(trello, "patch", "/somePath", {})
       ).to.throw(Error);
     });
 
     it("should not throw error if no options are passed", () => {
       expect(
-        trello.makeRequest.bind(
-          trello,
-          "GET",
-          "https://www.example.com/1/members/me/tokens"
-        )
+        trello.makeRequest.bind(trello, "GET", "/1/members/me/tokens")
       ).to.not.throw(Error);
     });
 
     it("should not throw error if a method passed is POST", async () => {
       expect(
-        trello.makeRequest.bind(
-          trello,
-          "POST",
-          "https://www.example.com/somePath",
-          {}
-        )
+        trello.makeRequest.bind(trello, "POST", "/somePath", {})
       ).to.not.throw(Error);
     });
 
     it("should not throw error if a method passed is GET", () => {
       expect(
-        trello.makeRequest.bind(
-          trello,
-          "GET",
-          "https://www.example.com/somePath",
-          {}
-        )
+        trello.makeRequest.bind(trello, "GET", "/somePath", {})
       ).to.not.throw(Error);
     });
 
     it("should not throw error if a method passed is PUT", () => {
       expect(
-        trello.makeRequest.bind(
-          trello,
-          "PUT",
-          "https://www.example.com/somePath",
-          {}
-        )
+        trello.makeRequest.bind(trello, "PUT", "/somePath", {})
       ).to.not.throw(Error);
     });
 
     it("should not throw error if a method passed is DELETE", () => {
       expect(
-        trello.makeRequest.bind(
-          trello,
-          "DELETE",
-          "https://www.example.com/somePath",
-          {}
-        )
+        trello.makeRequest.bind(trello, "DELETE", "/somePath", {})
       ).to.not.throw(Error);
     });
 
     it("should not mutate passed options object", () => {
       const options = { webhooks: true };
-      const result = trello.makeRequest(
-        "GET",
-        "https://www.example.com/1/cards",
-        options
-      );
+      const result = trello.makeRequest("GET", "/1/cards", options);
 
       result.then(function() {
         expect(Object.keys(options).length, 1, "options object was mutated");
@@ -566,7 +523,7 @@ describe("Trello", () => {
           trello.getCardsOnListWithExtraParams.bind(trello, "param1", [
             "id",
             "name",
-            "badges"
+            "badges",
           ])
         ).to.not.throw(Error);
       });
