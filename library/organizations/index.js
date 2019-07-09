@@ -2,7 +2,7 @@ const {
   constructRequest,
   handleMultipleParams,
   makeRequest,
-  checkParams
+  checkParams,
 } = require("../helpers");
 
 const getOrgBoards = (key, token, organizationId) => {
@@ -14,7 +14,7 @@ const getOrgBoards = (key, token, organizationId) => {
     key,
     token
   );
-  return makeRequest(request.url);
+  return makeRequest(request.url, request.method);
 };
 
 const getOrgMembers = (key, token, organizationId) => {
@@ -26,7 +26,7 @@ const getOrgMembers = (key, token, organizationId) => {
     key,
     token
   );
-  return makeRequest(request.url);
+  return makeRequest(request.url, request.method);
 };
 
 module.exports = { getOrgBoards, getOrgMembers };

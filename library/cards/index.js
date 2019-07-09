@@ -2,7 +2,7 @@ const {
   constructRequest,
   handleMultipleParams,
   makeRequest,
-  checkParams
+  checkParams,
 } = require("../helpers");
 
 const addCard = (key, token, name, listId) => {
@@ -10,7 +10,7 @@ const addCard = (key, token, name, listId) => {
 
   const request = constructRequest("/1/cards", "POST", key, token, {
     name,
-    idList: listId
+    idList: listId,
   });
 
   return makeRequest(request.url, request.method, request.data);
@@ -41,7 +41,7 @@ const addCommentToCard = (key, token, cardId, comment) => {
     key,
     token,
     {
-      text: comment
+      text: comment,
     }
   );
 
@@ -71,7 +71,7 @@ const addMemberToCard = (key, token, cardId, memberId) => {
     key,
     token,
     {
-      value: memberId
+      value: memberId,
     }
   );
 
@@ -142,7 +142,7 @@ const addLabelToCard = (key, token, cardId, labelId) => {
     key,
     token,
     {
-      value: labelId
+      value: labelId,
     }
   );
 
@@ -172,7 +172,7 @@ const getCardStickers = (key, token, cardId) => {
     key,
     token
   );
-  return makeRequest(request.url);
+  return makeRequest(request.url, request.method);
 };
 
 const addDueDateToCard = (key, token, cardId, date) => {
@@ -210,5 +210,5 @@ module.exports = {
   deleteLabelFromCard,
   getCardStickers,
   addDueDateToCard,
-  deleteCard
+  deleteCard,
 };

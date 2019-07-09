@@ -3,35 +3,41 @@ require("cross-fetch/polyfill");
 
 const baseUrl = "https://api.trello.com";
 
-const constructPutRequest = (method, baseUrl, path, key, token, options) => {
-  if (!options) return { url: `${baseUrl}${path}`, method };
-
-  const queryString = `?key=${key}&token=${token}`;
+const chainQueries = options => {
   const keys = Object.keys(options);
   const values = Object.values(options);
   const additionalQueries = keys
     .map((key, index) => `&${key}=${values[index]}`)
     .join("");
 
+  return additionalQueries;
+};
+
+const constructPutRequest = (method, baseUrl, path, key, token, options) => {
+  if (!options) return { url: `${baseUrl}${path}`, method };
+
+  const queryString = `?key=${key}&token=${token}`;
+  const additionalQueries = chainQueries(options);
+
   return {
     url: `${baseUrl}${path}${queryString}${additionalQueries}`,
+    method,
   };
 };
 
 const constructPostRequest = (method, baseUrl, path, key, token, options) => {
-  if (path.includes("webhook")) {
+  const isWebhook = path.includes("webhook");
+  const data = isWebhook ? { key, ...options } : { key, ...options, token };
+
+  if (isWebhook) {
     return {
-      url: `https://api.trello.com/1/tokens/${token}/webhooks/`,
+      url: isWebhook
+        ? `https://api.trello.com/1/tokens/${token}/webhooks/`
+        : `${baseUrl}${path}`,
       method,
-      data: { key, ...options },
+      data,
     };
   }
-
-  return {
-    url: `${baseUrl}${path}`,
-    method,
-    data: { ...options, key, token },
-  };
 };
 
 const constructGetDeleteRequest = (
@@ -59,15 +65,14 @@ const constructGetDeleteRequest = (
       url: `${baseUrl}${path}${queryString}&${extraOption}=${options.join(
         ","
       )}`,
+      method,
     };
 
-  const keys = Object.keys(options);
-  const values = Object.values(options);
-  const additionalQueries = keys
-    .map((key, index) => `&${key}=${values[index]}`)
-    .join("");
+  const additionalQueries = chainQueries(options);
+
   return {
     url: `${baseUrl}${path}${queryString}${additionalQueries}`,
+    method,
   };
 };
 
@@ -77,7 +82,6 @@ const constructRequest = (path, method, key, token, options, extraOption) => {
       "Unsupported requestMethod. Pass one of these methods: POST, GET, PUT, DELETE."
     );
 
-  //need to check this
   if (method === "PUT")
     return constructPutRequest(method, baseUrl, path, key, token, options);
 
@@ -110,14 +114,12 @@ const handleMakeRequest = (key, token, url, requestMethod, options) => {
     throw new TypeError("options should be an object");
 
   const requestData = constructRequest(url, method, key, token, options);
-  //console.log(url, method, key, token, options);
 
   return makeRequest(requestData.url, requestData.method, requestData.data);
 };
 
 const makeRequest = (url, method, options) => {
-  console.log(url, method, options);
-  if (!method && !options) return fetch(url);
+  if (method === "GET" || "DELETE") return fetch(url);
 
   if (!options) return fetch(url, { method });
 

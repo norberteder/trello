@@ -2,7 +2,7 @@ const {
   constructRequest,
   handleMultipleParams,
   makeRequest,
-  checkParams
+  checkParams,
 } = require("../helpers");
 
 const addBoard = (key, token, name, description, teamId) => {
@@ -11,7 +11,7 @@ const addBoard = (key, token, name, description, teamId) => {
   const request = constructRequest("/1/boards", "POST", key, token, {
     name,
     desc: description,
-    idOrganization: teamId
+    idOrganization: teamId,
   });
 
   return makeRequest(request.url, request.method, request.data);
@@ -41,7 +41,7 @@ const addListToBoard = (key, token, boardId, name) => {
     key,
     token,
     {
-      name
+      name,
     }
   );
 
@@ -57,7 +57,7 @@ const addMemberToBoard = (key, token, boardId, memberId, memberRights) => {
     key,
     token,
     {
-      type: memberRights
+      type: memberRights,
     }
   );
 
@@ -73,7 +73,7 @@ const getBoardMembers = (key, token, boardId) => {
     key,
     token
   );
-  return makeRequest(request.url);
+  return makeRequest(request.url, request.method);
 };
 
 const getListsOnBoard = (key, token, boardId) => {
@@ -85,7 +85,7 @@ const getListsOnBoard = (key, token, boardId) => {
     key,
     token
   );
-  return makeRequest(request.url);
+  return makeRequest(request.url, request.method);
 };
 
 const getListsOnBoardByFilter = (key, token, boardId, filter) => {
@@ -97,11 +97,11 @@ const getListsOnBoardByFilter = (key, token, boardId, filter) => {
     key,
     token,
     {
-      filter
+      filter,
     }
   );
 
-  return makeRequest(request.url);
+  return makeRequest(request.url, request.method);
 };
 
 const getCardsOnBoard = (key, token, boardId) => {
@@ -113,7 +113,7 @@ const getCardsOnBoard = (key, token, boardId) => {
     key,
     token
   );
-  return makeRequest(request.url);
+  return makeRequest(request.url, request.method);
 };
 
 const getLabelsForBoard = (key, token, boardId) => {
@@ -125,7 +125,7 @@ const getLabelsForBoard = (key, token, boardId) => {
     key,
     token
   );
-  return makeRequest(request.url);
+  return makeRequest(request.url, request.method);
 };
 
 const addLabelOnBoard = (key, token, boardId, name, color) => {
@@ -134,7 +134,7 @@ const addLabelOnBoard = (key, token, boardId, name, color) => {
   const request = constructRequest("/1/labels", "POST", key, token, {
     idBoard: boardId,
     color,
-    name
+    name,
   });
   return makeRequest(request.url, request.method, request.data);
 };
@@ -149,7 +149,7 @@ const getCardsOnBoardWithExtraParams = (key, token, boardId, extraParam) => {
     token
   );
 
-  return makeRequest(request.url);
+  return makeRequest(request.url, request.method);
 };
 
 module.exports = {
@@ -163,5 +163,5 @@ module.exports = {
   getCardsOnBoard,
   getLabelsForBoard,
   addLabelOnBoard,
-  getCardsOnBoardWithExtraParams
+  getCardsOnBoardWithExtraParams,
 };

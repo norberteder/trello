@@ -2,7 +2,7 @@ const {
   constructRequest,
   handleMultipleParams,
   makeRequest,
-  checkParams
+  checkParams,
 } = require("../helpers");
 
 const addWebhook = (key, token, description, callbackURL, idModel) => {
@@ -11,7 +11,7 @@ const addWebhook = (key, token, description, callbackURL, idModel) => {
   const request = constructRequest(`/1/webhooks`, "POST", key, token, {
     description,
     callbackURL,
-    idModel
+    idModel,
   });
 
   return makeRequest(request.url, request.method, request.data);
@@ -27,7 +27,7 @@ const deleteWebhook = (key, token, webHookId) => {
     key,
     token
   );
-  return makeRequest(request.url);
+  return makeRequest(request.url, request.method);
 };
 
 module.exports = { addWebhook, deleteWebhook };

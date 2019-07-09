@@ -2,7 +2,7 @@ const {
   constructRequest,
   handleMultipleParams,
   makeRequest,
-  checkParams
+  checkParams,
 } = require("../helpers");
 
 const renameList = (key, token, listId, name) => {
@@ -14,7 +14,7 @@ const renameList = (key, token, listId, name) => {
     key,
     token,
     {
-      value: name
+      value: name,
     }
   );
   return makeRequest(request.url, request.method, request.data);
@@ -36,7 +36,7 @@ const getCardsOnList = (key, token, listId) => {
     key,
     token
   );
-  return makeRequest(request.url);
+  return makeRequest(request.url, request.method);
 };
 
 const getCardsOnListWithExtraParams = (key, token, listId, fields) => {
@@ -53,12 +53,12 @@ const getCardsOnListWithExtraParams = (key, token, listId, fields) => {
     "fields"
   );
 
-  return makeRequest(request.url);
+  return makeRequest(request.url, request.method);
 };
 
 module.exports = {
   renameList,
   getCardsForList,
   getCardsOnList,
-  getCardsOnListWithExtraParams
+  getCardsOnListWithExtraParams,
 };
