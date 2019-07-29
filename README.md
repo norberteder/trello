@@ -82,6 +82,8 @@ API calls can either execute a callback or return a promise. To return a promise
 
 ### Get
 
+* getActionsOnCard 
+* getAttachmentsOnCard 
 * getBoardMembers 
 * getBoards 
 * getCard 
@@ -92,6 +94,7 @@ API calls can either execute a callback or return a promise. To return a promise
 * getCardsOnListWithExtraParams
 * getCardStickers
 * getChecklistsOnCard 
+* getCommentsOnCard 
 * getLabelsForBoard 
 * getListsOnBoard 
 * getListsOnBoardByFilter 
