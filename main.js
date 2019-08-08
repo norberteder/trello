@@ -191,6 +191,11 @@ Trello.prototype.addChecklistToCard = function (cardId, name, callback) {
     return makeRequest(rest.post, this.uri + '/1/cards/' + cardId + '/checklists', { query: query }, callback);
 };
 
+Trello.prototype.getChecklist = function (checkListId, callback) {
+    console.log("called");
+  return makeRequest(rest.get, this.uri + '/1/checklists/' + checkListId, {query: this.createQuery()}, callback);
+};
+
 Trello.prototype.addExistingChecklistToCard = function (cardId, checklistId, callback) {
     var query = this.createQuery();
     query.idChecklistSource = checklistId;
