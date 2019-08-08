@@ -902,24 +902,24 @@ describe('Trello', function () {
         var get;
 
         beforeEach(function (done) {
-          sinon.stub(restler, 'get', function (uri, options) {
-            return {once: function (event, callback) {
-                callback(null, null);
-              }};
+            sinon.stub(restler, 'get', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
           });
 
           trello.getChecklist('checkListId', function () {
-            get = restler.get;
-            done();
+              get = restler.get;
+              done();
           });
         });
 
         it('should get to https://api.trello.com/1/checklists', function () {
-          get.should.have.been.calledWith('https://api.trello.com/1/checklists/checkListId');
+            get.should.have.been.calledWith('https://api.trello.com/1/checklists/checkListId');
         });
 
         afterEach(function () {
-          restler.get.restore();
+            restler.get.restore();
         });
   });
 
