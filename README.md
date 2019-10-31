@@ -72,6 +72,7 @@ API calls can either execute a callback or return a promise. To return a promise
 * addMemberToCard 
 * addStickerToCard 
 * addWebhook 
+* copyBoard
 
 ### Delete
 
