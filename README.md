@@ -82,6 +82,7 @@ API calls can either execute a callback or return a promise. To return a promise
 
 ### Get
 
+* getActionsOnBoard
 * getBoardMembers 
 * getBoards 
 * getCard 
