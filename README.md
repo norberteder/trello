@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/norberteder/trello.svg?branch=master)](https://travis-ci.org/norberteder/trello)
+[![Build Status](https://travis-ci.org/luiztiago/trello.svg?branch=master)](https://travis-ci.org/luiztiago/trello)
 
 # trello
 ## A simple asynchronous client for [Trello](http://www.trello.com)
@@ -56,64 +56,63 @@ API calls can either execute a callback or return a promise. To return a promise
 
 ### Add
 
-* addAttachmentToCard 
-* addBoard 
-* addCard 
-* addCardWithExtraParams 
-* addChecklistToCard 
-* addCommentToCard 
-* addDueDateToCard 
-* addExistingChecklistToCard 
-* addItemToChecklist 
-* addLabelOnBoard 
-* addLabelToCard 
-* addListToBoard 
-* addMemberToBoard 
-* addMemberToCard 
-* addStickerToCard 
-* addWebhook 
+* addAttachmentToCard
+* addBoard
+* addCard
+* addCardWithExtraParams
+* addChecklistToCard
+* addCommentToCard
+* addDueDateToCard
+* addExistingChecklistToCard
+* addItemToChecklist
+* addLabelOnBoard
+* addLabelToCard
+* addListToBoard
+* addMemberToBoard
+* addMemberToCard
+* addStickerToCard
+* addWebhook
 
 ### Delete
 
-* deleteCard 
-* deleteLabel 
-* deleteLabelFromCard 
-* deleteWebhook 
+* deleteCard
+* deleteLabel
+* deleteLabelFromCard
+* deleteWebhook
 
 ### Get
 
-* getActionsOnBoard
-* getBoardMembers 
-* getBoards 
-* getCard 
-* getCardsForList 
-* getCardsOnBoard 
-* getCardsOnBoardWithExtraParams 
-* getCardsOnList 
+* getBoardMembers
+* getBoards
+* getCard
+* getCardsForList
+* getCardsOnBoard
+* getCardsOnBoardWithExtraParams
+* getCardsOnList
 * getCardsOnListWithExtraParams
 * getCardStickers
-* getChecklistsOnCard 
-* getCustomFieldsOnBoard 
-* getLabelsForBoard 
-* getListsOnBoard 
-* getListsOnBoardByFilter 
-* getMember 
-* getMemberCards 
-* getOrgBoards 
-* getOrgMembers 
+* getChecklistsOnCard
+* getCustomFieldsOnBoard
+* getLabelsForBoard
+* getListsOnBoard
+* getListsOnBoardByFilter
+* getMember
+* getMemberCards
+* getOrgBoards
+* getOrgMembers
 
 ### Update
 
-* renameList 
-* updateBoardPref 
-* updateCard 
-* updateCardDescription 
-* updateCardList 
-* updateCardName 
-* updateChecklist 
-* updateLabel 
-* updateLabelColor 
-* updateLabelName 
+* renameList
+* updateBoardPref
+* updateCard
+* updateCardDescription
+* updateCardList
+* updateCardName
+* updateChecklist
+* updateLabel
+* updateLabelColor
+* updateLabelName
 
 Everything that is not available as a function can be requested by calling `makeRequest`.
 
@@ -132,8 +131,8 @@ Everything that is not available as a function can be requested by calling `make
 ### 0.8.0
 
 * Rename list fixed
-* Handle API rate limit by retries 
-* New function `addCardWithExtraParams` 
+* Handle API rate limit by retries
+* New function `addCardWithExtraParams`
 
 ### 0.7.0
 
