@@ -317,11 +317,17 @@ Trello.prototype.getLabelsForBoard = function(boardId, callback) {
     return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/labels', {query:this.createQuery()}, callback);
 };
 
-
 Trello.prototype.getActionsOnBoard = function(boardId, callback) {
-    return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/actions', {query:this.createQuery()}, callback);
+    return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/actions', {query: this.createQuery()}, callback);
 };
-  
+
+Trello.prototype.getActionsOnBoardWithExtraParams = function(boardId, extraParams, callback) {
+    var query = this.createQuery();
+    Object.assign(query, extraParams);
+
+    return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/actions', {query: query}, callback);
+};
+
 Trello.prototype.getCustomFieldsOnBoard = function(boardId, callback) {
     return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/customFields', {query:this.createQuery()}, callback);
 };

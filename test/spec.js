@@ -575,7 +575,41 @@ describe('Trello', function () {
             restler.get.restore();
         });
     });
-  
+
+    describe('getActionsOnBoardWithExtraParams', function() {
+        var query;
+        var get;
+
+        var testDate = new Date("2015/03/25");
+        var extraParams = {before: testDate};
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'get', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.getActionsOnBoardWithExtraParams('boardId', extraParams, function () {
+                query = restler.get.args[0][1].query;
+                get = restler.get;
+                done();
+            });
+        });
+
+        it('should get to https://api.trello.com/1/boards/boardId/actions', function () {
+            get.should.have.been.calledWith('https://api.trello.com/1/boards/boardId/actions');
+        });
+
+        it('should include a date in the query', function () {
+            query.before.should.equal(testDate);
+        });
+
+        afterEach(function () {
+            restler.get.restore();
+        });
+    });
+
     describe('getCustomFieldsOnBoard', function() {
         var get;
 
