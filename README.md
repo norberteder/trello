@@ -120,6 +120,12 @@ Everything that is not available as a function can be requested by calling `make
 
 ## History
 
+### 0.10.0
+
+* Add `copyBoard` functionality
+* Add `getCustomFieldsOnBoard`
+* Add `getActionsOnBoard`
+
 ### 0.9.1
 
 * Added trailing slash to /boards/ call
