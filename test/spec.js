@@ -934,7 +934,7 @@ describe('Trello', function () {
         });
     });
 
-    describe('getChecklistsOnCard', function() {
+    describe('getChecklist', function() {
         var get;
 
         beforeEach(function (done) {
@@ -942,24 +942,24 @@ describe('Trello', function () {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
-            });
+          });
 
-            trello.getChecklistsOnCard('cardId', function () {
-                get = restler.get;
-                done();
-            });
+          trello.getChecklist('checkListId', function () {
+              get = restler.get;
+              done();
+          });
         });
 
-        it('should get to https://api.trello.com/1/cards/cardId/checklists', function () {
-            get.should.have.been.calledWith('https://api.trello.com/1/cards/cardId/checklists');
+        it('should get to https://api.trello.com/1/checklists', function () {
+            get.should.have.been.calledWith('https://api.trello.com/1/checklists/checkListId');
         });
 
         afterEach(function () {
             restler.get.restore();
         });
-    });
+  });
 
-    describe('getBoardMembers', function() {
+  describe('getBoardMembers', function() {
         var get;
 
         beforeEach(function (done) {
