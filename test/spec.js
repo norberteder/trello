@@ -587,6 +587,31 @@ describe('Trello', function () {
         });
     });
 
+    describe('getActionsOnBoard', function() {
+        var get;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'get', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.getActionsOnBoard('boardId', function () {
+                get = restler.get;
+                done();
+            });
+        });
+
+        it('should get to https://api.trello.com/1/boards/boardId/actions', function () {
+            get.should.have.been.calledWith('https://api.trello.com/1/boards/boardId/actions');
+        });
+
+        afterEach(function () {
+            restler.get.restore();
+        });
+    });
+  
     describe('getCustomFieldsOnBoard', function() {
         var get;
 
