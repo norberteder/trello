@@ -283,7 +283,7 @@ Trello.prototype.getCardsOnBoard = function (boardId, callback) {
 };
 
 Trello.prototype.getCardsOnBoardWithExtraParams = function (boardId, extraParams, callback) {
-    var query = this.createQuery();    
+    var query = this.createQuery();
     Object.assign(query, extraParams);
 
     return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/cards', {query: query}, callback);
@@ -294,7 +294,7 @@ Trello.prototype.getCardsOnList = function (listId, callback) {
 };
 
 Trello.prototype.getCardsOnListWithExtraParams = function (listId, extraParams, callback) {
-    var query = this.createQuery();    
+    var query = this.createQuery();
     Object.assign(query, extraParams);
 
     return makeRequest(rest.get, this.uri + '/1/lists/' + listId + '/cards', {query: query}, callback);
@@ -323,6 +323,10 @@ Trello.prototype.deleteWebhook = function (webHookId, callback) {
 
 Trello.prototype.getLabelsForBoard = function(boardId, callback) {
     return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/labels', {query:this.createQuery()}, callback);
+};
+
+Trello.prototype.getCustomFieldsOnBoard = function(boardId, callback) {
+    return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/customFields', {query:this.createQuery()}, callback);
 };
 
 Trello.prototype.addLabelOnBoard = function(boardId, name, color, callback) {
