@@ -103,6 +103,14 @@ Trello.prototype.addBoard = function (name, description, organizationId, callbac
     return makeRequest(rest.post, this.uri + '/1/boards/', {query: query}, callback);
 };
 
+Trello.prototype.copyBoard = function (name, sourceBoardId, callback) {
+    var query = this.createQuery();
+    query.name = name;
+    query.idBoardSource = sourceBoardId;
+
+    return makeRequest(rest.post, this.uri + '/1/boards/', {query: query}, callback);
+};
+
 Trello.prototype.updateBoardPref = function (boardId, field, value, callback) {
     var query = this.createQuery();
     query.value = value;
