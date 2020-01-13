@@ -140,6 +140,42 @@ describe('Trello', function () {
         });
     });
 
+    describe('copyBoard', function () {
+        var query;
+        var post;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'post', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.copyBoard('name', 'sourceBoardId', function () {
+                query = restler.post.args[0][1].query;
+                post = restler.post;
+                done();
+            });
+
+        });
+
+        it('should post to https://api.trello.com/1/boards/', function () {
+            post.should.have.been.calledWith('https://api.trello.com/1/boards/');
+        });
+
+        it('should include the name', function () {
+            query.name.should.equal('name');
+        });
+
+        it('should include the source board id', function () {
+            query.idBoardSource.should.equal('sourceBoardId');
+        });
+
+        afterEach(function () {
+            restler.post.restore();
+        });
+    });
+
     describe('addCard', function() {
         var query;
         var post;
