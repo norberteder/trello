@@ -51,7 +51,7 @@
   ],
   "dependencies": {
     "es6-promise": "~3.0.2",
-    "restler": "~3.3.0",
+    "needle": "^2.4.0",
     "object-assign": "~4.1.0"
   },
   "devDependencies": {

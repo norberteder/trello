@@ -120,6 +120,10 @@ Everything that is not available as a function can be requested by calling `make
 
 ## History
 
+### 0.11.0
+
+* Remove `restler` due to security issues, using `needle` now
+
 ### 0.10.0
 
 * Add `copyBoard` functionality

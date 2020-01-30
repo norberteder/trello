@@ -7,7 +7,7 @@ var fs = require('fs');
 chai.should();
 chai.use(sinonChai);
 
-var restler = require('restler');
+var rest = require('needle');
 var Trello = require('../main');
 
 describe('Trello', function () {
@@ -25,7 +25,7 @@ describe('Trello', function () {
         });
 
         it('should throw error if type of a method passed is not string', function () {
-            expect(trello.makeRequest.bind(trello, restler.post, 'somePath', {})).to.throw(TypeError)
+            expect(trello.makeRequest.bind(trello, rest.post, 'somePath', {})).to.throw(TypeError)
         });
 
         it('should throw error if a method passed is not one of these: POST, GET, PUT, DELETE', function () {
@@ -37,66 +37,66 @@ describe('Trello', function () {
         });
 
         it('should not throw error if a method passed is POST', function (done) {
-            sinon.stub(restler, 'post', function (path, options) {
+            sinon.stub(rest, 'post', function (path, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             expect(trello.makeRequest.bind(trello, 'POST', 'somePath', {}, function () {})).to.not.throw(Error);
-            restler.post.restore();
+            rest.post.restore();
             done();
         });
 
         it('should not throw error if a method passed is GET', function (done) {
-            sinon.stub(restler, 'get', function (path, options) {
+            sinon.stub(rest, 'get', function (path, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             expect(trello.makeRequest.bind(trello, 'GET', 'somePath', {}, function () {})).to.not.throw(Error);
-            restler.get.restore();
+            rest.get.restore();
             done();
         });
 
         it('should not throw error if a method passed is PUT', function (done) {
-            sinon.stub(restler, 'put', function (path, options) {
+            sinon.stub(rest, 'put', function (path, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             expect(trello.makeRequest.bind(trello, 'PUT', 'somePath', {}, function () {})).to.not.throw(Error);
-            restler.put.restore();
+            rest.put.restore();
             done();
         });
 
         it('should not throw error if a method passed is DELETE', function (done) {
-            sinon.stub(restler, 'del', function (path, options) {
+            sinon.stub(rest, 'delete', function (path, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             expect(trello.makeRequest.bind(trello, 'DELETE', 'somePath', {}, function () {})).to.not.throw(Error);
-            restler.del.restore();
+            rest.delete.restore();
             done();
         });
 
         it('should not mutate passed options object', function (done) {
-            sinon.stub(restler, 'get', function (path, options) {
+            sinon.stub(rest, 'get', function (path, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
             var options = { webhooks: true };
-            trello.makeRequest("get", "/1/cards", options)
+            trello.makeRequest('get', '/1/cards', options)
                 .then(function (result) {
                     expect(Object.keys(options).length, 1, "options object was mutated");
                     expect(options.webhooks, true)
                 });
-            restler.get.restore();
+            rest.get.restore();
             done();
         })
     });
@@ -106,15 +106,15 @@ describe('Trello', function () {
         var post;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'post', function (uri, options) {
+            sinon.stub(rest, 'post', function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.addBoard('name', 'description', 'organizationId', function () {
-                query = restler.post.args[0][1].query;
-                post = restler.post;
+                query = rest.post.args[0][1].query;
+                post = rest.post;
                 done();
             });
         });
@@ -136,7 +136,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.post.restore();
+            rest.post.restore();
         });
     });
 
@@ -145,15 +145,15 @@ describe('Trello', function () {
         var post;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'post', function (uri, options) {
+            sinon.stub(rest, 'post', function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.copyBoard('name', 'sourceBoardId', function () {
-                query = restler.post.args[0][1].query;
-                post = restler.post;
+                query = rest.post.args[0][1].query;
+                post = rest.post;
                 done();
             });
 
@@ -172,7 +172,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.post.restore();
+            rest.post.restore();
         });
     });
 
@@ -181,15 +181,15 @@ describe('Trello', function () {
         var post;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'post', function (uri, options) {
+            sinon.stub(rest, 'post', function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.addCard('name', 'description', 'listId', function () {
-                query = restler.post.args[0][1].query;
-                post = restler.post;
+                query = rest.post.args[0][1].query;
+                post = rest.post;
                 done();
             });
         });
@@ -211,7 +211,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.post.restore();
+            rest.post.restore();
         });
     });
 
@@ -226,15 +226,15 @@ describe('Trello', function () {
         };
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'post', function (uri, options) {
+            sinon.stub(rest, 'post', function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.addCardWithExtraParams('name', extraParams, 'listId', function () {
-                query = restler.post.args[0][1].query;
-                post = restler.post;
+                query = rest.post.args[0][1].query;
+                post = rest.post;
                 done();
             });
         });
@@ -260,7 +260,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.post.restore();
+            rest.post.restore();
         });
 
     });
@@ -273,15 +273,15 @@ describe('Trello', function () {
         var extraParams = {before: testDate}
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'get', function (uri, options) {
+            sinon.stub(rest, 'get', function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.getCardsOnListWithExtraParams('listId', extraParams, function () {
-                query = restler.get.args[0][1].query;
-                get = restler.get;
+                query = rest.get.args[0][1].query;
+                get = rest.get;
                 done();
             });
         });
@@ -294,7 +294,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.get.restore();
+            rest.get.restore();
         });
     });
 
@@ -306,15 +306,15 @@ describe('Trello', function () {
         var extraParams = {before: testDate}
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'get', function (uri, options) {
+            sinon.stub(rest, 'get', function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.getCardsOnBoardWithExtraParams('boardId', extraParams, function () {
-                query = restler.get.args[0][1].query;
-                get = restler.get;
+                query = rest.get.args[0][1].query;
+                get = rest.get;
                 done();
             });
         });
@@ -327,7 +327,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.get.restore();
+            rest.get.restore();
         });
     });
 
@@ -337,7 +337,7 @@ describe('Trello', function () {
         var data;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'post', function (uri, options) {
+            sinon.stub(rest, 'post', function (uri, options) {
                 return {
                     once: function (event, callback) {
                         callback(null, null);
@@ -346,9 +346,9 @@ describe('Trello', function () {
             });
 
             trello.addWebhook('webhook', 'http://callback', 'xxx', function (result) {
-                query = restler.post.args[0][1].query;
-                data = restler.post.args[0][1].data;
-                post = restler.post;
+                query = rest.post.args[0][1].query;
+                data = rest.post.args[0][1].data;
+                post = rest.post;
                 done();
             });
 
@@ -376,7 +376,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.post.restore();
+            rest.post.restore();
         });
     });
 
@@ -385,7 +385,7 @@ describe('Trello', function () {
         var del;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'del', function (uri, options) {
+            sinon.stub(rest, 'delete', function (uri, options) {
                 return {
                     once: function (event, callback) {
                         callback(null, null);
@@ -394,8 +394,8 @@ describe('Trello', function () {
             });
 
             trello.deleteWebhook('x1', function (result) {
-                query = restler.del.args[0][1].query;
-                del = restler.del;
+                query = rest.delete.args[0][1].query;
+                del = rest.delete;
                 done();
             });
 
@@ -410,7 +410,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.del.restore();
+            rest.delete.restore();
         });
     });
 
@@ -421,7 +421,7 @@ describe('Trello', function () {
         var data;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'put', function (uri, options) {
+            sinon.stub(rest, 'put', function (uri, options) {
                 return {
                     once: function (event, callback) {
                         callback(null, null);
@@ -430,8 +430,8 @@ describe('Trello', function () {
             });
 
             trello.updateCardList('myCardId', 'newListId', function (result) {
-                query = restler.put.args[0][1].query;
-                put = restler.put;
+                query = rest.put.args[0][1].query;
+                put = rest.put;
                 done();
             });
 
@@ -446,7 +446,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.put.restore();
+            rest.put.restore();
         });
     });
 
@@ -514,15 +514,15 @@ describe('Trello', function () {
         var post;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'post', function (uri, options) {
+            sinon.stub(rest, 'post', function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.addAttachmentToCard('myCardId', 'attachmentUrl', function () {
-                query = restler.post.args[0][1].query;
-                post = restler.post;
+                query = rest.post.args[0][1].query;
+                post = rest.post;
                 done();
             });
         });
@@ -536,7 +536,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.post.restore();
+            rest.post.restore();
         });
     });
 
@@ -545,15 +545,15 @@ describe('Trello', function () {
         var put;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'put', function (uri, options) {
+            sinon.stub(rest, 'put', function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.renameList('myListId', 'new list name', function () {
-                query = restler.put.args[0][1].query;
-                put = restler.put;
+                query = rest.put.args[0][1].query;
+                put = rest.put;
                 done();
             });
         });
@@ -567,7 +567,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.put.restore();
+            rest.put.restore();
         });
     });
 
@@ -591,14 +591,14 @@ describe('Trello', function () {
         var get;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'get', function (uri, options) {
+            sinon.stub(rest, 'get', function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.getActionsOnBoard('boardId', function () {
-                get = restler.get;
+                get = rest.get;
                 done();
             });
         });
@@ -608,7 +608,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.get.restore();
+            rest.get.restore();
         });
     });
   
@@ -616,14 +616,14 @@ describe('Trello', function () {
         var get;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'get', function (uri, options) {
+            sinon.stub(rest, 'get', function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.getCustomFieldsOnBoard('boardId', function () {
-                get = restler.get;
+                get = rest.get;
                 done();
             });
         });
@@ -633,7 +633,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.get.restore();
+            rest.get.restore();
         });
     });
 
@@ -641,14 +641,14 @@ describe('Trello', function () {
         var get;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'get', function (uri, options) {
+            sinon.stub(rest, 'get', function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.getLabelsForBoard('boardId', function () {
-                get = restler.get;
+                get = rest.get;
                 done();
             });
         });
@@ -658,7 +658,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.get.restore();
+            rest.get.restore();
         });
     });
 
@@ -667,15 +667,15 @@ describe('Trello', function () {
         var post;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'put', function (uri, options) {
+            sinon.stub(rest, 'put', function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.addMemberToBoard('boardId', 'memberId', 'normal', function () {
-                data = restler.put.args[0][1].data;
-                put = restler.put;
+                data = rest.put.args[0][1].data;
+                put = rest.put;
                 done();
             });
         });
@@ -689,7 +689,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.put.restore();
+            rest.put.restore();
         });
     });
 
@@ -699,16 +699,16 @@ describe('Trello', function () {
         var post;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'post', function (uri, options) {
+            sinon.stub(rest, 'post', function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.addLabelOnBoard('boardId', 'name', 'color', function () {
-                query = restler.post.args[0][1].query;
-                data = restler.post.args[0][1].data;
-                post = restler.post;
+                query = rest.post.args[0][1].query;
+                data = rest.post.args[0][1].data;
+                post = rest.post;
                 done();
             });
         });
@@ -730,7 +730,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.post.restore();
+            rest.post.restore();
         });
     });
 
@@ -738,14 +738,14 @@ describe('Trello', function () {
         var del;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'del', function (uri, options) {
+            sinon.stub(rest, 'delete', function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.deleteLabel('labelId', function () {
-                del = restler.del;
+                del = rest.delete;
                 done();
             });
         });
@@ -755,7 +755,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.del.restore();
+            rest.delete.restore();
         });
     });
 
@@ -765,16 +765,16 @@ describe('Trello', function () {
         var post;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'post', function (uri, options) {
+            sinon.stub(rest, 'post', function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.addLabelToCard('cardId', 'labelId', function () {
-                query = restler.post.args[0][1].query;
-                data = restler.post.args[0][1].data;
-                post = restler.post;
+                query = rest.post.args[0][1].query;
+                data = rest.post.args[0][1].data;
+                post = rest.post;
                 done();
             });
         });
@@ -788,7 +788,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.post.restore();
+            rest.post.restore();
         });
     });
 
@@ -796,14 +796,14 @@ describe('Trello', function () {
         var del;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'del', function (uri, options) {
+            sinon.stub(rest, 'delete', function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.deleteLabelFromCard('cardId', 'labelId', function () {
-                del = restler.del;
+                del = rest.delete;
                 done();
             });
         });
@@ -813,7 +813,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.del.restore();
+            rest.delete.restore();
         });
     });
 
@@ -822,15 +822,15 @@ describe('Trello', function () {
         var put;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'put', function (uri, options) {
+            sinon.stub(rest, 'put', function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.updateLabel('labelId', 'field', 'value', function () {
-                query = restler.put.args[0][1].query;
-                put = restler.put;
+                query = rest.put.args[0][1].query;
+                put = rest.put;
                 done();
             });
         });
@@ -844,7 +844,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.put.restore();
+            rest.put.restore();
         });
     });
 
@@ -852,14 +852,14 @@ describe('Trello', function () {
         var get;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'get', function (uri, options) {
+            sinon.stub(rest, 'get', function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.getCardStickers('cardId', function () {
-                get = restler.get;
+                get = rest.get;
                 done();
             });
         });
@@ -869,7 +869,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.get.restore();
+            rest.get.restore();
         });
     });
 
@@ -879,16 +879,16 @@ describe('Trello', function () {
         var post;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'post', function (uri, options) {
+            sinon.stub(rest, 'post', function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.addStickerToCard('cardId', 'image', 'left', 'top', 'zIndex', 'rotate', function () {
-                query = restler.post.args[0][1].query;
-                data = restler.post.args[0][1].data;
-                post = restler.post;
+                query = rest.post.args[0][1].query;
+                data = rest.post.args[0][1].data;
+                post = rest.post;
                 done();
             });
         });
@@ -918,7 +918,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.post.restore();
+            rest.post.restore();
         });
     });
 
@@ -927,15 +927,15 @@ describe('Trello', function () {
         var post;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'post', function (uri, options) {
+            sinon.stub(rest, 'post', function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.addChecklistToCard('cardId', 'name', function () {
-                query = restler.post.args[0][1].query;
-                post = restler.post;
+                query = rest.post.args[0][1].query;
+                post = rest.post;
                 done();
             });
         });
@@ -949,7 +949,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.post.restore();
+            rest.post.restore();
         });
     });
 
@@ -958,15 +958,15 @@ describe('Trello', function () {
         var post;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'post', function (uri, options) {
+            sinon.stub(rest, 'post', function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.addExistingChecklistToCard('cardId', 'checklistId', function () {
-                query = restler.post.args[0][1].query;
-                post = restler.post;
+                query = rest.post.args[0][1].query;
+                post = rest.post;
                 done();
             });
         });
@@ -980,7 +980,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.post.restore();
+            rest.post.restore();
         });
     });
 
@@ -988,14 +988,14 @@ describe('Trello', function () {
         var get;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'get', function (uri, options) {
+            sinon.stub(rest, 'get', function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.getChecklistsOnCard('cardId', function () {
-                get = restler.get;
+                get = rest.get;
                 done();
             });
         });
@@ -1005,7 +1005,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.get.restore();
+            rest.get.restore();
         });
     });
 
@@ -1013,14 +1013,14 @@ describe('Trello', function () {
         var get;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'get', function (uri, options) {
+            sinon.stub(rest, 'get', function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.getBoardMembers('boardId', function () {
-                get = restler.get;
+                get = rest.get;
                 done();
             });
         });
@@ -1030,7 +1030,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.get.restore();
+            rest.get.restore();
         });
     });
 
@@ -1038,14 +1038,14 @@ describe('Trello', function () {
         var get;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'get', function (uri, options) {
+            sinon.stub(rest, 'get', function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.getOrgMembers('organizationId', function () {
-                get = restler.get;
+                get = rest.get;
                 done();
             });
         });
@@ -1055,7 +1055,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.get.restore();
+            rest.get.restore();
         });
     });
 
@@ -1063,14 +1063,14 @@ describe('Trello', function () {
         var get;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'get', function (uri, options) {
+            sinon.stub(rest, 'get', function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.getOrgBoards('organizationId', function () {
-                get = restler.get;
+                get = rest.get;
                 done();
             });
         });
@@ -1080,7 +1080,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.get.restore();
+            rest.get.restore();
         });
     });
 
@@ -1089,15 +1089,15 @@ describe('Trello', function () {
         var put;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'put', function (uri, options) {
+            sinon.stub(rest, 'put', function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.updateChecklist('checklistId', 'field', 'value', function () {
-                query = restler.put.args[0][1].query;
-                put = restler.put;
+                query = rest.put.args[0][1].query;
+                put = rest.put;
                 done();
             });
         });
@@ -1111,7 +1111,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.put.restore();
+            rest.put.restore();
         });
     });
 
@@ -1120,15 +1120,15 @@ describe('Trello', function () {
         var put;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'put', function (uri, options) {
+            sinon.stub(rest, 'put', function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.addDueDateToCard('cardId', 'value', function () {
-                query = restler.put.args[0][1].query;
-                put = restler.put;
+                query = rest.put.args[0][1].query;
+                put = rest.put;
                 done();
             });
         });
@@ -1142,7 +1142,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.put.restore();
+            rest.put.restore();
         });
     });
 });
