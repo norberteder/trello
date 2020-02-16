@@ -289,6 +289,10 @@ Trello.prototype.getCardsOnBoardWithExtraParams = function (boardId, extraParams
     return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/cards', {query: query}, callback);
 }
 
+Trello.prototype.getCustomFieldsOnBoard = function (boardId, callback) {
+    return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/customFields', {query: this.createQuery()}, callback);
+};
+
 Trello.prototype.getCardsOnList = function (listId, callback) {
     return makeRequest(rest.get, this.uri + '/1/lists/' + listId + '/cards', {query: this.createQuery()}, callback);
 };
