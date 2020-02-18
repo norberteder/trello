@@ -293,6 +293,30 @@ Trello.prototype.getCustomFieldsOnBoard = function (boardId, callback) {
     return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/customFields', {query: this.createQuery()}, callback);
 };
 
+Trello.prototype.addCustomField = function (boardId, name, callback) {
+    var query = this.createQuery();
+    var data = {
+        idModel: boardId,
+        modelType: "board",
+        name: name,
+        options: [],
+        pos: "bottom",
+        type: "list"
+    };
+    return makeRequest(rest.post, this.uri + '/1/customFields', {data: data, query:query}, callback);
+};
+
+Trello.prototype.addOptionToCustomField = function (customField, value, callback) {
+    var query = this.createQuery();
+    var data = {
+        pos: "bottom",
+        value: {
+            text: value
+        }
+    };
+    return makeRequest(rest.post, this.uri + '/1/customFields/' + customField + '/options', {data: data, query:query}, callback);
+};
+
 Trello.prototype.getCardsOnList = function (listId, callback) {
     return makeRequest(rest.get, this.uri + '/1/lists/' + listId + '/cards', {query: this.createQuery()}, callback);
 };
