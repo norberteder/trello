@@ -317,6 +317,12 @@ Trello.prototype.addOptionToCustomField = function (customField, value, callback
     return makeRequest(rest.post, this.uri + '/1/customFields/' + customField + '/options', {data: data, query:query}, callback);
 };
 
+Trello.prototype.SetCustomFieldOnCard = function (cardId, customField, value, callback) {
+    var query = this.createQuery();
+    
+    return makeRequest(rest.put, this.uri + '/1/card/' + cardId + '/customField/' + customField + '/item', {data: value, query: query}, callback);
+};
+
 Trello.prototype.getCardsOnList = function (listId, callback) {
     return makeRequest(rest.get, this.uri + '/1/lists/' + listId + '/cards', {query: this.createQuery()}, callback);
 };
