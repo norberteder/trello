@@ -46,7 +46,7 @@ API calls can either execute a callback or return a promise. To return a promise
 ```javascript
     // Get all registered tokens and webhooks
     // Url will look like: https://api.trello.com/1/members/me/tokens?webhooks=true&key=YOURKEY&token=YOURTOKEN
-    trello.makeRequest('get', '/1/members/me/tokens', { webhooks: true })
+    trello.makeRequest('get', '/1/members/me/tokens', { query: { webhooks: true } })
       .then((res) => {
           console.log(res)
       });

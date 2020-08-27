@@ -87,8 +87,8 @@ Trello.prototype.makeRequest = function (requestMethod, path, options, callback)
         throw new Error("Unsupported requestMethod. Pass one of these methods: POST, GET, PUT, DELETE.");
     }
     var keyTokenObj = this.createQuery();
-    var query = objectAssign({}, options, keyTokenObj);
-    return makeRequest(methods[method], this.uri + path, {query: query}, callback)
+    options.query = objectAssign({}, options.query, keyTokenObj);
+    return makeRequest(methods[method], this.uri + path, options, callback)
 };
 
 Trello.prototype.addBoard = function (name, description, organizationId, callback) {
