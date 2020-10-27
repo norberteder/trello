@@ -265,6 +265,62 @@ describe('Trello', function () {
 
     });
 
+    describe('getCard', function() {
+        var query;
+        var post;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'get', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.getCard(null, 'cardId', function () {
+                query = restler.get.args[0][1].query;
+                get = restler.get;
+                done();
+            });
+        });
+
+        it('should get https://api.trello.com/1/cards/cardId', function () {
+            get.should.have.been.calledWith('https://api.trello.com/1/cards/cardId');
+        });
+
+        afterEach(function () {
+            restler.get.restore();
+        });
+
+    });
+
+    describe('getCardFromBoard', function() {
+        var query;
+        var post;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'get', function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.getCard('boardId', 'cardId', function () {
+                query = restler.get.args[0][1].query;
+                get = restler.get;
+                done();
+            });
+        });
+
+        it('should get https://api.trello.com/1/boards/boardId/cards/cardId', function () {
+            get.should.have.been.calledWith('https://api.trello.com/1/boards/boardId/cards/cardId');
+        });
+
+        afterEach(function () {
+            restler.get.restore();
+        });
+
+    });
+
     describe('getCardsOnListWithExtraParams', function () {
         var query;
         var post;
