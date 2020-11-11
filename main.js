@@ -155,6 +155,10 @@ Trello.prototype.getCard = function (boardId, cardId, callback) {
     return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/cards/' + cardId, {query: this.createQuery()}, callback);
 };
 
+Trello.prototype.getCardById = function (cardId, callback) {
+    return makeRequest(rest.get, this.uri + '/1/cards/' + cardId, {query: this.createQuery()}, callback);
+};
+
 Trello.prototype.getCardsForList = function(listId, actions, callback) {
     var query = this.createQuery();
     if (actions)
@@ -418,6 +422,9 @@ Trello.prototype.updateCustomFieldOnCard = function (cardId, field, value, callb
     return makeRequest(rest.put, this.uri + '/1/cards/' + cardId + /customField/ + field + '/item', options, callback);
 };
 
+Trello.prototype.getCustomFieldsOnCard = function (cardId, callback) {
+    return makeRequest(rest.get, this.uri + '/1/cards/' + cardId + '/customFieldItems', {query: this.createQuery()}, callback);
+};
 
 
 module.exports = Trello;
