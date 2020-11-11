@@ -78,19 +78,31 @@ Trello.prototype.makeRequest = function (requestMethod, path, options, callback)
     var method = requestMethod.toLowerCase();
     var methods = {
         'post': rest.post,
+        'postjson': rest.post,
         'get': rest.get,
         'put': rest.put,
+        'putjson' : rest.put,
         'delete': rest.del
     };
 
     if (!methods[method]) {
         throw new Error("Unsupported requestMethod. Pass one of these methods: POST, GET, PUT, DELETE.");
     }
+
     var keyTokenObj = this.createQuery();
     var query = objectAssign({}, options, keyTokenObj);
-    return makeRequest(methods[method], this.uri + path, {query: query}, callback)
-};
 
+    if(method.indexOf('json') !== -1) {
+        var jsonOptions = {};
+        jsonOptions.headers = {'Content-Type' : 'application/json'}
+        jsonOptions.data = options.data;
+        jsonOptions.query = query;
+        delete options.data;
+        return makeRequest(methods[method], this.uri + path, jsonOptions, callback)
+    } else {
+        return makeRequest(methods[method], this.uri + path, {query: query}, callback)
+    }
+};
 Trello.prototype.addBoard = function (name, description, organizationId, callback) {
     var query = this.createQuery();
     query.name = name;
