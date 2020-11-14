@@ -140,6 +140,8 @@ Trello.prototype.addCardWithExtraParams = function(name, extraParams, listId, ca
 };
 
 Trello.prototype.getCard = function (boardId, cardId, callback) {
+    if(boardId === null)
+        return makeRequest(rest.get, this.uri + '/1/cards/' + cardId, {query: this.createQuery()}, callback);
     return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/cards/' + cardId, {query: this.createQuery()}, callback);
 };
 
