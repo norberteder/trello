@@ -145,6 +145,10 @@ Trello.prototype.getCard = function (boardId, cardId, callback) {
     return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/cards/' + cardId, {query: this.createQuery()}, callback);
 };
 
+Trello.prototype.getCardWithoutBoardId = function (cardId, callback) {
+    return makeRequest(rest.get, this.uri + '/1/cards/' + cardId, {query: this.createQuery()}, callback);
+};
+
 Trello.prototype.getCardsForList = function(listId, actions, callback) {
     var query = this.createQuery();
     if (actions)
