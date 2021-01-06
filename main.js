@@ -423,7 +423,7 @@ Trello.prototype.updateCustomFieldOnCard = function (cardId, field, value, callb
         headers : {'Content-Type' : 'application/json'},
         data : { value : value}
     };
-    return makeRequest(rest.put, this.uri + '/1/cards/' + cardId + /customField/ + field + '/item', options, callback);
+    return makeRequest(rest.put, this.uri + '/1/cards/' + cardId + '/customField/' + field + '/item', options, callback);
 };
 
 Trello.prototype.getCustomFieldsOnCard = function (cardId, callback) {
