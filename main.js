@@ -78,19 +78,31 @@ Trello.prototype.makeRequest = function (requestMethod, path, options, callback)
     var method = requestMethod.toLowerCase();
     var methods = {
         'post': rest.post,
+        'postjson': rest.post,
         'get': rest.get,
         'put': rest.put,
+        'putjson' : rest.put,
         'delete': rest.del
     };
 
     if (!methods[method]) {
         throw new Error("Unsupported requestMethod. Pass one of these methods: POST, GET, PUT, DELETE.");
     }
+
     var keyTokenObj = this.createQuery();
     var query = objectAssign({}, options, keyTokenObj);
-    return makeRequest(methods[method], this.uri + path, {query: query}, callback)
-};
 
+    if(method.indexOf('json') !== -1) {
+        var jsonOptions = {};
+        jsonOptions.headers = {'Content-Type' : 'application/json'}
+        jsonOptions.data = options.data;
+        jsonOptions.query = query;
+        delete options.data;
+        return makeRequest(methods[method], this.uri + path, jsonOptions, callback)
+    } else {
+        return makeRequest(methods[method], this.uri + path, {query: query}, callback)
+    }
+};
 Trello.prototype.addBoard = function (name, description, organizationId, callback) {
     var query = this.createQuery();
     query.name = name;
@@ -143,6 +155,10 @@ Trello.prototype.getCard = function (boardId, cardId, callback) {
     if(boardId === null)
         return makeRequest(rest.get, this.uri + '/1/cards/' + cardId, {query: this.createQuery()}, callback);
     return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/cards/' + cardId, {query: this.createQuery()}, callback);
+};
+
+Trello.prototype.getCardById = function (cardId, callback) {
+    return makeRequest(rest.get, this.uri + '/1/cards/' + cardId, {query: this.createQuery()}, callback);
 };
 
 Trello.prototype.getCardsForList = function(listId, actions, callback) {
@@ -218,6 +234,10 @@ Trello.prototype.addExistingChecklistToCard = function (cardId, checklistId, cal
 
 Trello.prototype.getChecklistsOnCard = function (cardId, callback) {
     return makeRequest(rest.get, this.uri + '/1/cards/' + cardId + '/checklists', {query: this.createQuery()}, callback);
+};
+
+Trello.prototype.getActionsOnCard = function (cardId, callback) {
+    return makeRequest(rest.get, this.uri + '/1/cards/' + cardId + '/actions', {query: this.createQuery()}, callback);
 };
 
 Trello.prototype.addItemToChecklist = function (checkListId, name, pos, callback) {
@@ -431,6 +451,23 @@ Trello.prototype.addDueDateToCard = function (cardId, dateValue, callback) {
     query.value = dateValue;
 
     return makeRequest(rest.put, this.uri + '/1/cards/' + cardId + '/due', {query: query}, callback);
+};
+
+Trello.prototype.updateCustomFieldOnCard = function (cardId, field, value, callback) {
+    var options = {
+        query : this.createQuery(),
+        headers : {'Content-Type' : 'application/json'},
+        data : { value : value}
+    };
+    return makeRequest(rest.put, this.uri + '/1/cards/' + cardId + '/customField/' + field + '/item', options, callback);
+};
+
+Trello.prototype.getCustomFieldsOnCard = function (cardId, callback) {
+    return makeRequest(rest.get, this.uri + '/1/cards/' + cardId + '/customFieldItems', {query: this.createQuery()}, callback);
+};
+
+Trello.prototype.getAttachmentsOnCard = function (cardId, callback) {
+    return makeRequest(rest.get, this.uri + '/1/cards/' + cardId + '/attachments', {query: this.createQuery()}, callback);
 };
 
 
