@@ -62,6 +62,7 @@ API calls can either execute a callback or return a promise. To return a promise
 * addCardWithExtraParams 
 * addChecklistToCard 
 * addCommentToCard 
+* addCustomField
 * addDueDateToCard 
 * addExistingChecklistToCard 
 * addItemToChecklist 
@@ -70,15 +71,18 @@ API calls can either execute a callback or return a promise. To return a promise
 * addListToBoard 
 * addMemberToBoard 
 * addMemberToCard 
+* addOptionToCustomField
 * addStickerToCard 
 * addWebhook 
 * copyBoard
+* setCustomFieldOnCard
 
 ### Delete
 
 * deleteCard 
 * deleteLabel 
 * deleteLabelFromCard 
+* delMemberFromCard
 * deleteWebhook 
 
 ### Get
@@ -111,6 +115,7 @@ API calls can either execute a callback or return a promise. To return a promise
 * updateCardDescription 
 * updateCardList 
 * updateCardName 
+* updateCardPos
 * updateChecklist 
 * updateLabel 
 * updateLabelColor 
@@ -119,6 +124,16 @@ API calls can either execute a callback or return a promise. To return a promise
 Everything that is not available as a function can be requested by calling `makeRequest`.
 
 ## History
+
+### 0.11.0
+
+* Update optional fields
+* Add optional field queries
+* Add function `addCustomField`
+* Add function `addOptionToCustomField`
+* Add function `setCustomFieldOnCard`
+* Add function `updateCardPos`
+* Add function `delMemberFromCard`
 
 ### 0.10.0
 
