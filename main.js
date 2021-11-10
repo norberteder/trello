@@ -290,8 +290,10 @@ Trello.prototype.getOrgMembers = function (organizationId, callback) {
     return makeRequest(rest.get, this.uri + '/1/organizations/' + organizationId + '/members', {query: this.createQuery()}, callback);
 };
 
-Trello.prototype.getListsOnBoard = function (boardId, callback) {
-    return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/lists', {query: this.createQuery()}, callback);
+Trello.prototype.getListsOnBoard = function (boardId, fields = 'all', callback,) {
+    var query = this.createQuery();
+    query.fields = fields;
+    return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/lists', {query: query}, callback);
 };
 
 Trello.prototype.getListsOnBoardByFilter = function(boardId, filter, callback) {
@@ -304,9 +306,10 @@ Trello.prototype.getCardsOnBoard = function (boardId, callback) {
     return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/cards', {query: this.createQuery()}, callback);
 };
 
-Trello.prototype.getCardsOnBoardWithExtraParams = function (boardId, extraParams, callback) {
+Trello.prototype.getCardsOnBoardWithExtraParams = function (boardId, extraParams, fields = 'all', callback) {
     var query = this.createQuery();
     Object.assign(query, extraParams);
+    query.fields = fields
 
     return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/cards', {query: query}, callback);
 }
