@@ -415,6 +415,13 @@ Trello.prototype.deleteLabelFromCard = function(cardId, labelId, callback){
     return makeRequest(rest.del, this.uri + '/1/cards/' + cardId + '/idLabels/'+labelId, {query: this.createQuery()}, callback);
 };
 
+Trello.prototype.updateCardPos = function(cardId, position, callback) {
+    var query = this.createQuery();
+    var data = { pos: position };
+
+    return makeRequest(rest.put, this.uri + '/1/cards/' + cardId, {query: query, data: data}, callback);
+};
+
 Trello.prototype.updateLabel = function (labelId, field, value, callback) {
     var query = this.createQuery();
     query.value = value;
