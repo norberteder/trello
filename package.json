@@ -50,16 +50,16 @@
     "trello"
   ],
   "dependencies": {
-    "es6-promise": "~3.0.2",
-    "restler": "~3.3.0",
-    "object-assign": "~4.1.0"
+    "es6-promise": "^3.3.1",
+    "object-assign": "~4.1.0",
+    "restler": "^3.4.0"
   },
   "devDependencies": {
     "mocha": "~2.3.2",
     "chai": "3.2.0",
     "sinon": "~1.16.1",
     "sinon-chai": "~2.8.0",
-    "q": "~1.4.1"
+    "q": "1.5.1"
   },
   "license": "MIT",
   "engines": {
