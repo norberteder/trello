@@ -37,7 +37,7 @@ describe('Trello', function () {
         });
 
         it('should not throw error if a method passed is POST', function (done) {
-            sinon.stub(restler, 'post', function (path, options) {
+            sinon.stub(restler, 'post').callsFake(function (path, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -49,7 +49,7 @@ describe('Trello', function () {
         });
 
         it('should not throw error if a method passed is GET', function (done) {
-            sinon.stub(restler, 'get', function (path, options) {
+            sinon.stub(restler, 'get').callsFake(function (path, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -61,7 +61,7 @@ describe('Trello', function () {
         });
 
         it('should not throw error if a method passed is PUT', function (done) {
-            sinon.stub(restler, 'put', function (path, options) {
+            sinon.stub(restler, 'put').callsFake(function (path, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -73,7 +73,7 @@ describe('Trello', function () {
         });
 
         it('should not throw error if a method passed is DELETE', function (done) {
-            sinon.stub(restler, 'del', function (path, options) {
+            sinon.stub(restler, 'del').callsFake(function (path, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -85,7 +85,7 @@ describe('Trello', function () {
         });
 
         it('should not mutate passed options object', function (done) {
-            sinon.stub(restler, 'get', function (path, options) {
+            sinon.stub(restler, 'get').callsFake(function (path, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -106,7 +106,7 @@ describe('Trello', function () {
         var post;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'post', function (uri, options) {
+            sinon.stub(restler, 'post').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -120,6 +120,7 @@ describe('Trello', function () {
         });
 
         it('should post to https://api.trello.com/1/boards/', function () {
+            
             post.should.have.been.calledWith('https://api.trello.com/1/boards/');
         });
 
@@ -145,7 +146,7 @@ describe('Trello', function () {
         var post;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'post', function (uri, options) {
+            sinon.stub(restler, 'post').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -181,7 +182,7 @@ describe('Trello', function () {
         var post;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'post', function (uri, options) {
+            sinon.stub(restler, 'post').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -226,7 +227,7 @@ describe('Trello', function () {
         };
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'post', function (uri, options) {
+            sinon.stub(restler, 'post').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -270,7 +271,7 @@ describe('Trello', function () {
         var post;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'get', function (uri, options) {
+            sinon.stub(restler, 'get').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -298,7 +299,7 @@ describe('Trello', function () {
         var post;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'get', function (uri, options) {
+            sinon.stub(restler, 'get').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -323,13 +324,12 @@ describe('Trello', function () {
 
     describe('getCardsOnListWithExtraParams', function () {
         var query;
-        var post;
 
         var testDate = new Date("2015/03/25");
         var extraParams = {before: testDate}
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'get', function (uri, options) {
+            sinon.stub(restler, 'get').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -356,35 +356,58 @@ describe('Trello', function () {
 
     describe('getCardsOnBoardWithExtraParams', function () {
         var query;
-        var post;
 
         var testDate = new Date("2015/03/25");
         var extraParams = {before: testDate}
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'get', function (uri, options) {
+            sinon.stub(restler, 'get').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
-            trello.getCardsOnBoardWithExtraParams('boardId', extraParams, function () {
+            trello.getCardsOnBoardWithExtraParams('boardId', extraParams, 'all', function () {
                 query = restler.get.args[0][1].query;
                 get = restler.get;
                 done();
             });
         });
 
-        it('should get from https://api.trello.com/1/boards/boardId/cards', function () {
-            get.should.have.been.calledWith('https://api.trello.com/1/boards/boardId/cards');
-        });
         it('should include a date in the query', function () {
             query.before.should.equal(testDate)
         });
+        it('should get from https://api.trello.com/1/boards/boardId/cards', function () {
+            get.should.have.been.calledWith('https://api.trello.com/1/boards/boardId/cards');
+        });
+        
 
         afterEach(function () {
             restler.get.restore();
         });
+    });
+
+    describe('getListOnBoard', function() {
+        beforeEach(function(done) {
+            sinon.stub(restler, 'get').callsFake(function(uri, options) {
+               return { once: function(event, callback) {
+                   callback(null, null);
+               }} 
+            });
+
+            trello.getListsOnBoard('boardId', 'all', function () {
+                get = restler.get;
+                done();
+            });
+        });
+
+        it('should get from https://api.trello.com/1/boards/boardId/lists', function() {
+            get.should.have.been.calledWith('https://api.trello.com/1/boards/boardId/lists');
+        });
+
+        afterEach(function() {
+            restler.get.restore();
+        })
     });
 
     describe('addWebhook', function () {
@@ -393,7 +416,7 @@ describe('Trello', function () {
         var data;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'post', function (uri, options) {
+            sinon.stub(restler, 'post').callsFake(function (uri, options) {
                 return {
                     once: function (event, callback) {
                         callback(null, null);
@@ -441,7 +464,7 @@ describe('Trello', function () {
         var del;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'del', function (uri, options) {
+            sinon.stub(restler, 'del').callsFake(function (uri, options) {
                 return {
                     once: function (event, callback) {
                         callback(null, null);
@@ -477,7 +500,7 @@ describe('Trello', function () {
         var data;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'put', function (uri, options) {
+            sinon.stub(restler, 'put').callsFake(function (uri, options) {
                 return {
                     once: function (event, callback) {
                         callback(null, null);
@@ -569,8 +592,8 @@ describe('Trello', function () {
         var query;
         var post;
 
-        beforeEach(function (done) {
-            sinon.stub(restler, 'post', function (uri, options) {
+       beforeEach(function (done) {
+            sinon.stub(restler, 'post').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -601,7 +624,7 @@ describe('Trello', function () {
         var put;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'put', function (uri, options) {
+            sinon.stub(restler, 'put').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -647,7 +670,7 @@ describe('Trello', function () {
         var get;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'get', function (uri, options) {
+            sinon.stub(restler, 'get').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -672,7 +695,7 @@ describe('Trello', function () {
         var get;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'get', function (uri, options) {
+            sinon.stub(restler, 'get').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -697,7 +720,7 @@ describe('Trello', function () {
         var get;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'get', function (uri, options) {
+            sinon.stub(restler, 'get').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -723,7 +746,7 @@ describe('Trello', function () {
         var post;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'put', function (uri, options) {
+            sinon.stub(restler, 'put').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -755,7 +778,7 @@ describe('Trello', function () {
         var post;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'post', function (uri, options) {
+            sinon.stub(restler, 'post').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -794,7 +817,7 @@ describe('Trello', function () {
         var del;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'del', function (uri, options) {
+            sinon.stub(restler, 'del').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -821,7 +844,7 @@ describe('Trello', function () {
         var post;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'post', function (uri, options) {
+            sinon.stub(restler, 'post').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -852,7 +875,7 @@ describe('Trello', function () {
         var del;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'del', function (uri, options) {
+            sinon.stub(restler, 'del').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -878,7 +901,7 @@ describe('Trello', function () {
         var put;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'put', function (uri, options) {
+            sinon.stub(restler, 'put').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -908,7 +931,7 @@ describe('Trello', function () {
         var get;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'get', function (uri, options) {
+            sinon.stub(restler, 'get').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -935,7 +958,7 @@ describe('Trello', function () {
         var post;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'post', function (uri, options) {
+            sinon.stub(restler, 'post').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -983,7 +1006,7 @@ describe('Trello', function () {
         var post;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'post', function (uri, options) {
+            sinon.stub(restler, 'post').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -1014,7 +1037,7 @@ describe('Trello', function () {
         var post;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'post', function (uri, options) {
+            sinon.stub(restler, 'post').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -1044,7 +1067,7 @@ describe('Trello', function () {
         var get;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'get', function (uri, options) {
+            sinon.stub(restler, 'get').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -1069,7 +1092,7 @@ describe('Trello', function () {
         var get;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'get', function (uri, options) {
+            sinon.stub(restler, 'get').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -1094,7 +1117,7 @@ describe('Trello', function () {
         var get;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'get', function (uri, options) {
+            sinon.stub(restler, 'get').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -1119,7 +1142,7 @@ describe('Trello', function () {
         var get;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'get', function (uri, options) {
+            sinon.stub(restler, 'get').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -1145,7 +1168,7 @@ describe('Trello', function () {
         var put;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'put', function (uri, options) {
+            sinon.stub(restler, 'put').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
@@ -1176,7 +1199,7 @@ describe('Trello', function () {
         var put;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'put', function (uri, options) {
+            sinon.stub(restler, 'put').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
