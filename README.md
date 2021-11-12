@@ -125,6 +125,10 @@ Everything that is not available as a function can be requested by calling `make
 
 ## History
 
+### 0.12.0
+
+* Replaced `restler` with `needle`
+
 ### 0.11.0
 
 * Update optional fields

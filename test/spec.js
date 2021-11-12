@@ -7,7 +7,7 @@ var fs = require('fs');
 chai.should();
 chai.use(sinonChai);
 
-var restler = require('restler');
+var restler = require('needle');
 var Trello = require('../main');
 
 describe('Trello', function () {
@@ -73,14 +73,14 @@ describe('Trello', function () {
         });
 
         it('should not throw error if a method passed is DELETE', function (done) {
-            sinon.stub(restler, 'del').callsFake(function (path, options) {
+            sinon.stub(restler, 'delete').callsFake(function (path, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             expect(trello.makeRequest.bind(trello, 'DELETE', 'somePath', {}, function () {})).to.not.throw(Error);
-            restler.del.restore();
+            restler.delete.restore();
             done();
         });
 
@@ -464,7 +464,7 @@ describe('Trello', function () {
         var del;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'del').callsFake(function (uri, options) {
+            sinon.stub(restler, 'delete').callsFake(function (uri, options) {
                 return {
                     once: function (event, callback) {
                         callback(null, null);
@@ -473,8 +473,8 @@ describe('Trello', function () {
             });
 
             trello.deleteWebhook('x1', function (result) {
-                query = restler.del.args[0][1].query;
-                del = restler.del;
+                query = restler.delete.args[0][1].query;
+                del = restler.delete;
                 done();
             });
 
@@ -489,7 +489,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.del.restore();
+            restler.delete.restore();
         });
     });
 
@@ -817,14 +817,14 @@ describe('Trello', function () {
         var del;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'del').callsFake(function (uri, options) {
+            sinon.stub(restler, 'delete').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.deleteLabel('labelId', function () {
-                del = restler.del;
+                del = restler.delete;
                 done();
             });
         });
@@ -834,7 +834,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.del.restore();
+            restler.delete.restore();
         });
     });
 
@@ -875,14 +875,14 @@ describe('Trello', function () {
         var del;
 
         beforeEach(function (done) {
-            sinon.stub(restler, 'del').callsFake(function (uri, options) {
+            sinon.stub(restler, 'delete').callsFake(function (uri, options) {
                 return {once: function (event, callback) {
                     callback(null, null);
                 }};
             });
 
             trello.deleteLabelFromCard('cardId', 'labelId', function () {
-                del = restler.del;
+                del = restler.delete;
                 done();
             });
         });
@@ -892,7 +892,7 @@ describe('Trello', function () {
         });
 
         afterEach(function () {
-            restler.del.restore();
+            restler.delete.restore();
         });
     });
 

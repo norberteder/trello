@@ -1,5 +1,5 @@
 require('es6-promise').polyfill();
-var rest = require('restler');
+var rest = require('needle');
 var objectAssign = require('object-assign');
 
 var minRequestDelay = 500;
@@ -82,7 +82,7 @@ Trello.prototype.makeRequest = function (requestMethod, path, options, callback)
         'get': rest.get,
         'put': rest.put,
         'putjson' : rest.put,
-        'delete': rest.del
+        'delete': rest.delete
     };
 
     if (!methods[method]) {
@@ -212,7 +212,7 @@ Trello.prototype.addMemberToCard = function (cardId, memberId, callback) {
 Trello.prototype.delMemberFromCard = function (cardId, memberId, callback) {
     var query = this.createQuery();
   
-    return makeRequest(rest.del, this.uri + '/1/cards/' + cardId + '/members/' + memberId, {query: query}, callback);
+    return makeRequest(rest.delete, this.uri + '/1/cards/' + cardId + '/members/' + memberId, {query: query}, callback);
 };
 
 Trello.prototype.getBoards = function(memberId, callback) {
@@ -365,7 +365,7 @@ Trello.prototype.getCardsOnListWithExtraParams = function (listId, extraParams, 
 }
 
 Trello.prototype.deleteCard = function (cardId, callback) {
-    return makeRequest(rest.del, this.uri + '/1/cards/' + cardId, {query: this.createQuery()}, callback);
+    return makeRequest(rest.delete, this.uri + '/1/cards/' + cardId, {query: this.createQuery()}, callback);
 };
 
 Trello.prototype.addWebhook = function (description, callbackUrl, idModel, callback) {
@@ -382,7 +382,7 @@ Trello.prototype.addWebhook = function (description, callbackUrl, idModel, callb
 Trello.prototype.deleteWebhook = function (webHookId, callback) {
     var query = this.createQuery();
 
-    return makeRequest(rest.del, this.uri + '/1/webhooks/' + webHookId, { query: query }, callback);
+    return makeRequest(rest.delete, this.uri + '/1/webhooks/' + webHookId, { query: query }, callback);
 };
 
 Trello.prototype.getLabelsForBoard = function(boardId, callback) {
@@ -410,7 +410,7 @@ Trello.prototype.addLabelOnBoard = function(boardId, name, color, callback) {
 };
 
 Trello.prototype.deleteLabel = function(labelId, callback) {
-    return makeRequest(rest.del, this.uri + '/1/labels/' + labelId, {query: this.createQuery()}, callback);
+    return makeRequest(rest.delete, this.uri + '/1/labels/' + labelId, {query: this.createQuery()}, callback);
 };
 
 Trello.prototype.addLabelToCard = function(cardId, labelId, callback) {
@@ -420,7 +420,7 @@ Trello.prototype.addLabelToCard = function(cardId, labelId, callback) {
 };
 
 Trello.prototype.deleteLabelFromCard = function(cardId, labelId, callback){
-    return makeRequest(rest.del, this.uri + '/1/cards/' + cardId + '/idLabels/'+labelId, {query: this.createQuery()}, callback);
+    return makeRequest(rest.delete, this.uri + '/1/cards/' + cardId + '/idLabels/'+labelId, {query: this.createQuery()}, callback);
 };
 
 Trello.prototype.updateCardPos = function(cardId, position, callback) {

@@ -1,6 +1,6 @@
 {
   "name": "trello",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "author": "Norbert Eder <opensource@norberteder.com>",
   "description": "This module provides an easy way to make requests to the Trello API.",
   "contributors": [
@@ -52,7 +52,7 @@
   "dependencies": {
     "es6-promise": "^4.2.8",
     "object-assign": "~4.1.0",
-    "restler": "^3.4.0"
+    "needle": "3.0.0"
   },
   "devDependencies": {
     "mocha": "^9.1.3",
