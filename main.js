@@ -241,6 +241,14 @@ Trello.prototype.getChecklistsOnCard = function (cardId, callback) {
     return makeRequest(rest.get, this.uri + '/1/cards/' + cardId + '/checklists', {query: this.createQuery()}, callback);
 };
 
+Trello.prototype.getChecklistsOnBoard = function (boardId, callback) {
+  return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/checklists', {query: this.createQuery()}, callback);
+};
+
+Trello.prototype.getChecklist = function(checklistId, callback) {
+  return makeRequest(rest.get, this.uri + '/1/checklists/' + checklistId , {query: this.createQuery()}, callback);
+};
+
 Trello.prototype.getActionsOnCard = function (cardId, callback) {
     return makeRequest(rest.get, this.uri + '/1/cards/' + cardId + '/actions', {query: this.createQuery()}, callback);
 };
