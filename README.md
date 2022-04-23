@@ -98,6 +98,8 @@ API calls can either execute a callback or return a promise. To return a promise
 * getCardsOnListWithExtraParams
 * getCardStickers
 * getChecklistsOnCard 
+* getChecklistsOnBoard
+* getCheckList
 * getCustomFieldsOnBoard 
 * getLabelsForBoard 
 * getListsOnBoard 
@@ -124,6 +126,11 @@ API calls can either execute a callback or return a promise. To return a promise
 Everything that is not available as a function can be requested by calling `makeRequest`.
 
 ## History
+
+### 0.12.1
+
+* Add function getChecklistsOnBoard
+* Add function getChecklist
 
 ### 0.12.0
 
