@@ -1113,6 +1113,31 @@ describe('Trello', function () {
         });
     });
 
+    describe('getOrganization', function() {
+        var get;
+
+        beforeEach(function (done) {
+            sinon.stub(restler, 'get').callsFake(function (uri, options) {
+                return {once: function (event, callback) {
+                    callback(null, null);
+                }};
+            });
+
+            trello.getOrganization('organizationId', function () {
+                get = restler.get;
+                done();
+            });
+        });
+
+        it('should get to https://api.trello.com/1/organizations/organizationId', function () {
+            get.should.have.been.calledWith('https://api.trello.com/1/organizations/organizationId');
+        });
+
+        afterEach(function () {
+            restler.get.restore();
+        });
+    });
+
     describe('getOrgMembers', function() {
         var get;
 

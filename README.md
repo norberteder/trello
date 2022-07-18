@@ -103,7 +103,8 @@ API calls can either execute a callback or return a promise. To return a promise
 * getListsOnBoard 
 * getListsOnBoardByFilter 
 * getMember 
-* getMemberCards 
+* getMemberCards
+* getOrganization
 * getOrgBoards 
 * getOrgMembers 
 
@@ -124,6 +125,10 @@ API calls can either execute a callback or return a promise. To return a promise
 Everything that is not available as a function can be requested by calling `makeRequest`.
 
 ## History
+
+### 0.13.0
+
+* Add function `getOrganization`
 
 ### 0.12.0
 
