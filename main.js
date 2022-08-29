@@ -219,6 +219,10 @@ Trello.prototype.getBoards = function(memberId, callback) {
     return makeRequest(rest.get, this.uri + '/1/members/' + memberId + '/boards', {query: this.createQuery()}, callback);
 };
 
+Trello.prototype.getOrganization = function (organizationId, callback) {
+    return makeRequest(rest.get, this.uri + '/1/organizations/' + organizationId, {query: this.createQuery()}, callback);
+};
+
 Trello.prototype.getOrgBoards = function (organizationId, callback) {
     return makeRequest(rest.get, this.uri + '/1/organizations/' + organizationId + '/boards', {query: this.createQuery()}, callback);
 };
