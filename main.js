@@ -287,8 +287,14 @@ Trello.prototype.getMember = function(memberId, callback) {
     return makeRequest(rest.get, this.uri + '/1/member/' + memberId, {query: this.createQuery()}, callback);
 };
 
-Trello.prototype.getMemberCards = function (memberId, callback) {
-    return makeRequest(rest.get, this.uri + '/1/members/' + memberId + '/cards', {query: this.createQuery()}, callback);
+Trello.prototype.getMemberCards = function (memberId, filter, callback) {
+    var query = this.createQuery();
+    if (typeof(filter) === 'function' && !callback) {
+        callback = filter;
+    else {      
+        query.filter = filter;
+    }    
+    return makeRequest(rest.get, this.uri + '/1/members/' + memberId + '/cards', {query: query}, callback);
 };
 
 Trello.prototype.getBoardMembers = function (boardId, callback) {
