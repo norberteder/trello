@@ -291,12 +291,26 @@ Trello.prototype.getMemberCards = function (memberId, callback) {
     return makeRequest(rest.get, this.uri + '/1/members/' + memberId + '/cards', {query: this.createQuery()}, callback);
 };
 
-Trello.prototype.getBoardMembers = function (boardId, callback) {
+Trello.prototype.getBoardMembers = function (boardId, filter, callback) {
+    var query = this.createQuery();
+     if(filter && typeof(filter) !== 'function'){
+        query.filter = filter;
+    }
+    else {
+     callback = filter;   
+    }
     return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/members', {query: this.createQuery()}, callback);
 };
 
-Trello.prototype.getOrgMembers = function (organizationId, callback) {
-    return makeRequest(rest.get, this.uri + '/1/organizations/' + organizationId + '/members', {query: this.createQuery()}, callback);
+Trello.prototype.getOrgMembers = function (organizationId, filter, callback) {
+    var query = this.createQuery();
+   if(filter && typeof(filter) !== 'function'){
+        query.filter = filter;
+    }
+    else {
+     callback = filter;   
+    }
+    return makeRequest(rest.get, this.uri + '/1/organizations/' + organizationId + '/members', {query: query}, callback);
 };
 
 Trello.prototype.getListsOnBoard = function (boardId, fields = 'all', callback,) {
@@ -308,6 +322,12 @@ Trello.prototype.getListsOnBoard = function (boardId, fields = 'all', callback,)
 Trello.prototype.getListsOnBoardByFilter = function(boardId, filter, callback) {
     var query = this.createQuery();
     query.filter = filter;
+    return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/lists', {query: query}, callback);
+};
+
+Trello.prototype.getListsOnBoardWithExtraParams = function(boardId, extraParams, callback) {
+    var query = this.createQuery();
+    Object.assign(query, extraParams);
     return makeRequest(rest.get, this.uri + '/1/boards/' + boardId + '/lists', {query: query}, callback);
 };
 
